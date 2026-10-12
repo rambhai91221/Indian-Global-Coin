@@ -59,11 +59,14 @@ section.card ul li{margin:6px 0}
 
 .alloc{margin-top:10px}
 .alloc .row{display:flex;align-items:center;gap:12px;margin:12px 0;font-size:14px}
-.alloc .label{width:180px;color:var(--text)}
-@media(max-width:520px){.alloc .label{width:120px;font-size:13px}}
+.alloc .label{width:200px;color:var(--text)}
+@media(max-width:520px){.alloc .label{width:130px;font-size:13px}}
 .alloc .bar{flex:1;height:10px;border-radius:999px;background:var(--ink);border:1px solid var(--line);overflow:hidden}
 .alloc .fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.alloc .pct{width:52px;text-align:right;color:var(--gold);font-weight:700}
+.alloc .pct{width:64px;text-align:right;color:var(--gold);font-weight:700}
+
+.note{background:var(--panel2);border-left:3px solid var(--gold);border-radius:10px;padding:12px 16px;margin-top:16px;font-size:14px;color:#d6dbe1}
+.note b{color:var(--gold)}
 
 .phase{position:relative;padding-left:28px;margin:16px 0}
 .phase::before{content:"";position:absolute;left:7px;top:10px;bottom:-18px;width:2px;background:var(--line)}
@@ -87,7 +90,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   .btn{display:none !important}
   .cover{background:#fafafa;border:1px solid #ddd}
   .chip{background:#fff}
-  section.card,.toc,.kpi,.disclaimer{background:#fff}
+  section.card,.toc,.kpi,.disclaimer,.note{background:#fff}
   .disclaimer{background:#fff7f7}
   a{color:#111;text-decoration:none}
   .wrap{max-width:100%;padding:0}
@@ -198,7 +201,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     <div class="grid two">
       <div class="kpi"><div class="k">Name</div><div class="v">Indian Global Coin</div></div>
       <div class="kpi"><div class="k">Symbol</div><div class="v gold">IGC</div></div>
-      <div class="kpi"><div class="k">Total Supply</div><div class="v">1,000,000,000</div></div>
+      <div class="kpi"><div class="k">Total Supply</div><div class="v">1,000,000,000 (1 Billion)</div></div>
       <div class="kpi"><div class="k">Network</div><div class="v">BNB Smart Chain</div></div>
       <div class="kpi"><div class="k">Buy Fee</div><div class="v">1%</div></div>
       <div class="kpi"><div class="k">Sell Fee</div><div class="v">1%</div></div>
@@ -206,10 +209,13 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
 
     <p style="margin-top:18px"><b>Allocation</b></p>
     <div class="alloc">
-      <div class="row"><div class="label">Public Liquidity</div><div class="bar"><div class="fill" style="width:50%"></div></div><div class="pct">50%</div></div>
-      <div class="row"><div class="label">Marketing</div><div class="bar"><div class="fill" style="width:20%"></div></div><div class="pct">20%</div></div>
-      <div class="row"><div class="label">Merchant Ecosystem</div><div class="bar"><div class="fill" style="width:15%"></div></div><div class="pct">15%</div></div>
-      <div class="row"><div class="label">Team Reserve</div><div class="bar"><div class="fill" style="width:15%"></div></div><div class="pct">15%</div></div>
+      <div class="row"><div class="label">Public Liquidity (Market)</div><div class="bar"><div class="fill" style="width:10%"></div></div><div class="pct">10%</div></div>
+      <div class="row"><div class="label">Owner / Team / Project Wallet</div><div class="bar"><div class="fill" style="width:90%"></div></div><div class="pct">90%</div></div>
+    </div>
+
+    <div class="note">
+      <p style="margin:0"><b>10% (100,000,000 IGC / 10 Crore)</b> — allocated to the public liquidity pool for market trading (Buy/Sell) on PancakeSwap.</p>
+      <p style="margin:8px 0 0"><b>90% (900,000,000 IGC / 90 Crore)</b> — safely held in the creator/owner wallet, reserved for future use: marketing, airdrops, development, partnerships and new exchange listings.</p>
     </div>
   </section>
 
@@ -252,6 +258,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li>No hidden mint function — total supply is fixed at 1,000,000,000 IGC.</li>
       <li>Liquidity locked with a public, verifiable locker.</li>
       <li>Anti-bot and anti-whale limits enabled during launch.</li>
+      <li>Owner / Team wallet reserves are publicly visible on-chain.</li>
       <li>Community-led reporting channel for any suspicious activity.</li>
     </ul>
   </section>
@@ -294,4 +301,4 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   }
 </script>
 </body>
-  </html>
+          </html>
