@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
@@ -39,6 +38,13 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 #nowallet{display:none}
 #nowallet .row{margin-top:10px}
 #nowallet a{flex:1;text-align:center;text-decoration:none;color:#111;background:var(--gold);font-weight:700;padding:10px;border-radius:10px;font-size:14px}
+/* ===== Whitepaper डॉक सेक्शन (नया) ===== */
+.doc-actions{display:flex;gap:10px;flex-wrap:wrap}
+.doc-actions a{flex:1;min-width:150px;text-align:center;text-decoration:none;padding:12px 14px;border-radius:10px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.doc-actions a.gold{background:var(--gold);color:#111}
+.doc-actions a.gold:hover{background:#ffcd1f}
+.doc-actions a.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.doc-actions a.ghost:hover{border-color:var(--gold);color:var(--gold)}
 </style>
 </head>
 <body>
@@ -68,6 +74,17 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
   <button class="gold" id="act">वॉलेट जोड़ें</button>
   <p class="msg" id="msg"></p>
 </section>
+
+<!-- ===== नया: व्हाइटपेपर सेक्शन ===== -->
+<section>
+  <h2>व्हाइटपेपर (Whitepaper)</h2>
+  <p class="muted" style="margin:0 0 12px">IGC का पूरा विजन, टोकनोमिक्स, यूटिलिटी और रोडमैप पढ़ें — या PDF में डाउनलोड करें।</p>
+  <div class="doc-actions">
+    <a class="gold" href="whitepaper.html" target="_blank" rel="noopener">📖 व्हाइटपेपर पढ़ें</a>
+    <a class="ghost" href="whitepaper.html?print=1" target="_blank" rel="noopener">⬇ PDF डाउनलोड करें</a>
+  </div>
+</section>
+<!-- ===== /नया सेक्शन ===== -->
 
 <section>
   <h2>लाइव प्राइस चार्ट</h2>
@@ -239,7 +256,5 @@ if(window.ethereum){
   window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
 }
 </script>
-
 </body>
-</html>
-
+  </html>
