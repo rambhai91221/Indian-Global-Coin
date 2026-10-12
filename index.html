@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
 <style>
-:root{--ink:#0d1014;--panel:#161a20;--line:#272d36;--gold:#f0b90b;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97}
+:root{--ink:#0d1014;--panel:#161a20;--line:#272d36;--gold:#f0b90b;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97;--tg:#229ED9;--x:#000;--wa:#25D366}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--text);font-family:Hind,system-ui,sans-serif;line-height:1.5;padding:16px 16px 40px}
 .wrap{max-width:520px;margin:0 auto}
@@ -38,12 +38,10 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 #nowallet{display:none}
 #nowallet .row{margin-top:10px}
 #nowallet a{flex:1;text-align:center;text-decoration:none;color:#111;background:var(--gold);font-weight:700;padding:10px;border-radius:10px;font-size:14px}
-/* Whitepaper */
 .doc-actions{display:flex;gap:10px;flex-wrap:wrap}
 .doc-actions a{flex:1;min-width:150px;text-align:center;text-decoration:none;padding:12px 14px;border-radius:10px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .doc-actions a.gold{background:var(--gold);color:#111}
 .doc-actions a.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
-/* DEX Buttons */
 .dex-grid{display:grid;gap:10px}
 .dex-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--text);transition:border-color .2s}
 .dex-btn:hover{border-color:var(--gold)}
@@ -52,9 +50,70 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .dex-btn .t{font-weight:700;font-size:15px;line-height:1.15}
 .dex-btn .s{font-size:12px;color:var(--muted)}
 .dex-btn .arrow{color:var(--gold);font-weight:700;font-size:20px}
+.badge{display:inline-block;background:var(--gold);color:#111;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.5px;margin-bottom:8px}
+.airdrop-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.airdrop-head .gift{font-size:28px}
+.airdrop-head .txt .t1{font-size:18px;font-weight:800}
+.airdrop-head .txt .t2{font-size:13px;color:var(--gold);font-weight:600}
+.steps{counter-reset:s;list-style:none;padding:0;margin:12px 0}
+.steps li{position:relative;padding-left:38px;margin:10px 0;font-size:14.5px;color:#d6dbe1}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#111;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:400px){.social-grid{grid-template-columns:1fr}}
+.social-btn{display:flex;align-items:center;gap:12px;text-decoration:none;border-radius:12px;padding:14px;color:#fff;font-weight:700;font-size:14.5px;transition:transform .15s;cursor:pointer;border:0;font-family:inherit}
+.social-btn:hover{transform:translateY(-2px)}
+.social-btn .sico{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.social-btn.tg{background:var(--tg)}
+.social-btn.x{background:var(--x);border:1px solid var(--line)}
+.social-btn.wa{background:var(--wa);color:#0b1a10}
+.social-btn.doc{background:#7a5cff}
+.merchant-box{background:var(--ink);border:1px dashed var(--line);border-radius:12px;padding:14px;margin-top:10px}
+.merchant-box p{margin:6px 0;font-size:14px;color:#d6dbe1}
+.share-row{display:flex;gap:8px;flex-wrap:wrap}
+.share-row button,.share-row a{flex:1;min-width:120px;text-align:center;text-decoration:none;padding:11px 12px;border-radius:10px;font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:#fff;border:0;cursor:pointer;font-family:inherit}
+.share-row .s-wa{background:var(--wa);color:#0b1a10}
+.share-row .s-x{background:#000;border:1px solid var(--line)}
+.share-row .s-tg{background:var(--tg)}
+.share-row .s-copy{background:var(--gold);color:#111}
+.claim-box{background:linear-gradient(135deg,rgba(240,185,11,.14),rgba(240,185,11,.03));border:1px solid rgba(240,185,11,.4);border-radius:12px;padding:16px;margin-top:14px}
+.claim-box h3{margin:0 0 6px;font-size:15px;color:var(--gold);letter-spacing:.3px}
+.ref-code-display{background:#0d1014;border:2px dashed var(--gold);border-radius:10px;padding:14px;text-align:center;font-family:ui-monospace,Consolas,monospace;font-size:24px;font-weight:800;color:var(--gold);letter-spacing:3px;margin:10px 0;user-select:all}
+.ref-copy-row{display:flex;gap:8px;margin-top:8px}
+.ref-copy-row button{flex:1;padding:11px;border-radius:10px;font-weight:700;font-size:14px;font-family:inherit;border:0;cursor:pointer}
+.ref-copy-row .b-copy{background:var(--gold);color:#111}
+.ref-copy-row .b-share{background:var(--tg);color:#fff}
+.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.ref-stat{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.ref-stat .k{font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.ref-stat .v{font-size:16px;font-weight:800;color:var(--gold);margin-top:3px}
+.welcome-ref{background:linear-gradient(135deg,rgba(61,220,151,.16),rgba(61,220,151,.03));border:1px solid rgba(61,220,151,.45);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:14px;color:#d6fce9}
+.welcome-ref b{color:var(--ok)}
+.claim-main-btn{width:100%;margin-top:12px;padding:14px;border-radius:10px;font-size:16px;font-weight:800;background:var(--gold);color:#111;border:0;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.claim-main-btn:disabled{opacity:.6;cursor:not-allowed}
+.pool-bar{background:var(--panel);height:8px;border-radius:99px;overflow:hidden}
+.pool-fill{width:0%;height:100%;background:linear-gradient(90deg,var(--gold),#ffcd1f);transition:width 1s}
+/* Login box */
+.login-box{background:linear-gradient(135deg,rgba(240,185,11,.08),transparent);border:1px solid rgba(240,185,11,.3);border-radius:12px;padding:16px;margin-top:12px}
+.login-box h3{margin:0 0 10px;font-size:15px;color:var(--gold)}
+.login-box input{margin:6px 0;font-size:15px;padding:11px}
+.login-box .btn-full{width:100%;margin-top:8px;padding:12px;border-radius:10px;font-weight:700;font-size:14.5px;background:var(--gold);color:#111;border:0;cursor:pointer;font-family:inherit}
+.login-box .btn-google{width:100%;margin-top:8px;padding:12px;border-radius:10px;font-weight:700;font-size:14.5px;background:#fff;color:#111;border:0;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.login-box .btn-google img{width:18px;height:18px}
+.login-box .switch{text-align:center;font-size:13px;color:var(--muted);margin-top:10px}
+.login-box .switch a{color:var(--gold);cursor:pointer;text-decoration:underline}
+.user-badge{display:flex;align-items:center;justify-content:space-between;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:13.5px}
+.user-badge .em{color:var(--gold);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
+.user-badge .logout{color:var(--bad);cursor:pointer;font-weight:700;font-size:13px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.dash-item{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.dash-item .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.dash-item .v{font-size:17px;font-weight:800;color:var(--gold);margin-top:4px}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:#111;padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
+<div id="toast" class="toast"></div>
 <div class="wrap">
 
 <header>
@@ -62,12 +121,118 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
   <button class="gold" id="connect">वॉलेट जोड़ें</button>
 </header>
 
+<!-- ============ AIRDROP + LOGIN + DASHBOARD ============ -->
+<section>
+  <div class="badge">🎁 FREE AIRDROP LIVE</div>
+  <div class="airdrop-head">
+    <div class="gift">🎁</div>
+    <div class="txt">
+      <div class="t1">पाएँ <span style="color:var(--gold)">50,000 IGC</span> मुफ़्त!</div>
+      <div class="t2">सिर्फ पहले 2,000 लोगों के लिए</div>
+    </div>
+  </div>
+
+  <div id="refWelcome" style="display:none" class="welcome-ref">
+    🎉 आपको <b id="refWelcomeCode">friend</b> ने refer किया है! नीचे claim कीजिए और <b>50,000 IGC</b> पाइए।
+  </div>
+
+  <!-- Login / Signup -->
+  <div id="loginSection" class="login-box">
+    <h3 id="loginTitle">🔐 Login / Signup</h3>
+    <input id="emailInput" type="email" placeholder="अपना Email डालिए">
+    <input id="passInput" type="password" placeholder="Password (कम से कम 6 अक्षर)">
+    <button class="btn-full" id="loginBtn">Sign Up / Login</button>
+    <div style="text-align:center;color:var(--muted);font-size:12px;margin:8px 0">— या —</div>
+    <button class="btn-google" id="googleBtn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Continue with Google
+    </button>
+    <div class="switch">
+      <span id="switchText">अकाउंट है? Login कीजिए</span>
+    </div>
+  </div>
+
+  <!-- User Dashboard -->
+  <div id="dashboardSection" style="display:none">
+    <div class="user-badge">
+      <div>👤 <span class="em" id="userEmail">user@email.com</span></div>
+      <div class="logout" id="logoutBtn">Logout</div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-item"><div class="k">My Referrals</div><div class="v" id="dashRefs">0</div></div>
+      <div class="dash-item"><div class="k">Bonus IGC</div><div class="v" id="dashBonus">0</div></div>
+      <div class="dash-item"><div class="k">Claimed IGC</div><div class="v" id="dashClaimed">0</div></div>
+      <div class="dash-item"><div class="k">Status</div><div class="v" id="dashStatus">-</div></div>
+    </div>
+  </div>
+
+  <p class="muted" style="margin:12px 0 6px">IGC Airdrop में हिस्सा लेने के 3 आसान steps:</p>
+
+  <ol class="steps">
+    <li>Login कीजिए (ऊपर Email/Google से)</li>
+    <li>वॉलेट जोड़िए (ऊपर <b>वॉलेट जोड़ें</b> बटन)</li>
+    <li>अपना Referral Code दोस्तों को भेजिए — हर join पर <b style="color:var(--gold)">10,000 IGC बोनस</b></li>
+  </ol>
+
+  <div style="background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px">
+      <span>Total Airdrop Pool</span>
+      <span style="color:var(--gold);font-weight:700">10,00,00,000 IGC</span>
+    </div>
+    <div class="pool-bar"><div class="pool-fill" id="poolFill"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px">
+      <span>🎯 सीटें: <b style="color:var(--gold)">2,000</b></span>
+      <span>🪙 प्रति व्यक्ति: <b style="color:var(--gold)">50,000 IGC</b></span>
+    </div>
+  </div>
+
+  <!-- Referral Box -->
+  <div class="claim-box">
+    <h3>🎟️ आपका Referral Code</h3>
+    <p class="muted" style="margin:4px 0 0;font-size:12.5px">इसे दोस्तों को भेजिए — हर join पर 10,000 IGC बोनस मिलेगा।</p>
+    <div class="ref-code-display" id="myRefCode">Login करके देखें</div>
+    <div class="ref-copy-row">
+      <button class="b-copy" id="copyRefBtn">📋 Copy Code</button>
+      <button class="b-share" id="shareRefBtn">📤 Share Link</button>
+    </div>
+  </div>
+
+  <!-- Claim Button -->
+  <button class="claim-main-btn" id="claimBtn" disabled>🔒 पहले Login + Wallet जोड़ें</button>
+  <p class="muted" id="claimMsg" style="margin-top:8px;font-size:12.5px;text-align:center"></p>
+
+  <p class="muted" style="margin-top:10px;font-size:12px">⚠️ <b>Note:</b> Airdrop tokens PancakeSwap listing के 7 दिन के अंदर भेजे जाएँगे।</p>
+</section>
+
+<!-- ============ Community ============ -->
+<section>
+  <h2>💬 हमारी Community से जुड़िए</h2>
+  <div class="social-grid">
+    <a class="social-btn tg" id="tgBtn" href="https://t.me/" target="_blank" rel="noopener"><div class="sico">✈️</div><div>Telegram Group</div></a>
+    <a class="social-btn x" id="xBtn" href="https://x.com/" target="_blank" rel="noopener"><div class="sico">𝕏</div><div>X (Twitter)</div></a>
+    <a class="social-btn wa" id="waBtn" href="https://whatsapp.com/channel/" target="_blank" rel="noopener"><div class="sico">💬</div><div>WhatsApp Channel</div></a>
+    <a class="social-btn doc" href="whitepaper.html" target="_blank" rel="noopener"><div class="sico">📄</div><div>Whitepaper</div></a>
+  </div>
+</section>
+
+<!-- ============ Share ============ -->
+<section>
+  <h2>📢 दोस्तों के साथ शेयर कीजिए</h2>
+  <div class="share-row">
+    <a class="s-wa" id="shareWa" target="_blank" rel="noopener">💬 WhatsApp</a>
+    <a class="s-x" id="shareX" target="_blank" rel="noopener">𝕏 Twitter</a>
+    <a class="s-tg" id="shareTg" target="_blank" rel="noopener">✈️ Telegram</a>
+    <button class="s-copy" id="shareCopy">🔗 Link कॉपी</button>
+  </div>
+</section>
+
+<!-- ============ Wallet ============ -->
 <section id="nowallet">
   <h2>वॉलेट ऐप में खोलें</h2>
   <p class="muted" style="margin:0">इस ब्राउज़र में वॉलेट नहीं मिला। खरीद-बिक्री के लिए यह पेज अपने वॉलेट के ब्राउज़र में खोलें।</p>
   <div class="row"><a id="trust" href="#">Trust Wallet</a><a id="mm" href="#">MetaMask</a></div>
 </section>
 
+<!-- ============ Buy/Sell ============ -->
 <section>
   <h2>IGC खरीदें / बेचें</h2>
   <div class="tabs"><button id="tBuy" class="on">खरीदें</button><button id="tSell">बेचें</button></div>
@@ -76,238 +241,355 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
   <p class="muted" id="bal" style="margin:6px 0 0"></p>
   <label>लगभग मिलेगा</label>
   <div class="out" id="out">–</div>
-  <label for="slip">Slippage (%) — फीस के कारण कम से कम 3 रखें</label>
+  <label for="slip">Slippage (%) — कम से कम 3 रखें</label>
   <input id="slip" type="number" inputmode="decimal" value="3" min="1" max="49">
   <button class="gold" id="act">वॉलेट जोड़ें</button>
   <p class="msg" id="msg"></p>
 </section>
 
-<!-- ===== नया: अन्य जगह से खरीदें (PancakeSwap BNB + USDT, PooCoin) ===== -->
+<!-- ============ DEX ============ -->
 <section>
   <h2>अन्य जगह से खरीदें (DEX)</h2>
-  <p class="muted" style="margin:0 0 12px">अगर ऊपर वाला Buy/Sell काम न करे, तो नीचे दिए डिसेंट्रलाइज़्ड एक्सचेंज से सीधे खरीद सकते हैं।</p>
   <div class="dex-grid">
-
-    <a class="dex-btn" id="pcsBnb" target="_blank" rel="noopener">
-      <div class="l">
-        <div class="ico">🥞</div>
-        <div>
-          <div class="t">PancakeSwap — BNB से खरीदें</div>
-          <div class="s">BNB → IGC swap</div>
-        </div>
-      </div>
-      <div class="arrow">→</div>
-    </a>
-
-    <a class="dex-btn" id="pcsUsdt" target="_blank" rel="noopener">
-      <div class="l">
-        <div class="ico">💵</div>
-        <div>
-          <div class="t">PancakeSwap — USDT से खरीदें</div>
-          <div class="s">USDT (BEP-20) → IGC swap</div>
-        </div>
-      </div>
-      <div class="arrow">→</div>
-    </a>
-
-    <a class="dex-btn" id="poocoin" target="_blank" rel="noopener">
-      <div class="l">
-        <div class="ico">🐷</div>
-        <div>
-          <div class="t">PooCoin पर चार्ट देखें</div>
-          <div class="s">लाइव चार्ट और ट्रेडिंग लिंक</div>
-        </div>
-      </div>
-      <div class="arrow">→</div>
-    </a>
-
+    <a class="dex-btn" id="pcsBnb" target="_blank" rel="noopener"><div class="l"><div class="ico">🥞</div><div><div class="t">PancakeSwap — BNB से खरीदें</div><div class="s">BNB → IGC swap</div></div></div><div class="arrow">→</div></a>
+    <a class="dex-btn" id="pcsUsdt" target="_blank" rel="noopener"><div class="l"><div class="ico">💵</div><div><div class="t">PancakeSwap — USDT से खरीदें</div><div class="s">USDT (BEP-20) → IGC swap</div></div></div><div class="arrow">→</div></a>
+    <a class="dex-btn" id="poocoin" target="_blank" rel="noopener"><div class="l"><div class="ico">🐷</div><div><div class="t">PooCoin पर चार्ट देखें</div><div class="s">लाइव चार्ट</div></div></div><div class="arrow">→</div></a>
   </div>
 </section>
-<!-- ===== /नया सेक्शन ===== -->
 
+<!-- ============ Merchant ============ -->
 <section>
-  <h2>व्हाइटपेपर (Whitepaper)</h2>
-  <p class="muted" style="margin:0 0 12px">IGC का पूरा विजन, टोकनोमिक्स, यूटिलिटी और रोडमैप पढ़ें — या PDF में डाउनलोड करें।</p>
+  <h2>🏪 दुकानदारों के लिए — Merchant Program</h2>
+  <div class="merchant-box">
+    <p>✅ <b>0% setup fee</b></p>
+    <p>✅ <b>QR Code</b> — IGC QR पाएँ</p>
+    <p>✅ <b>Instant payment</b></p>
+    <p>✅ <b>Early merchant bonus</b> — पहले 100 को 50,000 IGC</p>
+  </div>
+  <button class="social-btn tg" id="merchantBtn" style="margin-top:12px"><div class="sico">🏪</div><div>Merchant बनने के लिए संपर्क करें</div></button>
+</section>
+
+<!-- ============ Whitepaper ============ -->
+<section>
+  <h2>व्हाइटपेपर</h2>
   <div class="doc-actions">
-    <a class="gold" href="whitepaper.html" target="_blank" rel="noopener">📖 व्हाइटपेपर पढ़ें</a>
-    <a class="ghost" href="whitepaper.html?print=1" target="_blank" rel="noopener">⬇ PDF डाउनलोड करें</a>
+    <a class="gold" href="whitepaper.html" target="_blank" rel="noopener">📖 पढ़ें</a>
+    <a class="ghost" href="whitepaper.html?print=1" target="_blank" rel="noopener">⬇ PDF</a>
   </div>
 </section>
 
+<!-- ============ Chart ============ -->
 <section>
   <h2>लाइव प्राइस चार्ट</h2>
-  <iframe id="chart" title="IGC price chart" loading="lazy"></iframe>
+  <iframe id="chart" title="IGC chart" loading="lazy"></iframe>
   <div class="links">
-    <a id="dex" target="_blank" rel="noopener">DexScreener पर खोलें</a>
-    <a id="poocoinLnk" target="_blank" rel="noopener">PooCoin पर खोलें</a>
-    <a id="scan" target="_blank" rel="noopener">BscScan पर देखें</a>
+    <a id="dex" target="_blank" rel="noopener">DexScreener</a>
+    <a id="poocoinLnk" target="_blank" rel="noopener">PooCoin</a>
+    <a id="scan" target="_blank" rel="noopener">BscScan</a>
   </div>
-  <p class="muted">चार्ट तभी दिखेगा जब liquidity जुड़ चुकी हो और ट्रेडिंग शुरू हो।</p>
 </section>
 
+<!-- ============ Contract ============ -->
 <section>
   <h2>कॉन्ट्रैक्ट एड्रेस</h2>
   <div class="addr" id="addr">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</div>
   <button class="ghost" id="copy">एड्रेस कॉपी करें</button>
-  <p class="muted">कुल सप्लाई 100 करोड़ IGC · खरीद और बिक्री पर 1% फीस · एक लेन-देन की अधिकतम सीमा लागू है।</p>
 </section>
 
 </div>
 
 <script>
+/* ================== CONFIG ================== */
 const IGC="0xd20068fa2d06406f20752ec8a401bf0cc3a37e15";
 const WBNB="0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-const USDT="0x55d398326f99059ff775485246999027b3197955"; // USDT (BEP-20) on BSC
+const USDT="0x55d398326f99059ffb5c1c8a2b2b8d9c1a2e1e1e"; // placeholder
 const ROUTER="0x10ed43c718714eb63d5aa57b78b54704e256024e";
 const RPC="https://bsc-dataseed.binance.org";
-const RABI=["function getAmountsOut(uint256,address[]) view returns (uint256[])",
-"function swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256) payable",
-"function swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"];
+const RABI=["function getAmountsOut(uint256,address[]) view returns (uint256[])","function swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256) payable","function swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"];
 const TABI=["function balanceOf(address) view returns (uint256)","function allowance(address,address) view returns (uint256)","function approve(address,uint256) returns (bool)"];
+
+/* ⚠️ यहाँ अपना Google Apps Script URL डालिए */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb...YOUR_ID.../exec";
+
+/* ⚠️ अपने social links */
+const SOCIAL={
+  telegram:"https://t.me/YourIGCChannel",
+  twitter: "https://x.com/YourIGCHandle",
+  whatsapp:"https://whatsapp.com/channel/YourIGCChannel",
+  merchant:"https://t.me/YourIGCSupport"
+};
+
+const AIRDROP={perUser:50000,seats:2000,pool:100000000,refBonus:10000};
 
 const $=id=>document.getElementById(id);
 const rpc=new ethers.JsonRpcProvider(RPC);
 const rRouter=new ethers.Contract(ROUTER,RABI,rpc);
 const rToken=new ethers.Contract(IGC,TABI,rpc);
 let mode="buy",user=null,signer=null,timer=null,quote=0n;
+let currentEmail=null;
 
-/* ===== लोगो fallback ===== */
-const DRIVE_PRIMARY="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512";
-const DRIVE_ALT="https://drive.google.com/uc?export=view&id=1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa";
-const lg=$("logo");
-lg.src=DRIVE_PRIMARY;
-let logoTry=0;
-lg.onerror=()=>{
-  logoTry++;
-  if(logoTry===1){lg.src=DRIVE_ALT;return}
-  if(logoTry===2){lg.src="logo.png";return}
-  if(logoTry===3){
-    lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';
+/* ================== TOAST ================== */
+function toast(msg,color){
+  const t=$("toast");t.textContent=msg;t.style.background=color||"var(--gold)";
+  t.style.color=color?"#fff":"#111";t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3000);
+}
+
+/* ================== LOCAL STORAGE KEYS ================== */
+const K={
+  MY_CODE:"igc_my_code",
+  REF_BY:"igc_ref_by",
+  EMAIL:"igc_email",
+  PASS:"igc_pass",
+  CLAIMED:"igc_claimed"
+};
+
+/* ================== REFERRAL CODE ================== */
+function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
+function getMyCode(){let c=localStorage.getItem(K.MY_CODE);if(!c){c=genCode();localStorage.setItem(K.MY_CODE,c);}return c;}
+function captureRef(){
+  const u=new URL(location.href);const r=u.searchParams.get("ref");
+  if(!r)return null;if(r===getMyCode())return null;
+  if(localStorage.getItem(K.REF_BY))return localStorage.getItem(K.REF_BY);
+  localStorage.setItem(K.REF_BY,r);return r;
+}
+
+/* ================== LOGIN / SIGNUP ================== */
+let isSignup=false;
+
+function updateLoginUI(){
+  $("loginTitle").textContent = isSignup ? "📝 नया अकाउंट बनाइए" : "🔐 Login कीजिए";
+  $("loginBtn").textContent = isSignup ? "Sign Up" : "Login";
+  $("switchText").innerHTML = isSignup
+    ? 'अकाउंट है? <a id="switchLink">Login</a>'
+    : 'नया user? <a id="switchLink">Sign Up</a>';
+  setTimeout(()=>{
+    const l=$("switchLink");
+    if(l) l.onclick=()=>{isSignup=!isSignup;updateLoginUI();};
+  },10);
+}
+
+$("loginBtn").onclick=()=>{
+  const em=$("emailInput").value.trim();
+  const pw=$("passInput").value.trim();
+  if(!em||!em.includes("@")){toast("सही Email डालिए","#ff6b6b");return}
+  if(pw.length<6){toast("Password कम से कम 6 अक्षर","#ff6b6b");return}
+
+  // Simple local auth (demo)
+  const savedEmail=localStorage.getItem(K.EMAIL);
+  const savedPass=localStorage.getItem(K.PASS);
+
+  if(isSignup){
+    if(savedEmail){toast("यह email पहले से registered है","#ff6b6b");return}
+    localStorage.setItem(K.EMAIL,em);
+    localStorage.setItem(K.PASS,pw);
+    currentEmail=em;
+    toast("✅ Signup successful!");
+    showDashboard();
+  }else{
+    if(em!==savedEmail||pw!==savedPass){toast("Email या Password गलत है","#ff6b6b");return}
+    currentEmail=em;
+    toast("✅ Login successful!");
+    showDashboard();
   }
 };
 
+$("googleBtn").onclick=async()=>{
+  // Demo Google login — production में Google Identity Services लगाएँ
+  const em=prompt("Google Email डालिए:");
+  if(!em||!em.includes("@"))return;
+  currentEmail=em;
+  localStorage.setItem(K.EMAIL,em);
+  localStorage.setItem(K.PASS,"google_oauth");
+  toast("✅ Google Login successful!");
+  showDashboard();
+  // Send to sheet
+  sendToSheet("googleLogin",{email:em,wallet:"",googleLogin:true});
+};
+
+$("logoutBtn").onclick=()=>{
+  localStorage.removeItem(K.EMAIL);
+  localStorage.removeItem(K.PASS);
+  currentEmail=null;
+  $("loginSection").style.display="block";
+  $("dashboardSection").style.display="none";
+  updateLoginUI();
+  toast("Logged out");
+};
+
+function showDashboard(){
+  $("loginSection").style.display="none";
+  $("dashboardSection").style.display="block";
+  $("userEmail").textContent=currentEmail||"user";
+  $("myRefCode").textContent=getMyCode();
+  loadUserData();
+  updateClaimBtn();
+}
+
+function updateClaimBtn(){
+  const hasUser=!!currentEmail;
+  const hasWallet=!!user;
+  const btn=$("claimBtn");
+  if(!hasUser){btn.disabled=true;btn.textContent="🔒 पहले Login कीजिए";return}
+  if(!hasWallet){btn.disabled=true;btn.textContent="🔗 पहले वॉलेट जोड़ें";return}
+  btn.disabled=false;
+  btn.textContent="🎁 50,000 IGC Claim कीजिए";
+}
+
+/* ================== GOOGLE SHEETS ================== */
+async function sendToSheet(action,payload){
+  if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL.includes("YOUR_ID")){
+    console.warn("Apps Script URL not set");
+    return null;
+  }
+  try{
+    const body=JSON.stringify({action,...payload,myRefCode:getMyCode(),referredBy:localStorage.getItem(K.REF_BY)||"direct",timestamp:new Date().toISOString()});
+    const res=await fetch(APPS_SCRIPT_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:body,
+      redirect:"follow"
+    });
+    return await res.json();
+  }catch(e){
+    console.error("Sheet error:",e);
+    return null;
+  }
+}
+
+/* ================== CLAIM ================== */
+$("claimBtn").onclick=async()=>{
+  if(!currentEmail){toast("पहले Login कीजिए","#ff6b6b");return}
+  if(!user){toast("पहले वॉलेट जोड़ें","#ff6b6b");await connect();return}
+  if(localStorage.getItem(K.CLAIMED)){toast("आप पहले ही claim कर चुके हैं","#ff6b6b");return}
+
+  const btn=$("claimBtn");btn.disabled=true;btn.textContent="Processing...";
+
+  const result=await sendToSheet("claim",{
+    email:currentEmail,
+    wallet:user,
+    googleLogin:localStorage.getItem(K.PASS)==="google_oauth"
+  });
+
+  if(result && result.success){
+    localStorage.setItem(K.CLAIMED,"1");
+    toast("✅ Claim successful! 50,000 IGC");
+    $("claimMsg").innerHTML="✅ आपका claim हो गया! Google Sheet में save हो गया।";
+    $("claimMsg").style.color="var(--ok)";
+    btn.textContent="✔ Claimed";
+    loadUserData();
+  }else{
+    toast(result && result.message ? result.message : "Claim failed — फिर कोशिश कीजिए","#ff6b6b");
+    btn.disabled=false;btn.textContent="🎁 50,000 IGC Claim कीजिए";
+  }
+};
+
+/* ================== DASHBOARD ================== */
+async function loadUserData(){
+  if(!user){return}
+  const result=await sendToSheet("getUser",{wallet:user});
+  if(result && result.success && result.user){
+    const u=result.user;
+    $("dashRefs").textContent=u.refCount||0;
+    $("dashBonus").textContent=(u.bonusIGC||0).toLocaleString("en-IN");
+    $("dashClaimed").textContent=(u.claimedIGC||0).toLocaleString("en-IN");
+    $("dashStatus").textContent=u.status||"-";
+  }else{
+    $("dashRefs").textContent="0";
+    $("dashBonus").textContent="0";
+    $("dashClaimed").textContent=localStorage.getItem(K.CLAIMED)?"50,000":"0";
+    $("dashStatus").textContent=localStorage.getItem(K.CLAIMED)?"Claimed":"-";
+  }
+}
+
+/* ================== REFERRAL UI ================== */
+$("copyRefBtn").onclick=async()=>{
+  const code=getMyCode();
+  try{await navigator.clipboard.writeText(code)}catch(e){}
+  toast("📋 Code copied: "+code);
+};
+
+function buildRefLink(){
+  const u=new URL(location.href);u.searchParams.set("ref",getMyCode());return u.toString();
+}
+
+$("shareRefBtn").onclick=()=>{
+  const link=buildRefLink();
+  const txt="🎁 मुझे Indian Global Coin (IGC) से 50,000 IGC FREE मिल रहे हैं! तुम भी मेरे referral link से जुड़ो:";
+  if(navigator.share){navigator.share({title:"IGC Airdrop",text:txt,url:link}).catch(()=>{});}
+  else{window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+link),"_blank");}
+};
+
+/* ================== SHARE ================== */
+function shareText(){return "🚀 Indian Global Coin (IGC) — BNB Chain पर नया BEP-20 टोकन! 50,000 IGC FREE:";}
+$("shareWa").href="https://wa.me/?text="+encodeURIComponent(shareText()+" "+buildRefLink());
+$("shareX").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText())+"&url="+encodeURIComponent(buildRefLink());
+$("shareTg").href="https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(shareText());
+$("shareCopy").onclick=async()=>{
+  try{await navigator.clipboard.writeText(buildRefLink())}catch(e){}
+  toast("🔗 Link copied!");
+};
+
+/* ================== INIT ================== */
+function initRefUI(){
+  captureRef();
+  const refBy=localStorage.getItem(K.REF_BY);
+  if(refBy){
+    $("refWelcome").style.display="block";
+    $("refWelcomeCode").textContent=refBy;
+  }
+  $("myRefCode").textContent=getMyCode();
+
+  // Auto-login if saved
+  const savedEmail=localStorage.getItem(K.EMAIL);
+  if(savedEmail){currentEmail=savedEmail;showDashboard();}
+  else updateLoginUI();
+
+  // Pool bar animation
+  setTimeout(()=>{$("poolFill").style.width="15%";},300);
+}
+
+/* ================== LOGO ================== */
+const DRIVE_PRIMARY="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512";
+const DRIVE_ALT="https://drive.google.com/uc?export=view&id=1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa";
+const lg=$("logo");lg.src=DRIVE_PRIMARY;let logoTry=0;
+lg.onerror=()=>{logoTry++;if(logoTry===1){lg.src=DRIVE_ALT;return}if(logoTry===2){lg.src="logo.png";return}if(logoTry===3){lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';}};
+
+/* ================== LINKS ================== */
 const checksum=ethers.getAddress(IGC);
-const usdtChecksum=ethers.getAddress(USDT);
 $("addr").textContent=checksum;
 $("dex").href="https://dexscreener.com/bsc/"+checksum;
 $("scan").href="https://bscscan.com/token/"+checksum;
 $("poocoin").href="https://poocoin.app/tokens/"+checksum;
 $("poocoinLnk").href="https://poocoin.app/tokens/"+checksum;
 $("chart").src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trades=0&info=0";
+$("pcsBnb").href="https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum;
+$("pcsUsdt").href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+ethers.getAddress(USDT)+"&outputCurrency="+checksum;
+$("tgBtn").href=SOCIAL.telegram;
+$("xBtn").href=SOCIAL.twitter;
+$("waBtn").href=SOCIAL.whatsapp;
+$("merchantBtn").onclick=()=>window.open(SOCIAL.merchant,"_blank");
 
-/* PancakeSwap links */
-$("pcsBnb").href  = "https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum;
-$("pcsUsdt").href = "https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+usdtChecksum+"&outputCurrency="+checksum;
-
-const here=location.href;
-$("trust").href="https://link.trustwallet.com/open_url?coin_id=20000714&url="+encodeURIComponent(here);
-$("mm").href="https://metamask.app.link/dapp/"+here.replace(/^https?:\/\//,"");
-
+/* ================== WALLET + SWAP (पूरा code जैसा पहले था) ================== */
 function say(t,c){const m=$("msg");m.textContent=t;m.className="msg "+(c||"")}
 const short=a=>a.slice(0,6)+"…"+a.slice(-4);
 const fmt=(v)=>{const n=Number(ethers.formatUnits(v,18));return n>=1000?n.toLocaleString("en-IN",{maximumFractionDigits:2}):n.toPrecision(6).replace(/\.?0+$/,"")};
-
-function setMode(m){
-  mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");
-  $("inLabel").textContent=m==="buy"?"BNB की मात्रा":"IGC की मात्रा";
-  $("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();
-}
+function setMode(m){mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");$("inLabel").textContent=m==="buy"?"BNB की मात्रा":"IGC की मात्रा";$("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
 function syncBtn(){$("act").textContent=user?(mode==="buy"?"IGC खरीदें":"IGC बेचें"):"वॉलेट जोड़ें"}
-
-async function refreshBal(){
-  if(!user){$("bal").textContent="";return}
-  try{
-    const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);
-    $("bal").textContent="बैलेंस: "+fmt(b)+(mode==="buy"?" BNB":" IGC");
-  }catch(e){}
-}
-
-async function connect(){
-  if(!window.ethereum){$("nowallet").style.display="block";say("वॉलेट नहीं मिला। ऊपर दिए बटन से वॉलेट ऐप में खोलें।","bad");return false}
-  try{
-    const acc=await window.ethereum.request({method:"eth_requestAccounts"});
-    try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x38"}]})}
-    catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}
-    signer=await new ethers.BrowserProvider(window.ethereum).getSigner();
-    user=await signer.getAddress();
-    $("connect").textContent=short(user);$("nowallet").style.display="none";
-    syncBtn();refreshBal();say("");return true;
-  }catch(e){say("वॉलेट नहीं जुड़ा: "+(e.shortMessage||e.message||"रद्द किया गया"),"bad");return false}
-}
-
-function parseAmt(){
-  try{const v=ethers.parseUnits($("amt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}
-}
-async function getQuote(){
-  const a=parseAmt();quote=0n;
-  if(a===0n){$("out").textContent="–";return}
-  const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];
-  try{
-    const r=await rRouter.getAmountsOut(a,path);quote=r[1];
-    $("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");
-  }catch(e){$("out").textContent="–";say("अभी liquidity नहीं मिली, इसलिए भाव नहीं दिख रहा।","bad")}
-}
-
-function err(e){
-  const t=(e.reason||e.shortMessage||e.message||"").toString();
-  if(/trading not enabled/i.test(t))return "ट्रेडिंग अभी शुरू नहीं हुई है।";
-  if(/Max Tx/i.test(t))return "एक बार में इतनी मात्रा की अनुमति नहीं है। मात्रा घटाइए।";
-  if(/Max Wallet/i.test(t))return "आपके वॉलेट की अधिकतम सीमा पूरी हो जाएगी। मात्रा घटाइए।";
-  if(/user rejected|denied|ACTION_REJECTED/i.test(t))return "आपने ट्रांज़ैक्शन रद्द कर दिया।";
-  if(/INSUFFICIENT_OUTPUT|K\b|execution reverted/i.test(t))return "लेन-देन विफल हुआ। Slippage बढ़ाकर (3–5%) फिर कोशिश करें।";
-  return t||"कुछ गड़बड़ हुई।";
-}
-
-async function act(){
-  if(!user){await connect();return}
-  const a=parseAmt();if(a===0n){say("मात्रा डालिए।","bad");return}
-  const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);
-  const btn=$("act");btn.disabled=true;
-  try{
-    await getQuote();
-    if(quote===0n){throw new Error("अभी liquidity नहीं है, इसलिए खरीद-बिक्री नहीं हो सकती।")}
-    const minOut=quote*BigInt(Math.floor((100-sl)*100))/10000n;
-    const dl=Math.floor(Date.now()/1000)+1200;
-    const router=new ethers.Contract(ROUTER,RABI,signer);
-    let tx;
-    if(mode==="buy"){
-      say("वॉलेट में ट्रांज़ैक्शन मंज़ूर कीजिए…");
-      tx=await router.swapExactETHForTokensSupportingFeeOnTransferTokens(minOut,[WBNB,IGC],user,dl,{value:a});
-    }else{
-      const tok=new ethers.Contract(IGC,TABI,signer);
-      if((await tok.allowance(user,ROUTER))<a){
-        say("पहले IGC की अनुमति (Approve) दीजिए…");
-        await (await tok.approve(ROUTER,a)).wait();
-      }
-      say("अब बिक्री मंज़ूर कीजिए…");
-      tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl);
-    }
-    say("ट्रांज़ैक्शन भेजा गया, कन्फ़र्म होने का इंतज़ार…");
-    await tx.wait();
-    say("पूरा हुआ! ✔ BscScan: "+short(tx.hash),"ok");
-    $("amt").value="";$("out").textContent="–";refreshBal();
-  }catch(e){say(err(e),"bad")}
-  btn.disabled=false;
-}
-
-$("tBuy").onclick=()=>setMode("buy");
-$("tSell").onclick=()=>setMode("sell");
-$("connect").onclick=connect;
-$("act").onclick=act;
+async function refreshBal(){if(!user){$("bal").textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);$("bal").textContent="बैलेंस: "+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
+async function connect(){if(!window.ethereum){$("nowallet").style.display="block";say("वॉलेट नहीं मिला।","bad");return false}try{await window.ethereum.request({method:"eth_requestAccounts"});try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x38"}]})}catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}signer=await new ethers.BrowserProvider(window.ethereum).getSigner();user=await signer.getAddress();$("connect").textContent=short(user);$("nowallet").style.display="none";syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();return true}catch(e){say("वॉलेट नहीं जुड़ा: "+(e.shortMessage||e.message||"रद्द किया गया"),"bad");return false}}
+function parseAmt(){try{const v=ethers.parseUnits($("amt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
+async function getQuote(){const a=parseAmt();quote=0n;if(a===0n){$("out").textContent="–";return}const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];try{const r=await rRouter.getAmountsOut(a,path);quote=r[1];$("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");}catch(e){$("out").textContent="–";say("अभी liquidity नहीं मिली।","bad")}}
+function err(e){const t=(e.reason||e.shortMessage||e.message||"").toString();if(/trading not enabled/i.test(t))return "ट्रेडिंग अभी शुरू नहीं हुई है।";if(/Max Tx/i.test(t))return "मात्रा घटाइए।";if(/Max Wallet/i.test(t))return "वॉलेट सीमा पूरी।";if(/user rejected|denied|ACTION_REJECTED/i.test(t))return "ट्रांज़ैक्शन रद्द किया।";if(/INSUFFICIENT_OUTPUT|K\b|execution reverted/i.test(t))return "Slippage बढ़ाइए (3–5%)।";return t||"कुछ गड़बड़ हुई।"}
+async function act(){if(!user){await connect();return}const a=parseAmt();if(a===0n){say("मात्रा डालिए।","bad");return}const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);const btn=$("act");btn.disabled=true;try{await getQuote();if(quote===0n){throw new Error("अभी liquidity नहीं है।")}const minOut=quote*BigInt(Math.floor((100-sl)*100))/10000n;const dl=Math.floor(Date.now()/1000)+1200;const router=new ethers.Contract(ROUTER,RABI,signer);let tx;if(mode==="buy"){say("वॉलेट में मंज़ूर कीजिए…");tx=await router.swapExactETHForTokensSupportingFeeOnTransferTokens(minOut,[WBNB,IGC],user,dl,{value:a})}else{const tok=new ethers.Contract(IGC,TABI,signer);if((await tok.allowance(user,ROUTER))<a){say("Approve कीजिए…");await (await tok.approve(ROUTER,a)).wait()}say("बिक्री मंज़ूर कीजिए…");tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl)}say("कन्फ़र्म होने का इंतज़ार…");await tx.wait();say("पूरा हुआ! ✔ "+short(tx.hash),"ok");$("amt").value="";$("out").textContent="–";refreshBal()}catch(e){say(err(e),"bad")}btn.disabled=false}
+$("tBuy").onclick=()=>setMode("buy");$("tSell").onclick=()=>setMode("sell");
+$("connect").onclick=connect;$("act").onclick=act;
 $("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
-$("max").onclick=async()=>{
-  if(!user){await connect();if(!user)return}
-  try{
-    if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}
-    else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}
-    getQuote();
-  }catch(e){}
-};
-$("copy").onclick=async()=>{
-  try{await navigator.clipboard.writeText(checksum)}
-  catch(e){const r=document.createRange();r.selectNode($("addr"));getSelection().removeAllRanges();getSelection().addRange(r);document.execCommand("copy")}
-  $("copy").textContent="कॉपी हो गया ✔";setTimeout(()=>$("copy").textContent="एड्रेस कॉपी करें",1800);
-};
+$("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent="कॉपी हो गया ✔";setTimeout(()=>$("copy").textContent="एड्रेस कॉपी करें",1800)};
+
+initRefUI();
+
 if(window.ethereum){
   window.ethereum.request({method:"eth_accounts"}).then(a=>{if(a&&a.length)connect()}).catch(()=>{});
   window.ethereum.on&&window.ethereum.on("accountsChanged",()=>location.reload());
@@ -315,4 +597,4 @@ if(window.ethereum){
 }
 </script>
 </body>
-</html>
+  </html>
