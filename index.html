@@ -14,6 +14,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--ink:#0d1014;--panel:#161a20;--line:#272d36;--gold:#f0b90b;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97;--tg:#229ED9;--x:#000;--wa:#25D366}
 *{box-sizing:border-box}
@@ -106,8 +107,10 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .login-box h3{margin:0 0 10px;font-size:15px;color:var(--gold)}
 .login-box input{margin:6px 0;font-size:15px;padding:11px}
 .login-box .btn-full{width:100%;margin-top:8px;padding:12px;border-radius:10px;font-weight:700;font-size:14.5px;background:var(--gold);color:#111;border:0;cursor:pointer;font-family:inherit}
-.login-box .btn-google{width:100%;margin-top:8px;padding:12px;border-radius:10px;font-weight:700;font-size:14.5px;background:#fff;color:#111;border:0;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.login-box .btn-google{width:100%;margin-top:8px;padding:12px;border-radius:10px;font-weight:700;font-size:14.5px;background:#fff;color:#111;border:0;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
+.login-box .btn-google:hover{background:#f1f1f1}
 .login-box .btn-google img{width:18px;height:18px;pointer-events:auto}
+.login-box .btn-google.loading{opacity:.7;cursor:wait}
 .login-box .switch{text-align:center;font-size:13px;color:var(--muted);margin-top:10px}
 .login-box .switch a{color:var(--gold);cursor:pointer;text-decoration:underline}
 .user-badge{display:flex;align-items:center;justify-content:space-between;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:13.5px}
@@ -119,10 +122,8 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .dash-item .v{font-size:17px;font-weight:800;color:var(--gold);margin-top:4px}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:#111;padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%}
 .toast.show{opacity:1}
-/* ========== SECURITY BADGE ========== */
 .sec-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(61,220,151,.18),rgba(61,220,151,.05));border:1px solid rgba(61,220,151,.5);color:var(--ok);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-top:8px;letter-spacing:.3px}
 .sec-badge::before{content:"🔒"}
-/* ========== SCREEN BLUR when devtools ========== */
 body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 </style>
 </head>
@@ -222,8 +223,8 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 <section>
   <h2>💬 हमारी Community से जुड़िए</h2>
   <div class="social-grid">
-    <a class="social-btn tg" id="tgBtn" href="https://t.me/" target="_blank" rel="noopener"><div class="sico">✈️</div><div>Telegram Group</div></a>
-    <a class="social-btn x" id="xBtn" href="https://x.com/" target="_blank" rel="noopener"><div class="sico">𝕏</div><div>X (Twitter)</div></a>
+    <a class="social-btn tg" id="tgBtn" href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener"><div class="sico">✈️</div><div>Telegram Group</div></a>
+    <a class="social-btn x" id="xBtn" href="https://x.com/Rambhai91221" target="_blank" rel="noopener"><div class="sico">𝕏</div><div>X (Twitter)</div></a>
     <a class="social-btn wa" id="waBtn" href="https://whatsapp.com/channel/" target="_blank" rel="noopener"><div class="sico">💬</div><div>WhatsApp Channel</div></a>
     <a class="social-btn doc" href="whitepaper.html" target="_blank" rel="noopener"><div class="sico">📄</div><div>Whitepaper</div></a>
   </div>
@@ -327,12 +328,15 @@ const TABI=["function balanceOf(address) view returns (uint256)","function allow
 /* ⚠️ यहाँ अपना Google Apps Script URL डालिए */
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb...YOUR_ID.../exec";
 
-/* ⚠️ अपने social links */
+/* ⚠️ यहाँ अपना Google OAuth Client ID डालिए */
+const GOOGLE_CLIENT_ID = "YOUR_CLIENT_ID.apps.googleusercontent.com";
+
+/* ✅ आपके असली Social links */
 const SOCIAL={
-  telegram:"https://t.me/YourIGCChannel",
-  twitter: "https://x.com/YourIGCHandle",
-  whatsapp:"https://whatsapp.com/channel/YourIGCChannel",
-  merchant:"https://t.me/YourIGCSupport"
+  telegram:"https://t.me/IGC_Official_Token",
+  twitter: "https://x.com/Rambhai91221",
+  whatsapp:"https://whatsapp.com/channel/",
+  merchant:"https://t.me/IGC_Official_Token"
 };
 
 const AIRDROP={perUser:50000,seats:2000,pool:100000000,refBonus:10000};
@@ -391,7 +395,6 @@ $("loginBtn").onclick=()=>{
   if(!em||!em.includes("@")){toast("सही Email डालिए","#ff6b6b");return}
   if(pw.length<6){toast("Password कम से कम 6 अक्षर","#ff6b6b");return}
 
-  // Simple local auth (demo)
   const savedEmail=localStorage.getItem(K.EMAIL);
   const savedPass=localStorage.getItem(K.PASS);
 
@@ -410,23 +413,108 @@ $("loginBtn").onclick=()=>{
   }
 };
 
-$("googleBtn").onclick=async()=>{
-  // Demo Google login — production में Google Identity Services लगाएँ
-  const em=prompt("Google Email डालिए:");
-  if(!em||!em.includes("@"))return;
-  currentEmail=em;
-  localStorage.setItem(K.EMAIL,em);
-  localStorage.setItem(K.PASS,"google_oauth");
-  toast("✅ Google Login successful!");
-  showDashboard();
-  // Send to sheet
-  sendToSheet("googleLogin",{email:em,wallet:"",googleLogin:true});
+/* ================== GOOGLE SIGN-IN (REAL) ================== */
+let googleReady=false;
+
+function initGoogleSignIn(){
+  if(!window.google || !window.google.accounts) return false;
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){
+    console.warn("Google Client ID not set");
+    return false;
+  }
+  try{
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      use_fedcm_for_prompt: true
+    });
+    googleReady=true;
+    return true;
+  }catch(e){
+    console.warn("Google init error", e);
+    return false;
+  }
+}
+
+function handleGoogleCredential(response){
+  try{
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const em = payload.email;
+    const name = payload.name || "";
+    if(!em){toast("Google login failed","#ff6b6b");return}
+    currentEmail = em;
+    localStorage.setItem(K.EMAIL, em);
+    localStorage.setItem(K.PASS, "google_oauth");
+    localStorage.setItem("igc_gname", name);
+    toast("✅ Google Login: " + em);
+    showDashboard();
+    sendToSheet("googleLogin",{email:em, wallet:user||"", googleLogin:true, name:name});
+  }catch(e){
+    toast("Google response error","#ff6b6b");
+    console.error(e);
+  }
+}
+
+$("googleBtn").onclick=()=>{
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){
+    toast("पहले Google Client ID setup कीजिए","#ff6b6b");
+    alert("Google Client ID सेट नहीं है।\n\nIGC/Admin से संपर्क कीजिए।");
+    return;
+  }
+  if(!googleReady){
+    initGoogleSignIn();
+  }
+  if(googleReady && window.google && google.accounts){
+    // Google account picker popup
+    google.accounts.id.prompt((notification)=>{
+      if(notification.isNotDisplayed() || notification.isSkippedMoment()){
+        // Fallback: One Tap blocked → use OAuth popup flow
+        try{
+          const client = google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID,
+            scope: "openid email profile",
+            callback: (resp)=>{
+              if(resp && resp.access_token){
+                fetch("https://www.googleapis.com/oauth2/v3/userinfo",{
+                  headers:{Authorization:"Bearer "+resp.access_token}
+                }).then(r=>r.json()).then(info=>{
+                  currentEmail = info.email;
+                  localStorage.setItem(K.EMAIL, info.email);
+                  localStorage.setItem(K.PASS, "google_oauth");
+                  localStorage.setItem("igc_gname", info.name||"");
+                  toast("✅ Google Login: " + info.email);
+                  showDashboard();
+                  sendToSheet("googleLogin",{email:info.email, wallet:user||"", googleLogin:true, name:info.name||""});
+                }).catch(()=>toast("Google userinfo error","#ff6b6b"));
+              }
+            }
+          });
+          client.requestAccessToken();
+        }catch(e){
+          toast("Google login failed","#ff6b6b");
+          console.error(e);
+        }
+      }
+    });
+  } else {
+    toast("Google script load हो रहा है… फिर try कीजिए","#ff6b6b");
+  }
 };
 
+// Try init when GIS loads
+window.addEventListener("load", ()=>{
+  setTimeout(()=>{ initGoogleSignIn(); }, 1000);
+});
+
+/* ================== LOGOUT ================== */
 $("logoutBtn").onclick=()=>{
   localStorage.removeItem(K.EMAIL);
   localStorage.removeItem(K.PASS);
+  localStorage.removeItem("igc_gname");
   currentEmail=null;
+  try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
   $("loginSection").style.display="block";
   $("dashboardSection").style.display="none";
   updateLoginUI();
@@ -556,12 +644,10 @@ function initRefUI(){
   }
   $("myRefCode").textContent=getMyCode();
 
-  // Auto-login if saved
   const savedEmail=localStorage.getItem(K.EMAIL);
   if(savedEmail){currentEmail=savedEmail;showDashboard();}
   else updateLoginUI();
 
-  // Pool bar animation
   setTimeout(()=>{$("poolFill").style.width="15%";},300);
 }
 
@@ -616,7 +702,6 @@ if(window.ethereum){
 (function(){
   "use strict";
 
-  // 1. Anti-iframe (Clickjacking protection)
   try {
     if (window.top !== window.self) {
       window.top.location = window.self.location.href;
@@ -626,46 +711,30 @@ if(window.ethereum){
     return;
   }
 
-  // 2. Right-click disable
   document.addEventListener('contextmenu', function(e){
     e.preventDefault();
     toast('🚫 Right-click disabled for security');
     return false;
   });
 
-  // 3. Long-press disable (mobile)
   document.addEventListener('touchstart', function(e){
     if (e.touches.length > 1) { e.preventDefault(); }
   }, {passive:false});
 
-  // 4. Key blocking
   document.addEventListener('keydown', function(e){
     const k = e.key;
     const ctrl = e.ctrlKey || e.metaKey;
-
-    // F12
     if (k === 'F12' || e.keyCode === 123) { e.preventDefault(); toast('🚫 DevTools disabled'); return false; }
-
-    // Ctrl+Shift+I / J / C / K
     if (ctrl && e.shiftKey && ['I','J','C','K'].includes((k||'').toUpperCase())) { e.preventDefault(); toast('🚫 DevTools disabled'); return false; }
-
-    // Ctrl+U (View Source)
     if (ctrl && (k||'').toLowerCase() === 'u') { e.preventDefault(); toast('🚫 View source disabled'); return false; }
-
-    // Ctrl+S (Save)
     if (ctrl && (k||'').toLowerCase() === 's') { e.preventDefault(); return false; }
-
-    // Ctrl+P (Print)
     if (ctrl && (k||'').toLowerCase() === 'p') { e.preventDefault(); toast('🚫 Print disabled'); return false; }
-
-    // Ctrl+A (Select All) - only outside inputs
     const tag = (e.target.tagName || '').toLowerCase();
     if (ctrl && (k||'').toLowerCase() === 'a' && tag !== 'input' && tag !== 'textarea') {
       e.preventDefault(); return false;
     }
   }, true);
 
-  // 5. Copy/Cut protection (allow in inputs)
   document.addEventListener('copy', function(e){
     const tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea') return;
@@ -679,12 +748,10 @@ if(window.ethereum){
     e.preventDefault();
   });
 
-  // 6. Prevent image drag
   document.addEventListener('dragstart', function(e){
     if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
   });
 
-  // 7. Anti-devtools detection (basic, non-intrusive)
   let devtoolsWarned = false;
   function detectDevTools(){
     const threshold = 170;
@@ -702,7 +769,6 @@ if(window.ethereum){
   }
   setInterval(detectDevTools, 1500);
 
-  // 8. Console banner on load
   console.clear();
   console.log('%c🛑 STOP!', 'color:#f0b90b;font-size:60px;font-weight:900;text-shadow:3px 3px 0 #000;');
   console.log('%cIndian Global Coin (IGC) — Secure Application', 'color:#f0b90b;font-size:18px;font-weight:bold;');
@@ -710,21 +776,18 @@ if(window.ethereum){
   console.log('%c🛡️ We NEVER ask for your seed phrase or private key.', 'color:#3ddc97;font-size:14px;');
   console.log('%c✅ Contract: 0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15', 'color:#8b93a0;font-size:12px;');
 
-  // 9. Integrity: freeze important globals
   try {
     Object.defineProperty(window, 'IGC', { value: IGC, writable: false, configurable: false });
     Object.defineProperty(window, 'ROUTER', { value: ROUTER, writable: false, configurable: false });
     Object.defineProperty(window, 'APPS_SCRIPT_URL', { value: APPS_SCRIPT_URL, writable: false, configurable: false });
   } catch (e) { /* ignore */ }
 
-  // 10. Periodic integrity check
   setInterval(function(){
     if (window.IGC !== IGC || window.ROUTER !== ROUTER) {
       document.body.innerHTML = '<div style="padding:60px 20px;text-align:center;color:#ff6b6b;font-family:sans-serif;background:#0d1014;min-height:100vh"><h1>⚠️ Security Breach Detected</h1><p>Page has been modified. Please reload.</p><button onclick="location.reload()" style="padding:12px 24px;background:#f0b90b;border:0;border-radius:10px;font-weight:700;margin-top:20px;cursor:pointer">🔄 Reload</button></div>';
     }
   }, 5000);
 
-  // 11. Prevent text selection via double-click on non-inputs
   document.addEventListener('mousedown', function(e){
     if (e.detail > 1) {
       const tag = (e.target.tagName || '').toLowerCase();
@@ -732,10 +795,8 @@ if(window.ethereum){
     }
   });
 
-  // 12. Disable drag on all elements
   document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
 
-  // 13. Prevent middle-click paste
   document.addEventListener('auxclick', function(e){
     if (e.button === 1) { e.preventDefault(); }
   });
@@ -743,4 +804,4 @@ if(window.ethereum){
 })();
 </script>
 </body>
-        </html>
+  </html>
