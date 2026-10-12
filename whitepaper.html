@@ -1,1 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGC Whitepaper v1.0 — Indian Global Coin</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d1014;--panel:#161a20;--panel2:#1b2028;--line:#272d36;--gold:#f0b90b;--gold2:#c99a08;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:Inter,Hind,system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
 
+.topbar{position:sticky;top:0;z-index:20;background:rgba(13,16,20,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.topbar .brandrow{display:flex;align-items:center;gap:10px;min-width:0}
+.topbar img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:var(--gold);flex:none}
+.topbar .bt{font-weight:700;font-size:15px;line-height:1.1}
+.topbar .bs{font-size:11px;color:var(--muted)}
+.topbar .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn.gold{background:var(--gold);color:#111}
+.btn.gold:hover{background:#ffcd1f;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
+
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 60px}
+
+.cover{background:radial-gradient(120% 100% at 0% 0%, rgba(240,185,11,.16), transparent 60%), var(--panel);border:1px solid var(--line);border-radius:20px;padding:34px 24px;text-align:center;margin-bottom:22px;page-break-inside:avoid}
+.cover .biglogo{width:100px;height:100px;border-radius:50%;object-fit:cover;background:var(--gold);margin:0 auto 16px;display:block;border:3px solid rgba(240,185,11,.4)}
+.cover h1{margin:0 0 6px;font-size:30px;letter-spacing:-.5px}
+.cover .tag{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:2.4px;text-transform:uppercase;margin-bottom:10px}
+.cover p.sub{color:#cfd5dc;margin:6px auto;font-size:14.5px;max-width:560px}
+.cover .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.chip{border:1px solid var(--line);background:var(--ink);padding:6px 12px;border-radius:999px;font-size:12px;color:var(--text)}
+.chip b{color:var(--gold)}
+
+.toc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:22px;page-break-after:always}
+.toc h3{margin:0 0 10px;font-size:13px;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase}
+.toc ol{margin:0;padding-left:20px;columns:2;column-gap:26px}
+@media(max-width:600px){.toc ol{columns:1}}
+.toc li{margin:5px 0;font-size:14px}
+
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;page-break-inside:avoid}
+section.card h2{margin:0 0 10px;font-size:22px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;font-weight:800;font-size:15px;flex:none}
+section.card p{color:#d6dbe1;font-size:15px;margin:8px 0}
+section.card ul{color:#d6dbe1;font-size:15px;padding-left:22px;margin:8px 0}
+section.card ul li{margin:6px 0}
+
+.grid{display:grid;gap:12px}
+@media(min-width:560px){.grid.two{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .k{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:1.2px}
+.kpi .v{font-size:16px;font-weight:700;color:var(--text);margin-top:4px;word-break:break-word}
+.kpi .v.gold{color:var(--gold)}
+.kpi .v.mono{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+
+.alloc{margin-top:10px}
+.alloc .row{display:flex;align-items:center;gap:12px;margin:12px 0;font-size:14px}
+.alloc .label{width:180px;color:var(--text)}
+@media(max-width:520px){.alloc .label{width:120px;font-size:13px}}
+.alloc .bar{flex:1;height:10px;border-radius:999px;background:var(--ink);border:1px solid var(--line);overflow:hidden}
+.alloc .fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.alloc .pct{width:52px;text-align:right;color:var(--gold);font-weight:700}
+
+.phase{position:relative;padding-left:28px;margin:16px 0}
+.phase::before{content:"";position:absolute;left:7px;top:10px;bottom:-18px;width:2px;background:var(--line)}
+.phase:last-child::before{display:none}
+.phase::after{content:"";position:absolute;left:0;top:6px;width:16px;height:16px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(240,185,11,.2)}
+.phase h4{margin:0 0 4px;font-size:15px;color:var(--gold);letter-spacing:.3px}
+.phase p{margin:0;font-size:14px;color:#d6dbe1}
+
+.disclaimer{background:#1a1214;border:1px solid #3a1f22;border-radius:14px;padding:18px 20px}
+.disclaimer h3{color:var(--bad);margin:0 0 8px;font-size:15px}
+.disclaimer p{color:#e5c9c9;font-size:13.5px;margin:6px 0}
+
+footer{text-align:center;color:var(--muted);font-size:12.5px;padding:22px 0 0;border-top:1px solid var(--line);margin-top:26px}
+footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+
+@media print{
+  :root{--ink:#fff;--panel:#fff;--panel2:#f6f7f9;--line:#d5d8dd;--text:#111;--muted:#555}
+  body{background:#fff;color:#111}
+  .topbar{position:static;background:#fff;border-bottom:1px solid #ccc}
+  .topbar .actions{display:none !important}
+  .btn{display:none !important}
+  .cover{background:#fafafa;border:1px solid #ddd}
+  .chip{background:#fff}
+  section.card,.toc,.kpi,.disclaimer{background:#fff}
+  .disclaimer{background:#fff7f7}
+  a{color:#111;text-decoration:none}
+  .wrap{max-width:100%;padding:0}
+  section.card{page-break-inside:avoid}
+  .toc{page-break-after:always}
+  footer .links{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brandrow">
+    <img src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w256" alt="IGC" onerror="this.src='logo.png'">
+    <div>
+      <div class="bt">Indian Global Coin</div>
+      <div class="bs">Whitepaper v1.0</div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn gold" onclick="window.print()">⬇ Download PDF</button>
+    <a class="btn ghost" href="index.html">← Back to App</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="cover">
+    <img class="biglogo" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512" alt="IGC logo" onerror="this.src='logo.png'">
+    <div class="tag">Whitepaper · Version 1.0</div>
+    <h1>Indian Global Coin (IGC)</h1>
+    <p class="sub">A borderless, fast & low-cost digital payment ecosystem built on BNB Smart Chain (BEP-20).</p>
+    <div class="chips">
+      <span class="chip">Network: <b>BSC (BEP-20)</b></span>
+      <span class="chip">Supply: <b>1,000,000,000 IGC</b></span>
+      <span class="chip">Fee: <b>1% Buy / 1% Sell</b></span>
+      <span class="chip">Ticker: <b>IGC</b></span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#s1">Executive Summary</a></li>
+      <li><a href="#s2">Vision</a></li>
+      <li><a href="#s3">The Problem</a></li>
+      <li><a href="#s4">Our Solution</a></li>
+      <li><a href="#s5">Technology</a></li>
+      <li><a href="#s6">Tokenomics</a></li>
+      <li><a href="#s7">Utility & Use Cases</a></li>
+      <li><a href="#s8">Roadmap</a></li>
+      <li><a href="#s9">Security & Transparency</a></li>
+      <li><a href="#s10">Community & Governance</a></li>
+      <li><a href="#s11">Disclaimer</a></li>
+    </ol>
+  </div>
+
+  <section class="card" id="s1">
+    <h2><span class="num">1</span>Executive Summary</h2>
+    <p>Indian Global Coin (IGC) is a community-driven <b>BEP-20</b> token deployed on the <b>BNB Smart Chain (BSC)</b>. It is designed to serve as a fast, secure and ultra-low-cost medium of exchange for everyday digital payments, remittances and cross-border commerce.</p>
+    <p>By combining the speed and affordability of BSC with a simple, transparent token model, IGC aims to bridge Indian value systems with the global crypto economy — enabling anyone, anywhere to send and receive value in seconds, for less than the cost of a cup of chai.</p>
+  </section>
+
+  <section class="card" id="s2">
+    <h2><span class="num">2</span>Vision</h2>
+    <p>To build a <b>borderless digital payment ecosystem</b> where IGC becomes a trusted medium of exchange for daily life — from a local shop purchase to an international remittance — without banks, without borders, and without delays.</p>
+    <ul>
+      <li>Make crypto payments as simple as sending a message.</li>
+      <li>Empower small merchants, freelancers and families with near-zero fees.</li>
+      <li>Represent Indian innovation on the global blockchain stage.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s3">
+    <h2><span class="num">3</span>The Problem</h2>
+    <ul>
+      <li><b>Slow transfers:</b> International bank transfers take 2–5 working days.</li>
+      <li><b>High fees:</b> Remittance and cross-border payments can cost 5–10% in fees and hidden FX spreads.</li>
+      <li><b>Financial exclusion:</b> Millions remain outside the traditional banking net.</li>
+      <li><b>Limited utility:</b> Most cryptocurrencies today are traded, not used.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s4">
+    <h2><span class="num">4</span>Our Solution</h2>
+    <ul>
+      <li><b>Instant settlement:</b> Transactions confirm on BSC in 3–5 seconds.</li>
+      <li><b>Micro-fees:</b> Gas cost is usually less than ₹1 per transaction.</li>
+      <li><b>On-chain transparency:</b> Every transfer is publicly verifiable on BscScan.</li>
+      <li><b>Merchant-friendly:</b> QR-based payments for shops, cafés and online stores.</li>
+      <li><b>Easy onboarding:</b> Anyone with a Trust Wallet or MetaMask can use IGC today.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s5">
+    <h2><span class="num">5</span>Technology</h2>
+    <div class="grid two">
+      <div class="kpi"><div class="k">Blockchain</div><div class="v">BNB Smart Chain</div></div>
+      <div class="kpi"><div class="k">Token Standard</div><div class="v">BEP-20</div></div>
+      <div class="kpi"><div class="k">Decimals</div><div class="v">18</div></div>
+      <div class="kpi"><div class="k">Smart Contract</div><div class="v mono">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</div></div>
+    </div>
+    <p style="margin-top:14px">IGC leverages BSC's low fees, high throughput and compatibility with the Ethereum Virtual Machine (EVM) — giving it instant compatibility with PancakeSwap, Trust Wallet, MetaMask and most major BSC tools.</p>
+  </section>
+
+  <section class="card" id="s6">
+    <h2><span class="num">6</span>Tokenomics</h2>
+    <div class="grid two">
+      <div class="kpi"><div class="k">Name</div><div class="v">Indian Global Coin</div></div>
+      <div class="kpi"><div class="k">Symbol</div><div class="v gold">IGC</div></div>
+      <div class="kpi"><div class="k">Total Supply</div><div class="v">1,000,000,000</div></div>
+      <div class="kpi"><div class="k">Network</div><div class="v">BNB Smart Chain</div></div>
+      <div class="kpi"><div class="k">Buy Fee</div><div class="v">1%</div></div>
+      <div class="kpi"><div class="k">Sell Fee</div><div class="v">1%</div></div>
+    </div>
+
+    <p style="margin-top:18px"><b>Allocation</b></p>
+    <div class="alloc">
+      <div class="row"><div class="label">Public Liquidity</div><div class="bar"><div class="fill" style="width:50%"></div></div><div class="pct">50%</div></div>
+      <div class="row"><div class="label">Marketing</div><div class="bar"><div class="fill" style="width:20%"></div></div><div class="pct">20%</div></div>
+      <div class="row"><div class="label">Merchant Ecosystem</div><div class="bar"><div class="fill" style="width:15%"></div></div><div class="pct">15%</div></div>
+      <div class="row"><div class="label">Team Reserve</div><div class="bar"><div class="fill" style="width:15%"></div></div><div class="pct">15%</div></div>
+    </div>
+  </section>
+
+  <section class="card" id="s7">
+    <h2><span class="num">7</span>Utility & Use Cases</h2>
+    <ul>
+      <li><b>Peer-to-peer transfers</b> — send IGC to anyone in seconds.</li>
+      <li><b>Merchant payments</b> — QR code checkout for shops and online stores.</li>
+      <li><b>Cross-border remittance</b> — near-zero-fee family transfers worldwide.</li>
+      <li><b>E-commerce integration</b> — pay on partner platforms using IGC.</li>
+      <li><b>Community rewards</b> — airdrops, contests and loyalty rewards in IGC.</li>
+      <li><b>Future:</b> staking, governance voting and IGC Wallet App.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s8">
+    <h2><span class="num">8</span>Roadmap</h2>
+    <div class="phase">
+      <h4>Phase 1 — Foundation</h4>
+      <p>Smart contract design, testnet deployment and internal + third-party security audit.</p>
+    </div>
+    <div class="phase">
+      <h4>Phase 2 — Launch</h4>
+      <p>Mainnet deployment, liquidity added on PancakeSwap, public trading begins, community setup.</p>
+    </div>
+    <div class="phase">
+      <h4>Phase 3 — Utility</h4>
+      <p>Web wallet, merchant payment QR system, mobile app beta and first merchant partnerships.</p>
+    </div>
+    <div class="phase">
+      <h4>Phase 4 — Global Expansion</h4>
+      <p>Listings on top centralized exchanges (CEX), global e-commerce partnerships and DAO governance rollout.</p>
+    </div>
+  </section>
+
+  <section class="card" id="s9">
+    <h2><span class="num">9</span>Security & Transparency</h2>
+    <ul>
+      <li>Smart contract publicly verifiable on <b>BscScan</b>.</li>
+      <li>No hidden mint function — total supply is fixed at 1,000,000,000 IGC.</li>
+      <li>Liquidity locked with a public, verifiable locker.</li>
+      <li>Anti-bot and anti-whale limits enabled during launch.</li>
+      <li>Community-led reporting channel for any suspicious activity.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s10">
+    <h2><span class="num">10</span>Community & Governance</h2>
+    <p>IGC is built by and for its community. Long-term direction — marketing spend, partnerships and future features — will be shaped through community polls and, eventually, a lightweight DAO where IGC holders vote on key proposals.</p>
+    <ul>
+      <li>Telegram & X (Twitter) community channels</li>
+      <li>Open development updates</li>
+      <li>Future on-chain governance for IGC holders</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s11">
+    <div class="disclaimer">
+      <h3>11. Disclaimer</h3>
+      <p>This whitepaper is for informational purposes only and does not constitute financial, legal or investment advice. Cryptocurrency investments carry significant risk, including the possible loss of all funds. IGC price may fluctuate heavily and there is no guarantee of future value, liquidity or listings.</p>
+      <p>Nothing in this document should be interpreted as a promise of profit. Please do your own research (DYOR) and only invest what you can afford to lose. Laws regarding digital assets vary by country — ensure you comply with your local regulations before purchasing or using IGC.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="https://bscscan.com/token/0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15" target="_blank" rel="noopener">BscScan</a>
+      <a href="https://dexscreener.com/bsc/0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15" target="_blank" rel="noopener">DexScreener</a>
+    </div>
+    <div>© Indian Global Coin (IGC) — Whitepaper v1.0</div>
+  </footer>
+
+</div>
+
+<script>
+  // अगर लिंक में ?print=1 हो तो सीधे प्रिंट डायलॉग खोल दो
+  if (location.search.indexOf('print') > -1) {
+    window.addEventListener('load', function () {
+      setTimeout(function () { window.print(); }, 700);
+    });
+  }
+</script>
+</body>
+  </html>
