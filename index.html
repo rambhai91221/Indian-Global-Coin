@@ -1,1 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Indian Global Coin (IGC)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+<style>
+:root{--ink:#0d1014;--panel:#161a20;--line:#272d36;--gold:#f0b90b;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Hind,system-ui,sans-serif;line-height:1.5;padding:16px 16px 40px}
+.wrap{max-width:520px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+.brandrow{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:none;background:var(--gold)}
+.brand{font-size:20px;font-weight:700}.brand small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px}
+.gold{background:var(--gold);color:#111;font-weight:700;padding:10px 16px}
+.ghost{background:transparent;color:var(--text);border:1px solid var(--line);padding:8px 12px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+h2{font-size:17px;margin:0 0 12px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1;padding:10px;background:var(--ink);color:var(--muted);border:1px solid var(--line)}
+.tabs button.on{background:var(--gold);color:#111;font-weight:700;border-color:var(--gold)}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+.row{display:flex;gap:8px}
+input{width:100%;font:inherit;font-size:18px;color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px}
+input:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.out{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:18px;min-height:50px}
+.msg{font-size:14px;margin:12px 0 0;min-height:21px;word-break:break-word}
+.bad{color:var(--bad)}.ok{color:var(--ok)}.muted{color:var(--muted);font-size:13px}
+#act{width:100%;margin-top:14px;padding:14px;font-size:17px}
+.addr{font-family:ui-monospace,Consolas,monospace;font-size:13px;word-break:break-all;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;background:var(--ink)}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.links a{color:var(--gold);font-size:14px}
+#nowallet{display:none}
+#nowallet .row{margin-top:10px}
+#nowallet a{flex:1;text-align:center;text-decoration:none;color:#111;background:var(--gold);font-weight:700;padding:10px;border-radius:10px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brandrow"><img id="logo" class="logo" alt="IGC लोगो" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w256"><div class="brand">Indian Global Coin<small>IGC · BNB Smart Chain (BEP-20)</small></div></div>
+  <button class="gold" id="connect">वॉलेट जोड़ें</button>
+</header>
+
+<section id="nowallet">
+  <h2>वॉलेट ऐप में खोलें</h2>
+  <p class="muted" style="margin:0">इस ब्राउज़र में वॉलेट नहीं मिला। खरीद-बिक्री के लिए यह पेज अपने वॉलेट के ब्राउज़र में खोलें।</p>
+  <div class="row"><a id="trust" href="#">Trust Wallet</a><a id="mm" href="#">MetaMask</a></div>
+</section>
+
+<section>
+  <h2>IGC खरीदें / बेचें</h2>
+  <div class="tabs"><button id="tBuy" class="on">खरीदें</button><button id="tSell">बेचें</button></div>
+  <label id="inLabel" for="amt">BNB की मात्रा</label>
+  <div class="row"><input id="amt" type="number" inputmode="decimal" min="0" placeholder="0.0"><button class="ghost" id="max">Max</button></div>
+  <p class="muted" id="bal" style="margin:6px 0 0"></p>
+  <label>लगभग मिलेगा</label>
+  <div class="out" id="out">–</div>
+  <label for="slip">Slippage (%) — फीस के कारण कम से कम 3 रखें</label>
+  <input id="slip" type="number" inputmode="decimal" value="3" min="1" max="49">
+  <button class="gold" id="act">वॉलेट जोड़ें</button>
+  <p class="msg" id="msg"></p>
+</section>
+
+<section>
+  <h2>लाइव प्राइस चार्ट</h2>
+  <iframe id="chart" title="IGC price chart" loading="lazy"></iframe>
+  <div class="links">
+    <a id="dex" target="_blank" rel="noopener">DexScreener पर खोलें</a>
+    <a id="scan" target="_blank" rel="noopener">BscScan पर देखें</a>
+  </div>
+  <p class="muted">चार्ट तभी दिखेगा जब liquidity जुड़ चुकी हो और ट्रेडिंग शुरू हो।</p>
+</section>
+
+<section>
+  <h2>कॉन्ट्रैक्ट एड्रेस</h2>
+  <div class="addr" id="addr">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</div>
+  <button class="ghost" id="copy">एड्रेस कॉपी करें</button>
+  <p class="muted">कुल सप्लाई 100 करोड़ IGC · खरीद और बिक्री पर 1% फीस · एक लेन-देन की अधिकतम सीमा लागू है।</p>
+</section>
+
+</div>
+
+<script>
+const IGC="0xd20068fa2d06406f20752ec8a401bf0cc3a37e15";
+const WBNB="0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
+const ROUTER="0x10ed43c718714eb63d5aa57b78b54704e256024e";
+const RPC="https://bsc-dataseed.binance.org";
+const RABI=["function getAmountsOut(uint256,address[]) view returns (uint256[])",
+"function swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256) payable",
+"function swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"];
+const TABI=["function balanceOf(address) view returns (uint256)","function allowance(address,address) view returns (uint256)","function approve(address,uint256) returns (bool)"];
+
+const $=id=>document.getElementById(id);
+const rpc=new ethers.JsonRpcProvider(RPC);
+const rRouter=new ethers.Contract(ROUTER,RABI,rpc);
+const rToken=new ethers.Contract(IGC,TABI,rpc);
+let mode="buy",user=null,signer=null,timer=null,quote=0n;
+
+/* ===== लोगो: पहले Google Drive लिंक, फिर लोकल logo.png, फिर टेक्स्ट ===== */
+const DRIVE_PRIMARY="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512";
+const DRIVE_ALT="https://drive.google.com/uc?export=view&id=1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa";
+const lg=$("logo");
+lg.src=DRIVE_PRIMARY;
+let logoTry=0;
+lg.onerror=()=>{
+  logoTry++;
+  if(logoTry===1){lg.src=DRIVE_ALT;return}
+  if(logoTry===2){lg.src="logo.png";return}
+  if(logoTry===3){
+    lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';
+  }
+};
+
+const checksum=ethers.getAddress(IGC);
+$("addr").textContent=checksum;
+$("dex").href="https://dexscreener.com/bsc/"+checksum;
+$("scan").href="https://bscscan.com/token/"+checksum;
+$("chart").src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trades=0&info=0";
+const here=location.href;
+$("trust").href="https://link.trustwallet.com/open_url?coin_id=20000714&url="+encodeURIComponent(here);
+$("mm").href="https://metamask.app.link/dapp/"+here.replace(/^https?:\/\//,"");
+
+function say(t,c){const m=$("msg");m.textContent=t;m.className="msg "+(c||"")}
+const short=a=>a.slice(0,6)+"…"+a.slice(-4);
+const fmt=(v)=>{const n=Number(ethers.formatUnits(v,18));return n>=1000?n.toLocaleString("en-IN",{maximumFractionDigits:2}):n.toPrecision(6).replace(/\.?0+$/,"")};
+
+function setMode(m){
+  mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");
+  $("inLabel").textContent=m==="buy"?"BNB की मात्रा":"IGC की मात्रा";
+  $("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();
+}
+function syncBtn(){$("act").textContent=user?(mode==="buy"?"IGC खरीदें":"IGC बेचें"):"वॉलेट जोड़ें"}
+
+async function refreshBal(){
+  if(!user){$("bal").textContent="";return}
+  try{
+    const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);
+    $("bal").textContent="बैलेंस: "+fmt(b)+(mode==="buy"?" BNB":" IGC");
+  }catch(e){}
+}
+
+async function connect(){
+  if(!window.ethereum){$("nowallet").style.display="block";say("वॉलेट नहीं मिला। ऊपर दिए बटन से वॉलेट ऐप में खोलें।","bad");return false}
+  try{
+    const acc=await window.ethereum.request({method:"eth_requestAccounts"});
+    try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x38"}]})}
+    catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}
+    signer=await new ethers.BrowserProvider(window.ethereum).getSigner();
+    user=await signer.getAddress();
+    $("connect").textContent=short(user);$("nowallet").style.display="none";
+    syncBtn();refreshBal();say("");return true;
+  }catch(e){say("वॉलेट नहीं जुड़ा: "+(e.shortMessage||e.message||"रद्द किया गया"),"bad");return false}
+}
+
+function parseAmt(){
+  try{const v=ethers.parseUnits($("amt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}
+}
+async function getQuote(){
+  const a=parseAmt();quote=0n;
+  if(a===0n){$("out").textContent="–";return}
+  const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];
+  try{
+    const r=await rRouter.getAmountsOut(a,path);quote=r[1];
+    $("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");
+  }catch(e){$("out").textContent="–";say("अभी liquidity नहीं मिली, इसलिए भाव नहीं दिख रहा।","bad")}
+}
+
+function err(e){
+  const t=(e.reason||e.shortMessage||e.message||"").toString();
+  if(/trading not enabled/i.test(t))return "ट्रेडिंग अभी शुरू नहीं हुई है।";
+  if(/Max Tx/i.test(t))return "एक बार में इतनी मात्रा की अनुमति नहीं है। मात्रा घटाइए।";
+  if(/Max Wallet/i.test(t))return "आपके वॉलेट की अधिकतम सीमा पूरी हो जाएगी। मात्रा घटाइए।";
+  if(/user rejected|denied|ACTION_REJECTED/i.test(t))return "आपने ट्रांज़ैक्शन रद्द कर दिया।";
+  if(/INSUFFICIENT_OUTPUT|K\b|execution reverted/i.test(t))return "लेन-देन विफल हुआ। Slippage बढ़ाकर (3–5%) फिर कोशिश करें।";
+  return t||"कुछ गड़बड़ हुई।";
+}
+
+async function act(){
+  if(!user){await connect();return}
+  const a=parseAmt();if(a===0n){say("मात्रा डालिए।","bad");return}
+  const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);
+  const btn=$("act");btn.disabled=true;
+  try{
+    await getQuote();
+    if(quote===0n){throw new Error("अभी liquidity नहीं है, इसलिए खरीद-बिक्री नहीं हो सकती।")}
+    const minOut=quote*BigInt(Math.floor((100-sl)*100))/10000n;
+    const dl=Math.floor(Date.now()/1000)+1200;
+    const router=new ethers.Contract(ROUTER,RABI,signer);
+    let tx;
+    if(mode==="buy"){
+      say("वॉलेट में ट्रांज़ैक्शन मंज़ूर कीजिए…");
+      tx=await router.swapExactETHForTokensSupportingFeeOnTransferTokens(minOut,[WBNB,IGC],user,dl,{value:a});
+    }else{
+      const tok=new ethers.Contract(IGC,TABI,signer);
+      if((await tok.allowance(user,ROUTER))<a){
+        say("पहले IGC की अनुमति (Approve) दीजिए…");
+        await (await tok.approve(ROUTER,a)).wait();
+      }
+      say("अब बिक्री मंज़ूर कीजिए…");
+      tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl);
+    }
+    say("ट्रांज़ैक्शन भेजा गया, कन्फ़र्म होने का इंतज़ार…");
+    await tx.wait();
+    say("पूरा हुआ! ✔ BscScan: "+short(tx.hash),"ok");
+    $("amt").value="";$("out").textContent="–";refreshBal();
+  }catch(e){say(err(e),"bad")}
+  btn.disabled=false;
+}
+
+$("tBuy").onclick=()=>setMode("buy");
+$("tSell").onclick=()=>setMode("sell");
+$("connect").onclick=connect;
+$("act").onclick=act;
+$("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
+$("max").onclick=async()=>{
+  if(!user){await connect();if(!user)return}
+  try{
+    if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}
+    else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}
+    getQuote();
+  }catch(e){}
+};
+$("copy").onclick=async()=>{
+  try{await navigator.clipboard.writeText(checksum)}
+  catch(e){const r=document.createRange();r.selectNode($("addr"));getSelection().removeAllRanges();getSelection().addRange(r);document.execCommand("copy")}
+  $("copy").textContent="कॉपी हो गया ✔";setTimeout(()=>$("copy").textContent="एड्रेस कॉपी करें",1800);
+};
+if(window.ethereum){
+  window.ethereum.request({method:"eth_accounts"}).then(a=>{if(a&&a.length)connect()}).catch(()=>{});
+  window.ethereum.on&&window.ethereum.on("accountsChanged",()=>location.reload());
+  window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
+}
+</script>
+
+</body>
+</html>
 
