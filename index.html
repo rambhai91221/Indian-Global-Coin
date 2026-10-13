@@ -216,6 +216,11 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 .mine-cooldown{display:none;text-align:center;margin-top:12px;padding:14px;background:var(--ink);border:1px solid var(--line);border-radius:10px}
 .mine-cooldown .cd-k{font-size:12px;color:var(--muted);margin-bottom:4px}
 .mine-cooldown .cd-v{font-size:22px;font-weight:800;color:var(--gold);font-family:ui-monospace,Consolas,monospace}
+.mine-progress{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px}
+.mine-progress .mp-head{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.mine-progress .mp-bar{height:8px;border-radius:99px;background:var(--panel);overflow:hidden}
+.mine-progress .mp-fill{height:100%;background:linear-gradient(90deg,var(--ok),#5ee8a8);transition:width .6s;width:0%}
+.mine-progress .mp-foot{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
 </style>
 </head>
 <body>
@@ -343,11 +348,25 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
       <div class="cd-v" id="cooldownTimer">--:--:--</div>
     </div>
 
+    <!-- Lifetime Cap Progress -->
+    <div class="mine-progress" id="lifetimeProgressBox">
+      <div class="mp-head">
+        <span>Lifetime Mining Progress</span>
+        <span style="color:var(--gold);font-weight:700" id="lifetimeText">0 / 30,000 IGC</span>
+      </div>
+      <div class="mp-bar"><div class="mp-fill" id="lifetimeFill"></div></div>
+      <div class="mp-foot">
+        <span>बचा: <b style="color:var(--ok)" id="lifetimeRemaining">30,000 IGC</b></span>
+        <span>Cap: <b style="color:var(--gold)">30,000 IGC</b></span>
+      </div>
+    </div>
+
     <div class="trust-note" style="margin-top:12px;font-size:12px">
       <b>💡 कैसे काम करता है:</b><br>
       • हर 24 घंटे में 1 बार mine करें — 100 IGC मिलेंगे<br>
       • हर सफल referral = <b>+50 IGC/day</b> extra<br>
-      • Max limit: <b>2,000 IGC/day</b><br>
+      • Max limit: <b>1,000 IGC/day</b><br>
+      • <b>Lifetime Cap: 30,000 IGC per user</b><br>
       • Mined IGC आपके wallet में 30 दिन के अंदर भेजे जाएँगे
     </div>
 
@@ -693,7 +712,8 @@ const FALLBACK_TOTAL_SUPPLY = 1000000000;
 /* ============ MINING CONFIG ============ */
 const MINING_PER_CLICK = 100;
 const REF_BOOST_PER = 50;
-const MAX_DAILY = 2000;
+const MAX_DAILY = 1000;
+const MINING_LIFETIME_CAP = 30000;
 const MINE_KEY = "igc_last_mine";
 const MINE_TOTAL_KEY = "igc_total_mined";
 let cooldownInterval = null;
@@ -957,6 +977,26 @@ function updateMiningUI(){
   $("miningRate").textContent = dailyRate + " IGC/day";
   $("myMiningRate").textContent = dailyRate;
 
+  // Lifetime progress bar
+  const capUsed = Math.min(totalMined, MINING_LIFETIME_CAP);
+  const pct = Math.min((capUsed / MINING_LIFETIME_CAP) * 100, 100);
+  $("lifetimeText").textContent = capUsed.toLocaleString("en-IN") + " / " + MINING_LIFETIME_CAP.toLocaleString("en-IN") + " IGC";
+  $("lifetimeFill").style.width = pct + "%";
+  const remaining = Math.max(MINING_LIFETIME_CAP - totalMined, 0);
+  $("lifetimeRemaining").textContent = remaining.toLocaleString("en-IN") + " IGC";
+
+  // Lifetime cap check
+  if(totalMined >= MINING_LIFETIME_CAP){
+    $("mineBtn").disabled = true;
+    $("mineBtn").style.opacity = "0.55";
+    $("mineBtn").style.cursor = "not-allowed";
+    $("mineBtnText").textContent = "🎉 Lifetime Cap पूरा हो गया!";
+    $("mineCooldown").style.display = "none";
+    if(cooldownInterval){clearInterval(cooldownInterval);cooldownInterval=null;}
+    return;
+  }
+
+  // Cooldown check
   const now = Date.now();
   const elapsed = now - lastMine;
   const cooldownMs = 24 * 60 * 60 * 1000;
@@ -965,7 +1005,8 @@ function updateMiningUI(){
     $("mineBtn").disabled = false;
     $("mineBtn").style.opacity = "1";
     $("mineBtn").style.cursor = "pointer";
-    $("mineBtnText").textContent = "अभी Mine कीजिए — " + dailyRate + " IGC";
+    const willEarn = Math.min(dailyRate, remaining);
+    $("mineBtnText").textContent = "अभी Mine कीजिए — " + willEarn + " IGC";
     $("mineCooldown").style.display = "none";
     if(cooldownInterval){clearInterval(cooldownInterval);cooldownInterval=null;}
   } else {
@@ -1004,6 +1045,13 @@ $("mineBtn").onclick = async () => {
   if(!currentEmail){toast("पहले Login कीजिए","#ff6b6b");return}
   if(!user){toast("पहले Wallet जोड़ें","#ff6b6b");return}
 
+  // Lifetime cap check
+  const totalMined = parseInt(localStorage.getItem(MINE_TOTAL_KEY) || "0");
+  if(totalMined >= MINING_LIFETIME_CAP){
+    toast("🎉 आपका Lifetime mining cap पूरा हो गया!","#ff6b6b");
+    return;
+  }
+
   $("mineBtn").disabled = true;
   $("mineBtnText").textContent = "Mining हो रही है…";
 
@@ -1015,7 +1063,9 @@ $("mineBtn").onclick = async () => {
   if(result && result.success){
     localStorage.setItem(MINE_KEY, Date.now().toString());
     const prev = parseInt(localStorage.getItem(MINE_TOTAL_KEY) || "0");
-    localStorage.setItem(MINE_TOTAL_KEY, (prev + result.mined).toString());
+    // Cap the total so it doesn't exceed lifetime cap
+    const newTotal = Math.min(prev + result.mined, MINING_LIFETIME_CAP);
+    localStorage.setItem(MINE_TOTAL_KEY, newTotal.toString());
     toast("⛏️ " + result.mined + " IGC मिले! अगली mining 24 घंटे बाद");
     updateMiningUI();
   } else {
@@ -1271,4 +1321,4 @@ if(window.ethereum){
 })();
 </script>
 </body>
-  </html>
+</html>
