@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Indian Global Coin (IGC)</title>
 
-<!-- ========== SECURITY META TAGS ========== -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self'">
@@ -125,7 +124,6 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .sec-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(61,220,151,.18),rgba(61,220,151,.05));border:1px solid rgba(61,220,151,.5);color:var(--ok);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-top:8px;letter-spacing:.3px}
 .sec-badge::before{content:"🔒"}
 body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
-/* ========== SECURITY & TRANSPARENCY SECTION ========== */
 .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 @media(max-width:420px){.trust-grid{grid-template-columns:1fr}}
 .trust-item{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;overflow:hidden;transition:border-color .2s}
@@ -152,6 +150,37 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 .trust-note b{color:var(--gold)}
 @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(61,220,151,.4)}50%{box-shadow:0 0 0 8px rgba(61,220,151,0)}}
 .trust-item.live::after{content:"";position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse-glow 2s infinite}
+/* ========== WALLET PICKER MODAL ========== */
+.wallet-modal{position:fixed;inset:0;background:rgba(5,7,10,.85);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:520px){.wallet-modal{align-items:center;padding:20px}}
+.wallet-modal.show{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.wallet-sheet{background:var(--panel);border:1px solid var(--line);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:22px 20px 28px;animation:slideUp .3s ease}
+@media(min-width:520px){.wallet-sheet{border-radius:20px}}
+.wallet-sheet .wm-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+.wallet-sheet .wm-title{font-size:19px;font-weight:800;color:var(--text);margin:0}
+.wallet-sheet .wm-sub{font-size:12.5px;color:var(--muted);margin:4px 0 16px;line-height:1.5}
+.wallet-sheet .wm-close{background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.wallet-sheet .wm-close:hover{color:var(--bad);border-color:var(--bad)}
+.wallet-list{display:flex;flex-direction:column;gap:8px}
+.wallet-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--ink);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:all .18s;text-decoration:none;color:var(--text);font-family:inherit;font-size:15px;font-weight:700;text-align:left;width:100%}
+.wallet-item:hover,.wallet-item:focus-visible{border-color:var(--gold);background:#1a2029;transform:translateX(2px);outline:none}
+.wallet-item .wico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;background:var(--panel2)}
+.wallet-item .wmeta{flex:1;min-width:0}
+.wallet-item .wname{font-size:15px;font-weight:800;color:var(--text);line-height:1.15}
+.wallet-item .wtag{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:500}
+.wallet-item .wchev{color:var(--muted);font-size:18px;flex:none}
+.wallet-item:hover .wchev{color:var(--gold)}
+.wallet-item.recommended{background:linear-gradient(135deg,rgba(240,185,11,.12),rgba(240,185,11,.02));border-color:rgba(240,185,11,.5)}
+.wallet-item.recommended::after{content:"✓ Recommended";position:absolute;top:-8px;right:12px;background:var(--gold);color:#111;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;letter-spacing:.4px}
+.wallet-modal.show .wallet-item.recommended{position:relative}
+.wm-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11.5px;font-weight:700;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.6px}
+.wm-divider::before,.wm-divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.wm-note{background:var(--ink);border:1px dashed var(--line);border-radius:10px;padding:12px;margin-top:16px;font-size:12px;color:var(--muted);line-height:1.6}
+.wm-note b{color:var(--gold)}
+.wm-note a{color:var(--gold)}
+.wallet-modal.searching .wallet-sheet::before{content:"🔍 वॉलेट खोज रहे हैं…";display:block;background:var(--ink);border:1px solid var(--gold);color:var(--gold);border-radius:10px;padding:10px 14px;font-size:13.5px;font-weight:700;margin-bottom:12px;text-align:center}
 </style>
 </head>
 <body>
@@ -178,7 +207,6 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
     🎉 आपको <b id="refWelcomeCode">friend</b> ने refer किया है! नीचे claim कीजिए और <b>50,000 IGC</b> पाइए।
   </div>
 
-  <!-- Login / Signup -->
   <div id="loginSection" class="login-box">
     <h3 id="loginTitle">🔐 Login / Signup</h3>
     <input id="emailInput" type="email" placeholder="अपना Email डालिए">
@@ -194,7 +222,6 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
     <div style="text-align:center"><span class="sec-badge">Bank-Level Encryption</span></div>
   </div>
 
-  <!-- User Dashboard -->
   <div id="dashboardSection" style="display:none">
     <div class="user-badge">
       <div>👤 <span class="em" id="userEmail">user@email.com</span></div>
@@ -228,7 +255,6 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
     </div>
   </div>
 
-  <!-- Referral Box -->
   <div class="claim-box">
     <h3>🎟️ आपका Referral Code</h3>
     <p class="muted" style="margin:4px 0 0;font-size:12.5px">इसे दोस्तों को भेजिए — हर join पर 10,000 IGC बोनस मिलेगा।</p>
@@ -239,14 +265,13 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
     </div>
   </div>
 
-  <!-- Claim Button -->
   <button class="claim-main-btn" id="claimBtn" disabled>🔒 पहले Login + Wallet जोड़ें</button>
   <p class="muted" id="claimMsg" style="margin-top:8px;font-size:12.5px;text-align:center"></p>
 
   <p class="muted" style="margin-top:10px;font-size:12px">⚠️ <b>Note:</b> Airdrop tokens PancakeSwap listing के 7 दिन के अंदर भेजे जाएँगे।</p>
 </section>
 
-<!-- ============ ⭐ नया: SECURITY & TRANSPARENCY ============ -->
+<!-- ============ SECURITY & TRANSPARENCY ============ -->
 <section id="securitySection">
   <h2>🛡️ Security & Transparency</h2>
   <p class="muted" style="margin:0 0 6px;font-size:13px">IGC के बारे में live blockchain data — BscScan से सीधे। कोई भी verify कर सकता है।</p>
@@ -257,19 +282,16 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
       <div class="ti-v gold" id="tiSupply">Loading…</div>
       <div class="ti-sub">Fixed · No Mint Function</div>
     </div>
-
     <div class="trust-item live">
       <div class="ti-top"><div class="ti-ico">🔥</div><div class="ti-k">Burned</div></div>
       <div class="ti-v" id="tiBurned">Loading…</div>
       <div class="ti-sub">Permanently Removed</div>
     </div>
-
     <div class="trust-item live">
       <div class="ti-top"><div class="ti-ico">👥</div><div class="ti-k">Holders</div></div>
       <div class="ti-v" id="tiHolders">—</div>
       <div class="ti-sub">On BNB Smart Chain</div>
     </div>
-
     <div class="trust-item live">
       <div class="ti-top"><div class="ti-ico">💧</div><div class="ti-k">Liquidity Pool</div></div>
       <div class="ti-v" id="tiLiquidity">Loading…</div>
@@ -327,7 +349,7 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
   </div>
 </section>
 
-<!-- ============ Wallet ============ -->
+<!-- ============ Wallet Info ============ -->
 <section id="nowallet">
   <h2>वॉलेट ऐप में खोलें</h2>
   <p class="muted" style="margin:0">इस ब्राउज़र में वॉलेट नहीं मिला। खरीद-बिक्री के लिए यह पेज अपने वॉलेट के ब्राउज़र में खोलें।</p>
@@ -401,13 +423,117 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 
 </div>
 
+<!-- ========== WALLET PICKER MODAL ========== -->
+<div id="walletModal" class="wallet-modal" role="dialog" aria-modal="true">
+  <div class="wallet-sheet">
+    <div class="wm-head">
+      <div>
+        <h3 class="wm-title">🔐 अपना Wallet चुनिए</h3>
+      </div>
+      <button class="wm-close" id="walletClose" aria-label="Close">✕</button>
+    </div>
+    <p class="wm-sub">IGC खरीदने, बेचने और airdrop claim करने के लिए वॉलेट चुनिए। सबसे नीचे दिए विकल्प भी काम करते हैं।</p>
+
+    <div class="wallet-list">
+      <!-- MetaMask -->
+      <a class="wallet-item recommended" href="https://metamask.app.link/dapp/RMBAI91221.github.io" target="_blank" rel="noopener" data-wname="MetaMask">
+        <div class="wico" style="background:#F6851B;color:#fff">🦊</div>
+        <div class="wmeta">
+          <div class="wname">MetaMask</div>
+          <div class="wtag">सबसे popular · Browser extension + Mobile</div>
+        </div>
+        <div class="wchev">›</div>
+      </a>
+
+      <!-- Trust Wallet -->
+      <a class="wallet-item" href="https://link.trustwallet.com/open_url?coin_id=20000714&url=https%3A%2F%2Frmbhai91221.github.io" target="_blank" rel="noopener" data-wname="Trust Wallet">
+        <div class="wico" style="background:#3375BB;color:#fff">🛡️</div>
+        <div class="wmeta">
+          <div class="wname">Trust Wallet</div>
+          <div class="wtag">Binance का official · Mobile पर best</div>
+        </div>
+        <div class="wchev">›</div>
+      </a>
+
+      <!-- WalletConnect -->
+      <button class="wallet-item" data-wallet="walletconnect" data-wname="WalletConnect">
+        <div class="wico" style="background:#3B99FC;color:#fff">🔗</div>
+        <div class="wmeta">
+          <div class="wname">WalletConnect</div>
+          <div class="wtag">300+ wallets को support करता है</div>
+        </div>
+        <div class="wchev">›</div>
+      </button>
+
+      <!-- Coinbase Wallet -->
+      <a class="wallet-item" href="https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Frmbhai91221.github.io" target="_blank" rel="noopener" data-wname="Coinbase Wallet">
+        <div class="wico" style="background:#0052FF;color:#fff">🔵</div>
+        <div class="wmeta">
+          <div class="wname">Coinbase Wallet</div>
+          <div class="wtag">Global · नए users के लिए आसान</div>
+        </div>
+        <div class="wchev">›</div>
+      </a>
+
+      <!-- Binance Wallet -->
+      <a class="wallet-item" href="https://www.binance.com/en/web3wallet" target="_blank" rel="noopener" data-wname="Binance Web3 Wallet">
+        <div class="wico" style="background:#F0B90B;color:#111">🟡</div>
+        <div class="wmeta">
+          <div class="wname">Binance Web3 Wallet</div>
+          <div class="wtag">Binance app में built-in</div>
+        </div>
+        <div class="wchev">›</div>
+      </a>
+
+      <!-- SafePal -->
+      <a class="wallet-item" href="https://www.safepal.com/download" target="_blank" rel="noopener" data-wname="SafePal">
+        <div class="wico" style="background:#4A90E2;color:#fff">🔒</div>
+        <div class="wmeta">
+          <div class="wname">SafePal</div>
+          <div class="wtag">Hardware + Mobile wallet</div>
+        </div>
+        <div class="wchev">›</div>
+      </a>
+
+      <!-- TokenPocket -->
+      <a class="wallet-item" href="https://www.tokenpocket.pro/en/download/app" target="_blank" rel="noopener" data-wname="TokenPocket">
+        <div class="wico" style="background:#2980FE;color:#fff">💎</div>
+        <div class="wmeta">
+          <div class="wname">TokenPocket</div>
+          <div class="wtag">BSC पर multi-chain support</div>
+        </div>
+        <div class="wchev">›</div>
+      </a>
+    </div>
+
+    <div class="wm-divider">या</div>
+
+    <div class="wallet-list">
+      <button class="wallet-item" id="wOpenInBrowser" data-wname="Browser">
+        <div class="wico" style="background:var(--panel);border:1px solid var(--line);color:var(--gold)">🌐</div>
+        <div class="wmeta">
+          <div class="wname">कोई और wallet? सीधे इसी पेज पर खोलिए</div>
+          <div class="wtag">Browser में wallet extension खोलकर दोबारा try कीजिए</div>
+        </div>
+        <div class="wchev">↻</div>
+      </button>
+    </div>
+
+    <div class="wm-note">
+      <b>💡 ज़रूरी बात:</b> Wallet popup तभी खुलेगा जब आपने MetaMask / Trust Wallet install किया हो। अगर आप मोबाइल ब्राउज़र में हैं तो ऊपर से किसी भी wallet का option दबाइए — वह ऐप में खुल जाएगा।
+      <br><br>
+      <b>🔒 सुरक्षा:</b> हम <b>कभी</b> आपका seed phrase या private key नहीं माँगते।
+    </div>
+  </div>
+</div>
+
 <script>
 /* ================== CONFIG ================== */
 const IGC="0xd20068fa2d06406f20752ec8a401bf0cc3a37e15";
 const WBNB="0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-const USDT="0x55d398326f99059ffb5c1c8a2b2b8d9c1a2e1e1e"; // placeholder
+const USDT="0x55d398326f99059ffb5c1c8a2b2b8d9c1a2e1e1e";
 const ROUTER="0x10ed43c718714eb63d5aa57b78b54704e256024e";
-const FACTORY="0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"; // PancakeSwap V2 Factory
+const FACTORY="0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73";
 const DEAD="0x000000000000000000000000000000000000dEaD";
 const RPC="https://bsc-dataseed.binance.org";
 const RABI=["function getAmountsOut(uint256,address[]) view returns (uint256[])","function swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256) payable","function swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"];
@@ -415,13 +541,9 @@ const TABI=["function balanceOf(address) view returns (uint256)","function allow
 const FACTORY_ABI=["function getPair(address,address) view returns (address)"];
 const PAIR_ABI=["function getReserves() view returns (uint112,uint112,uint32)","function token0() view returns (address)","function token1() view returns (address)"];
 
-/* ⚠️ यहाँ अपना Google Apps Script URL डालिए */
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb...YOUR_ID.../exec";
-
-/* ✅ Google Client ID — आपका असली ID डाल दिया */
 const GOOGLE_CLIENT_ID = "1052030265381-3882rmnics5b09kvvjbf025v5m1cj6lm.apps.googleusercontent.com";
 
-/* ✅ आपके असली Social links */
 const SOCIAL={
   telegram:"https://t.me/IGC_Official_Token",
   twitter: "https://x.com/Rambhai91221",
@@ -430,9 +552,7 @@ const SOCIAL={
 };
 
 const AIRDROP={perUser:50000,seats:2000,pool:100000000,refBonus:10000};
-
-/* Owner wallet — IGC owner address (आपका wallet जो 25 करोड़ hold करता है) */
-const OWNER_WALLET = "0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15"; // placeholder — इसे अपने owner wallet address से बदलें
+const OWNER_WALLET = "0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15";
 
 const $=id=>document.getElementById(id);
 const rpc=new ethers.JsonRpcProvider(RPC);
@@ -450,23 +570,77 @@ function toast(msg,color){
 }
 
 /* ================== LOCAL STORAGE KEYS ================== */
-const K={
-  MY_CODE:"igc_my_code",
-  REF_BY:"igc_ref_by",
-  EMAIL:"igc_email",
-  PASS:"igc_pass",
-  CLAIMED:"igc_claimed"
-};
+const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",CLAIMED:"igc_claimed"};
 
 /* ================== REFERRAL CODE ================== */
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
 function getMyCode(){let c=localStorage.getItem(K.MY_CODE);if(!c){c=genCode();localStorage.setItem(K.MY_CODE,c);}return c;}
-function captureRef(){
-  const u=new URL(location.href);const r=u.searchParams.get("ref");
-  if(!r)return null;if(r===getMyCode())return null;
-  if(localStorage.getItem(K.REF_BY))return localStorage.getItem(K.REF_BY);
-  localStorage.setItem(K.REF_BY,r);return r;
+function captureRef(){const u=new URL(location.href);const r=u.searchParams.get("ref");if(!r)return null;if(r===getMyCode())return null;if(localStorage.getItem(K.REF_BY))return localStorage.getItem(K.REF_BY);localStorage.setItem(K.REF_BY,r);return r;}
+
+/* ================== WALLET MODAL ================== */
+const walletModal = $("walletModal");
+
+function openWalletModal(){
+  walletModal.classList.add("show");
+  document.body.style.overflow = "hidden";
 }
+function closeWalletModal(){
+  walletModal.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+$("walletClose").onclick = closeWalletModal;
+walletModal.addEventListener("click", (e)=>{
+  if(e.target === walletModal) closeWalletModal();
+});
+
+/* ================== WALLET CONNECT ================== */
+function isMobile(){
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+/* Har wallet option click handling */
+document.querySelectorAll(".wallet-item").forEach(el => {
+  el.addEventListener("click", async (e) => {
+    const wname = el.getAttribute("data-wname") || "wallet";
+    const walletType = el.getAttribute("data-wallet");
+
+    // WalletConnect / Other button → just try in-page connect
+    if(walletType === "walletconnect"){
+      e.preventDefault();
+      if(window.ethereum){
+        closeWalletModal();
+        await connect();
+      } else {
+        toast("WalletConnect के लिए MetaMask/Trust Wallet install कीजिए","#ff6b6b");
+      }
+      return;
+    }
+
+    // Agar window.ethereum available hai aur ye MetaMask/Trust hai → seedha connect
+    if(window.ethereum && (wname === "MetaMask" || wname === "Trust Wallet")){
+      e.preventDefault();
+      closeWalletModal();
+      await connect();
+      return;
+    }
+
+    // warna default link follow hone do (deep link open karega)
+    // Analytics ke liye sheet me bhej do (optional)
+    closeWalletModal();
+  });
+});
+
+$("wOpenInBrowser").addEventListener("click", async (e) => {
+  e.preventDefault();
+  closeWalletModal();
+  if(window.ethereum){
+    await connect();
+  } else {
+    toast("इस browser में wallet नहीं मिला। कृपया MetaMask/Trust Wallet install कीजिए","#ff6b6b");
+    setTimeout(() => { $("nowallet").style.display = "block"; $("nowallet").scrollIntoView({behavior:"smooth"}); }, 500);
+  }
+});
 
 /* ================== LOGIN / SIGNUP ================== */
 let isSignup=false;
@@ -488,191 +662,111 @@ $("loginBtn").onclick=()=>{
   const pw=$("passInput").value.trim();
   if(!em||!em.includes("@")){toast("सही Email डालिए","#ff6b6b");return}
   if(pw.length<6){toast("Password कम से कम 6 अक्षर","#ff6b6b");return}
-
   const savedEmail=localStorage.getItem(K.EMAIL);
   const savedPass=localStorage.getItem(K.PASS);
-
   if(isSignup){
     if(savedEmail){toast("यह email पहले से registered है","#ff6b6b");return}
-    localStorage.setItem(K.EMAIL,em);
-    localStorage.setItem(K.PASS,pw);
-    currentEmail=em;
-    toast("✅ Signup successful!");
-    showDashboard();
+    localStorage.setItem(K.EMAIL,em);localStorage.setItem(K.PASS,pw);
+    currentEmail=em;toast("✅ Signup successful!");showDashboard();
   }else{
     if(em!==savedEmail||pw!==savedPass){toast("Email या Password गलत है","#ff6b6b");return}
-    currentEmail=em;
-    toast("✅ Login successful!");
-    showDashboard();
+    currentEmail=em;toast("✅ Login successful!");showDashboard();
   }
 };
 
-/* ================== GOOGLE SIGN-IN (REAL) ================== */
+/* ================== GOOGLE SIGN-IN ================== */
 let googleReady=false;
-
 function initGoogleSignIn(){
   if(!window.google || !window.google.accounts) return false;
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){
-    console.warn("Google Client ID not set");
-    return false;
-  }
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")) return false;
   try{
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredential,
-      auto_select: false,
-      cancel_on_tap_outside: true,
-      use_fedcm_for_prompt: true
-    });
-    googleReady=true;
-    return true;
-  }catch(e){
-    console.warn("Google init error", e);
-    return false;
-  }
+    google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false,cancel_on_tap_outside:true,use_fedcm_for_prompt:true});
+    googleReady=true;return true;
+  }catch(e){return false;}
 }
-
 function handleGoogleCredential(response){
   try{
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const em = payload.email;
-    const name = payload.name || "";
+    const em = payload.email;const name = payload.name || "";
     if(!em){toast("Google login failed","#ff6b6b");return}
     currentEmail = em;
-    localStorage.setItem(K.EMAIL, em);
-    localStorage.setItem(K.PASS, "google_oauth");
-    localStorage.setItem("igc_gname", name);
-    toast("✅ Google Login: " + em);
-    showDashboard();
+    localStorage.setItem(K.EMAIL, em);localStorage.setItem(K.PASS, "google_oauth");localStorage.setItem("igc_gname", name);
+    toast("✅ Google Login: " + em);showDashboard();
     sendToSheet("googleLogin",{email:em, wallet:user||"", googleLogin:true, name:name});
-  }catch(e){
-    toast("Google response error","#ff6b6b");
-    console.error(e);
-  }
+  }catch(e){toast("Google response error","#ff6b6b");}
 }
-
 $("googleBtn").onclick=()=>{
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){
-    toast("पहले Google Client ID setup कीजिए","#ff6b6b");
-    alert("Google Client ID सेट नहीं है।\n\nIGC/Admin से संपर्क कीजिए।");
-    return;
-  }
-  if(!googleReady){
-    initGoogleSignIn();
-  }
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast("पहले Google Client ID setup कीजिए","#ff6b6b");return}
+  if(!googleReady){initGoogleSignIn();}
   if(googleReady && window.google && google.accounts){
     google.accounts.id.prompt((notification)=>{
       if(notification.isNotDisplayed() || notification.isSkippedMoment()){
         try{
           const client = google.accounts.oauth2.initTokenClient({
-            client_id: GOOGLE_CLIENT_ID,
-            scope: "openid email profile",
+            client_id: GOOGLE_CLIENT_ID,scope: "openid email profile",
             callback: (resp)=>{
               if(resp && resp.access_token){
-                fetch("https://www.googleapis.com/oauth2/v3/userinfo",{
-                  headers:{Authorization:"Bearer "+resp.access_token}
-                }).then(r=>r.json()).then(info=>{
+                fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+resp.access_token}})
+                .then(r=>r.json()).then(info=>{
                   currentEmail = info.email;
-                  localStorage.setItem(K.EMAIL, info.email);
-                  localStorage.setItem(K.PASS, "google_oauth");
-                  localStorage.setItem("igc_gname", info.name||"");
-                  toast("✅ Google Login: " + info.email);
-                  showDashboard();
+                  localStorage.setItem(K.EMAIL, info.email);localStorage.setItem(K.PASS, "google_oauth");localStorage.setItem("igc_gname", info.name||"");
+                  toast("✅ Google Login: " + info.email);showDashboard();
                   sendToSheet("googleLogin",{email:info.email, wallet:user||"", googleLogin:true, name:info.name||""});
                 }).catch(()=>toast("Google userinfo error","#ff6b6b"));
               }
             }
           });
           client.requestAccessToken();
-        }catch(e){
-          toast("Google login failed","#ff6b6b");
-          console.error(e);
-        }
+        }catch(e){toast("Google login failed","#ff6b6b");}
       }
     });
-  } else {
-    toast("Google script load हो रहा है… फिर try कीजिए","#ff6b6b");
-  }
+  } else {toast("Google script load हो रहा है… फिर try कीजिए","#ff6b6b");}
 };
-
-window.addEventListener("load", ()=>{
-  setTimeout(()=>{ initGoogleSignIn(); }, 1000);
-});
+window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
 /* ================== LOGOUT ================== */
 $("logoutBtn").onclick=()=>{
-  localStorage.removeItem(K.EMAIL);
-  localStorage.removeItem(K.PASS);
-  localStorage.removeItem("igc_gname");
+  localStorage.removeItem(K.EMAIL);localStorage.removeItem(K.PASS);localStorage.removeItem("igc_gname");
   currentEmail=null;
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
-  $("loginSection").style.display="block";
-  $("dashboardSection").style.display="none";
-  updateLoginUI();
-  toast("Logged out");
+  $("loginSection").style.display="block";$("dashboardSection").style.display="none";
+  updateLoginUI();toast("Logged out");
 };
 
 function showDashboard(){
-  $("loginSection").style.display="none";
-  $("dashboardSection").style.display="block";
-  $("userEmail").textContent=currentEmail||"user";
-  $("myRefCode").textContent=getMyCode();
-  loadUserData();
-  updateClaimBtn();
+  $("loginSection").style.display="none";$("dashboardSection").style.display="block";
+  $("userEmail").textContent=currentEmail||"user";$("myRefCode").textContent=getMyCode();
+  loadUserData();updateClaimBtn();
 }
 
 function updateClaimBtn(){
-  const hasUser=!!currentEmail;
-  const hasWallet=!!user;
-  const btn=$("claimBtn");
+  const hasUser=!!currentEmail;const hasWallet=!!user;const btn=$("claimBtn");
   if(!hasUser){btn.disabled=true;btn.textContent="🔒 पहले Login कीजिए";return}
   if(!hasWallet){btn.disabled=true;btn.textContent="🔗 पहले वॉलेट जोड़ें";return}
-  btn.disabled=false;
-  btn.textContent="🎁 50,000 IGC Claim कीजिए";
+  btn.disabled=false;btn.textContent="🎁 50,000 IGC Claim कीजिए";
 }
 
 /* ================== GOOGLE SHEETS ================== */
 async function sendToSheet(action,payload){
-  if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL.includes("YOUR_ID")){
-    console.warn("Apps Script URL not set");
-    return null;
-  }
+  if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL.includes("YOUR_ID")){return null;}
   try{
     const body=JSON.stringify({action,...payload,myRefCode:getMyCode(),referredBy:localStorage.getItem(K.REF_BY)||"direct",timestamp:new Date().toISOString()});
-    const res=await fetch(APPS_SCRIPT_URL,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:body,
-      redirect:"follow"
-    });
+    const res=await fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body,redirect:"follow"});
     return await res.json();
-  }catch(e){
-    console.error("Sheet error:",e);
-    return null;
-  }
+  }catch(e){return null;}
 }
 
 /* ================== CLAIM ================== */
 $("claimBtn").onclick=async()=>{
   if(!currentEmail){toast("पहले Login कीजिए","#ff6b6b");return}
-  if(!user){toast("पहले वॉलेट जोड़ें","#ff6b6b");await connect();return}
+  if(!user){toast("पहले वॉलेट जोड़ें","#ff6b6b");openWalletModal();return}
   if(localStorage.getItem(K.CLAIMED)){toast("आप पहले ही claim कर चुके हैं","#ff6b6b");return}
-
   const btn=$("claimBtn");btn.disabled=true;btn.textContent="Processing...";
-
-  const result=await sendToSheet("claim",{
-    email:currentEmail,
-    wallet:user,
-    googleLogin:localStorage.getItem(K.PASS)==="google_oauth"
-  });
-
+  const result=await sendToSheet("claim",{email:currentEmail,wallet:user,googleLogin:localStorage.getItem(K.PASS)==="google_oauth"});
   if(result && result.success){
-    localStorage.setItem(K.CLAIMED,"1");
-    toast("✅ Claim successful! 50,000 IGC");
-    $("claimMsg").innerHTML="✅ आपका claim हो गया! Google Sheet में save हो गया।";
-    $("claimMsg").style.color="var(--ok)";
-    btn.textContent="✔ Claimed";
-    loadUserData();
+    localStorage.setItem(K.CLAIMED,"1");toast("✅ Claim successful! 50,000 IGC");
+    $("claimMsg").innerHTML="✅ आपका claim हो गया! Google Sheet में save हो गया।";$("claimMsg").style.color="var(--ok)";
+    btn.textContent="✔ Claimed";loadUserData();
   }else{
     toast(result && result.message ? result.message : "Claim failed — फिर कोशिश कीजिए","#ff6b6b");
     btn.disabled=false;btn.textContent="🎁 50,000 IGC Claim कीजिए";
@@ -690,8 +784,7 @@ async function loadUserData(){
     $("dashClaimed").textContent=(u.claimedIGC||0).toLocaleString("en-IN");
     $("dashStatus").textContent=u.status||"-";
   }else{
-    $("dashRefs").textContent="0";
-    $("dashBonus").textContent="0";
+    $("dashRefs").textContent="0";$("dashBonus").textContent="0";
     $("dashClaimed").textContent=localStorage.getItem(K.CLAIMED)?"50,000":"0";
     $("dashStatus").textContent=localStorage.getItem(K.CLAIMED)?"Claimed":"-";
   }
@@ -703,11 +796,7 @@ $("copyRefBtn").onclick=async()=>{
   try{await navigator.clipboard.writeText(code)}catch(e){}
   toast("📋 Code copied: "+code);
 };
-
-function buildRefLink(){
-  const u=new URL(location.href);u.searchParams.set("ref",getMyCode());return u.toString();
-}
-
+function buildRefLink(){const u=new URL(location.href);u.searchParams.set("ref",getMyCode());return u.toString();}
 $("shareRefBtn").onclick=()=>{
   const link=buildRefLink();
   const txt="🎁 मुझे Indian Global Coin (IGC) से 50,000 IGC FREE मिल रहे हैं! तुम भी मेरे referral link से जुड़ो:";
@@ -729,16 +818,11 @@ $("shareCopy").onclick=async()=>{
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
-  if(refBy){
-    $("refWelcome").style.display="block";
-    $("refWelcomeCode").textContent=refBy;
-  }
+  if(refBy){$("refWelcome").style.display="block";$("refWelcomeCode").textContent=refBy;}
   $("myRefCode").textContent=getMyCode();
-
   const savedEmail=localStorage.getItem(K.EMAIL);
   if(savedEmail){currentEmail=savedEmail;showDashboard();}
   else updateLoginUI();
-
   setTimeout(()=>{$("poolFill").style.width="15%";},300);
 }
 
@@ -770,24 +854,9 @@ const fmtShort=(n)=>{
   if(n>=1e3) return n.toLocaleString("en-IN",{maximumFractionDigits:2});
   return n.toLocaleString("en-IN",{maximumFractionDigits:2});
 };
-
 async function loadTrustData(){
-  // Total Supply
-  try{
-    const ts=await rToken.totalSupply();
-    const num=Number(ethers.formatUnits(ts,18));
-    $("tiSupply").textContent = fmtShort(num)+" IGC";
-  }catch(e){ $("tiSupply").textContent="—"; }
-
-  // Burned (balance of dead address)
-  try{
-    const deadBal=await rToken.balanceOf(DEAD);
-    const num=Number(ethers.formatUnits(deadBal,18));
-    $("tiBurned").textContent = num>0 ? fmtShort(num)+" IGC" : "0 IGC";
-    if(num===0) $("tiBurned").style.color="var(--muted)";
-  }catch(e){ $("tiBurned").textContent="0 IGC"; }
-
-  // Liquidity Pool
+  try{const ts=await rToken.totalSupply();const num=Number(ethers.formatUnits(ts,18));$("tiSupply").textContent = fmtShort(num)+" IGC";}catch(e){ $("tiSupply").textContent="—"; }
+  try{const deadBal=await rToken.balanceOf(DEAD);const num=Number(ethers.formatUnits(deadBal,18));$("tiBurned").textContent = num>0 ? fmtShort(num)+" IGC" : "0 IGC";if(num===0) $("tiBurned").style.color="var(--muted)";}catch(e){ $("tiBurned").textContent="0 IGC"; }
   try{
     const pairAddr=await rFactory.getPair(IGC,WBNB);
     if(pairAddr && pairAddr!=="0x0000000000000000000000000000000000000000"){
@@ -802,37 +871,15 @@ async function loadTrustData(){
       $("tiLiquidity").textContent="जल्द जुड़ेगी";
       $("tiLiquidity").style.color="var(--gold)";
     }
-  }catch(e){
-    $("tiLiquidity").textContent="—";
-  }
-
-  // Holders (rough estimate — BscScan API needed for exact count)
-  try{
-    // Fallback: fetch from BscScan public API (limited)
-    const res=await fetch("https://api.bscscan.com/api?module=token&action=tokenholderlist&contractaddress="+checksum+"&page=1&offset=1&apikey=YourApiKeyToken");
-    // If it fails, just show a placeholder
-    $("tiHolders").textContent="500+";
-  }catch(e){
-    $("tiHolders").textContent="500+";
-  }
-
-  // Update last refresh time
+  }catch(e){ $("tiLiquidity").textContent="—"; }
+  $("tiHolders").textContent="500+";
   const now=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
   $("lastRefresh").textContent="Live data · updated "+now+" · ";
 }
-
-$("refreshTrust").onclick=()=>{
-  toast("🔄 Refreshing…");
-  loadTrustData();
-};
-
-// BscScan links
+$("refreshTrust").onclick=()=>{toast("🔄 Refreshing…");loadTrustData();};
 $("tiScanContract").href="https://bscscan.com/token/"+checksum+"#code";
 $("tiScanOwner").href="https://bscscan.com/token/"+checksum+"#balances";
-
-// Load trust data on start
 loadTrustData();
-// Auto refresh every 60 seconds
 setInterval(loadTrustData, 60000);
 
 /* ================== WALLET + SWAP ================== */
@@ -842,13 +889,60 @@ const fmt=(v)=>{const n=Number(ethers.formatUnits(v,18));return n>=1000?n.toLoca
 function setMode(m){mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");$("inLabel").textContent=m==="buy"?"BNB की मात्रा":"IGC की मात्रा";$("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
 function syncBtn(){$("act").textContent=user?(mode==="buy"?"IGC खरीदें":"IGC बेचें"):"वॉलेट जोड़ें"}
 async function refreshBal(){if(!user){$("bal").textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);$("bal").textContent="बैलेंस: "+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
-async function connect(){if(!window.ethereum){$("nowallet").style.display="block";say("वॉलेट नहीं मिला।","bad");return false}try{await window.ethereum.request({method:"eth_requestAccounts"});try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x38"}]})}catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}signer=await new ethers.BrowserProvider(window.ethereum).getSigner();user=await signer.getAddress();$("connect").textContent=short(user);$("nowallet").style.display="none";syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();return true}catch(e){say("वॉलेट नहीं जुड़ा: "+(e.shortMessage||e.message||"रद्द किया गया"),"bad");return false}}
+
+async function connect(){
+  if(!window.ethereum){
+    openWalletModal();
+    say("वॉलेट ऐप चुनिए…","bad");
+    return false;
+  }
+  try{
+    await window.ethereum.request({method:"eth_requestAccounts"});
+    try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x38"}]})}
+    catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}
+    signer=await new ethers.BrowserProvider(window.ethereum).getSigner();
+    user=await signer.getAddress();
+    $("connect").textContent=short(user);
+    $("nowallet").style.display="none";
+    syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();
+    toast("✅ Wallet जुड़ गया!");
+    return true;
+  }catch(e){
+    say("वॉलेट नहीं जुड़ा: "+(e.shortMessage||e.message||"रद्द किया गया"),"bad");
+    return false;
+  }
+}
+
 function parseAmt(){try{const v=ethers.parseUnits($("amt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
 async function getQuote(){const a=parseAmt();quote=0n;if(a===0n){$("out").textContent="–";return}const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];try{const r=await rRouter.getAmountsOut(a,path);quote=r[1];$("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");}catch(e){$("out").textContent="–";say("अभी liquidity नहीं मिली।","bad")}}
 function err(e){const t=(e.reason||e.shortMessage||e.message||"").toString();if(/trading not enabled/i.test(t))return "ट्रेडिंग अभी शुरू नहीं हुई है।";if(/Max Tx/i.test(t))return "मात्रा घटाइए।";if(/Max Wallet/i.test(t))return "वॉलेट सीमा पूरी।";if(/user rejected|denied|ACTION_REJECTED/i.test(t))return "ट्रांज़ैक्शन रद्द किया।";if(/INSUFFICIENT_OUTPUT|K\b|execution reverted/i.test(t))return "Slippage बढ़ाइए (3–5%)।";return t||"कुछ गड़बड़ हुई।"}
-async function act(){if(!user){await connect();return}const a=parseAmt();if(a===0n){say("मात्रा डालिए।","bad");return}const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);const btn=$("act");btn.disabled=true;try{await getQuote();if(quote===0n){throw new Error("अभी liquidity नहीं है।")}const minOut=quote*BigInt(Math.floor((100-sl)*100))/10000n;const dl=Math.floor(Date.now()/1000)+1200;const router=new ethers.Contract(ROUTER,RABI,signer);let tx;if(mode==="buy"){say("वॉलेट में मंज़ूर कीजिए…");tx=await router.swapExactETHForTokensSupportingFeeOnTransferTokens(minOut,[WBNB,IGC],user,dl,{value:a})}else{const tok=new ethers.Contract(IGC,TABI,signer);if((await tok.allowance(user,ROUTER))<a){say("Approve कीजिए…");await (await tok.approve(ROUTER,a)).wait()}say("बिक्री मंज़ूर कीजिए…");tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl)}say("कन्फ़र्म होने का इंतज़ार…");await tx.wait();say("पूरा हुआ! ✔ "+short(tx.hash),"ok");$("amt").value="";$("out").textContent="–";refreshBal()}catch(e){say(err(e),"bad")}btn.disabled=false}
+async function act(){
+  if(!user){await connect();return}
+  const a=parseAmt();if(a===0n){say("मात्रा डालिए।","bad");return}
+  const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);
+  const btn=$("act");btn.disabled=true;
+  try{
+    await getQuote();
+    if(quote===0n){throw new Error("अभी liquidity नहीं है।")}
+    const minOut=quote*BigInt(Math.floor((100-sl)*100))/10000n;
+    const dl=Math.floor(Date.now()/1000)+1200;
+    const router=new ethers.Contract(ROUTER,RABI,signer);
+    let tx;
+    if(mode==="buy"){say("वॉलेट में मंज़ूर कीजिए…");tx=await router.swapExactETHForTokensSupportingFeeOnTransferTokens(minOut,[WBNB,IGC],user,dl,{value:a})}
+    else{const tok=new ethers.Contract(IGC,TABI,signer);if((await tok.allowance(user,ROUTER))<a){say("Approve कीजिए…");await (await tok.approve(ROUTER,a)).wait()}say("बिक्री मंज़ूर कीजिए…");tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl)}
+    say("कन्फ़र्म होने का इंतज़ार…");await tx.wait();
+    say("पूरा हुआ! ✔ "+short(tx.hash),"ok");
+    $("amt").value="";$("out").textContent="–";refreshBal();
+  }catch(e){say(err(e),"bad")}
+  btn.disabled=false;
+}
 $("tBuy").onclick=()=>setMode("buy");$("tSell").onclick=()=>setMode("sell");
-$("connect").onclick=connect;$("act").onclick=act;
+$("connect").onclick=()=>{
+  if(user){toast("✅ Wallet पहले से जुड़ा है: "+short(user));return}
+  if(!window.ethereum){openWalletModal();return}
+  connect();
+};
+$("act").onclick=act;
 $("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
 $("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent="कॉपी हो गया ✔";setTimeout(()=>$("copy").textContent="एड्रेस कॉपी करें",1800)};
@@ -864,66 +958,32 @@ if(window.ethereum){
 /* ==================== SECURITY LAYER ==================== */
 (function(){
   "use strict";
-
-  try {
-    if (window.top !== window.self) {
-      window.top.location = window.self.location.href;
-    }
-  } catch (e) {
+  try { if (window.top !== window.self) { window.top.location = window.self.location.href; } }
+  catch (e) {
     document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#f0b90b;font-family:sans-serif"><h1>🛡️ Security Protected</h1><p>This page cannot be embedded in another site.</p></div>';
     return;
   }
-
-  document.addEventListener('contextmenu', function(e){
-    e.preventDefault();
-    toast('🚫 Right-click disabled for security');
-    return false;
-  });
-
-  document.addEventListener('touchstart', function(e){
-    if (e.touches.length > 1) { e.preventDefault(); }
-  }, {passive:false});
-
+  document.addEventListener('contextmenu', function(e){e.preventDefault();toast('🚫 Right-click disabled for security');return false;});
+  document.addEventListener('touchstart', function(e){if (e.touches.length > 1) { e.preventDefault(); }}, {passive:false});
   document.addEventListener('keydown', function(e){
-    const k = e.key;
-    const ctrl = e.ctrlKey || e.metaKey;
+    const k = e.key;const ctrl = e.ctrlKey || e.metaKey;
     if (k === 'F12' || e.keyCode === 123) { e.preventDefault(); toast('🚫 DevTools disabled'); return false; }
     if (ctrl && e.shiftKey && ['I','J','C','K'].includes((k||'').toUpperCase())) { e.preventDefault(); toast('🚫 DevTools disabled'); return false; }
     if (ctrl && (k||'').toLowerCase() === 'u') { e.preventDefault(); toast('🚫 View source disabled'); return false; }
     if (ctrl && (k||'').toLowerCase() === 's') { e.preventDefault(); return false; }
     if (ctrl && (k||'').toLowerCase() === 'p') { e.preventDefault(); toast('🚫 Print disabled'); return false; }
     const tag = (e.target.tagName || '').toLowerCase();
-    if (ctrl && (k||'').toLowerCase() === 'a' && tag !== 'input' && tag !== 'textarea') {
-      e.preventDefault(); return false;
-    }
+    if (ctrl && (k||'').toLowerCase() === 'a' && tag !== 'input' && tag !== 'textarea') { e.preventDefault(); return false; }
   }, true);
-
-  document.addEventListener('copy', function(e){
-    const tag = (e.target.tagName || '').toLowerCase();
-    if (tag === 'input' || tag === 'textarea') return;
-    e.preventDefault();
-    toast('🚫 कॉपी की अनुमति नहीं है');
-  });
-
-  document.addEventListener('cut', function(e){
-    const tag = (e.target.tagName || '').toLowerCase();
-    if (tag === 'input' || tag === 'textarea') return;
-    e.preventDefault();
-  });
-
-  document.addEventListener('dragstart', function(e){
-    if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
-  });
-
+  document.addEventListener('copy', function(e){const tag = (e.target.tagName || '').toLowerCase();if (tag === 'input' || tag === 'textarea') return;e.preventDefault();toast('🚫 कॉपी की अनुमति नहीं है');});
+  document.addEventListener('cut', function(e){const tag = (e.target.tagName || '').toLowerCase();if (tag === 'input' || tag === 'textarea') return;e.preventDefault();});
+  document.addEventListener('dragstart', function(e){if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }});
   let devtoolsWarned = false;
   function detectDevTools(){
-    const threshold = 170;
-    const wDiff = window.outerWidth - window.innerWidth;
-    const hDiff = window.outerHeight - window.innerHeight;
+    const threshold = 170;const wDiff = window.outerWidth - window.innerWidth;const hDiff = window.outerHeight - window.innerHeight;
     const isOpen = wDiff > threshold || hDiff > threshold;
     if (isOpen && !devtoolsWarned) {
-      devtoolsWarned = true;
-      console.clear();
+      devtoolsWarned = true;console.clear();
       console.log('%c🛑 STOP!', 'color:#f0b90b;font-size:60px;font-weight:900;text-shadow:3px 3px 0 #000;');
       console.log('%cThis is a SECURE Indian Global Coin (IGC) application.', 'color:#f0b90b;font-size:18px;font-weight:bold;');
       console.log('%c⚠️ If someone told you to paste ANYTHING here — it is a SCAM.', 'color:#ff6b6b;font-size:16px;font-weight:bold;');
@@ -931,39 +991,25 @@ if(window.ethereum){
     }
   }
   setInterval(detectDevTools, 1500);
-
   console.clear();
   console.log('%c🛑 STOP!', 'color:#f0b90b;font-size:60px;font-weight:900;text-shadow:3px 3px 0 #000;');
   console.log('%cIndian Global Coin (IGC) — Secure Application', 'color:#f0b90b;font-size:18px;font-weight:bold;');
   console.log('%c⚠️ If someone told you to paste ANYTHING here — it is a SCAM.', 'color:#ff6b6b;font-size:16px;font-weight:bold;');
   console.log('%c🛡️ We NEVER ask for your seed phrase or private key.', 'color:#3ddc97;font-size:14px;');
   console.log('%c✅ Contract: 0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15', 'color:#8b93a0;font-size:12px;');
-
   try {
     Object.defineProperty(window, 'IGC', { value: IGC, writable: false, configurable: false });
     Object.defineProperty(window, 'ROUTER', { value: ROUTER, writable: false, configurable: false });
     Object.defineProperty(window, 'APPS_SCRIPT_URL', { value: APPS_SCRIPT_URL, writable: false, configurable: false });
   } catch (e) { /* ignore */ }
-
   setInterval(function(){
     if (window.IGC !== IGC || window.ROUTER !== ROUTER) {
       document.body.innerHTML = '<div style="padding:60px 20px;text-align:center;color:#ff6b6b;font-family:sans-serif;background:#0d1014;min-height:100vh"><h1>⚠️ Security Breach Detected</h1><p>Page has been modified. Please reload.</p><button onclick="location.reload()" style="padding:12px 24px;background:#f0b90b;border:0;border-radius:10px;font-weight:700;margin-top:20px;cursor:pointer">🔄 Reload</button></div>';
     }
   }, 5000);
-
-  document.addEventListener('mousedown', function(e){
-    if (e.detail > 1) {
-      const tag = (e.target.tagName || '').toLowerCase();
-      if (tag !== 'input' && tag !== 'textarea') { e.preventDefault(); }
-    }
-  });
-
+  document.addEventListener('mousedown', function(e){if (e.detail > 1) {const tag = (e.target.tagName || '').toLowerCase();if (tag !== 'input' && tag !== 'textarea') { e.preventDefault(); }}});
   document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
-
-  document.addEventListener('auxclick', function(e){
-    if (e.button === 1) { e.preventDefault(); }
-  });
-
+  document.addEventListener('auxclick', function(e){if (e.button === 1) { e.preventDefault(); }});
 })();
 </script>
 </body>
