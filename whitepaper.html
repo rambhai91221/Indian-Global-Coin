@@ -68,6 +68,23 @@ section.card ul li{margin:6px 0}
 .note{background:var(--panel2);border-left:3px solid var(--gold);border-radius:10px;padding:12px 16px;margin-top:16px;font-size:14px;color:#d6dbe1}
 .note b{color:var(--gold)}
 
+/* === NEW: Trading & Availability Cards === */
+.trade-grid{display:grid;gap:12px;margin-top:14px}
+@media(min-width:560px){.trade-grid.two{grid-template-columns:1fr 1fr}}
+.trade-card{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;position:relative;overflow:hidden}
+.trade-card.live{border-color:rgba(61,220,151,.4)}
+.trade-card.live::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ok)}
+.trade-card.planned{border-color:rgba(240,185,11,.4)}
+.trade-card.planned::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
+.trade-card .tc-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.trade-card .tc-ico{font-size:22px;flex:none}
+.trade-card .tc-name{font-weight:800;font-size:15px;color:var(--text)}
+.trade-card .tc-status{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.5px;margin-left:auto}
+.trade-card .tc-status.live{background:rgba(61,220,151,.18);color:var(--ok);border:1px solid rgba(61,220,151,.4)}
+.trade-card .tc-status.planned{background:rgba(240,185,11,.18);color:var(--gold);border:1px solid rgba(240,185,11,.4)}
+.trade-card .tc-desc{font-size:13px;color:#cfd5dc;margin:0;line-height:1.6}
+.trade-card a{font-size:13px;font-weight:700;display:inline-block;margin-top:6px}
+
 .phase{position:relative;padding-left:28px;margin:16px 0}
 .phase::before{content:"";position:absolute;left:7px;top:10px;bottom:-18px;width:2px;background:var(--line)}
 .phase:last-child::before{display:none}
@@ -98,7 +115,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   .btn{display:none !important}
   .cover{background:#fafafa;border:1px solid #ddd}
   .chip{background:#fff}
-  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel{background:#fff}
+  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel,.trade-card{background:#fff}
   .disclaimer{background:#fff7f7}
   .trustpanel{background:#f0fff8}
   a{color:#111;text-decoration:none}
@@ -137,6 +154,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <span class="chip">Supply: <b>1,000,000,000 IGC</b></span>
       <span class="chip">Fee: <b>1% Buy / 1% Sell</b></span>
       <span class="chip">Ticker: <b>IGC</b></span>
+      <span class="chip">Status: <b>Live on DEX</b></span>
     </div>
   </div>
 
@@ -150,16 +168,18 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li><a href="#s5">Technology</a></li>
       <li><a href="#s6">Tokenomics</a></li>
       <li><a href="#s7">Utility & Use Cases</a></li>
-      <li><a href="#s8">Roadmap</a></li>
-      <li><a href="#s9">Security & Transparency</a></li>
-      <li><a href="#s10">Community & Governance</a></li>
-      <li><a href="#s11">Legal Notice & Disclaimer</a></li>
+      <li><a href="#s8">Trading & Availability</a></li>
+      <li><a href="#s9">Roadmap</a></li>
+      <li><a href="#s10">Security & Transparency</a></li>
+      <li><a href="#s11">Community & Governance</a></li>
+      <li><a href="#s12">Legal Notice & Disclaimer</a></li>
     </ol>
   </div>
 
   <section class="card" id="s1">
     <h2><span class="num">1</span>Executive Summary</h2>
     <p>Indian Global Coin (IGC) is a community-driven <b>BEP-20</b> token deployed on the <b>BNB Smart Chain (BSC)</b>. It is designed to serve as a fast, secure and ultra-low-cost medium of exchange for everyday digital payments, remittances and cross-border commerce.</p>
+    <p>IGC is <b>live and trading today on PancakeSwap</b> — the largest decentralized exchange on BNB Smart Chain — with public liquidity, live charts on DexScreener and PooCoin, and a fully verified smart contract on BscScan.</p>
     <p>By combining the speed and affordability of BSC with a simple, transparent token model, IGC aims to bridge Indian value systems with the global crypto economy — enabling anyone, anywhere to send and receive value in seconds, for less than the cost of a cup of chai.</p>
   </section>
 
@@ -254,8 +274,85 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </ul>
   </section>
 
+  <!-- ============ NEW: Trading & Availability ============ -->
   <section class="card" id="s8">
-    <h2><span class="num">8</span>Roadmap</h2>
+    <h2><span class="num">8</span>Trading & Availability</h2>
+    <p>IGC is <b>live and publicly tradeable</b> on decentralized exchanges. Anyone can buy or sell IGC right now, 24/7, without any central authority.</p>
+
+    <div class="trade-grid two">
+      <div class="trade-card live">
+        <div class="tc-head">
+          <div class="tc-ico">🥞</div>
+          <div class="tc-name">PancakeSwap</div>
+          <div class="tc-status live">LIVE</div>
+        </div>
+        <p class="tc-desc">The #1 decentralized exchange on BNB Smart Chain. Swap BNB or USDT directly for IGC — no signup, no KYC needed.</p>
+      </div>
+
+      <div class="trade-card live">
+        <div class="tc-head">
+          <div class="tc-ico">📊</div>
+          <div class="tc-name">DexScreener</div>
+          <div class="tc-status live">LIVE</div>
+        </div>
+        <p class="tc-desc">Live price chart, volume, market cap and every trade in real-time. Fully public and verifiable.</p>
+      </div>
+
+      <div class="trade-card live">
+        <div class="tc-head">
+          <div class="tc-ico">🐷</div>
+          <div class="tc-name">PooCoin</div>
+          <div class="tc-status live">LIVE</div>
+        </div>
+        <p class="tc-desc">BNB Chain chart tracker. Detailed analytics, holder info and price history for IGC.</p>
+      </div>
+
+      <div class="trade-card live">
+        <div class="tc-head">
+          <div class="tc-ico">📜</div>
+          <div class="tc-name">BscScan</div>
+          <div class="tc-status live">VERIFIED</div>
+        </div>
+        <p class="tc-desc">Smart contract is publicly visible and auditable. Every transaction is on-chain and verifiable by anyone.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:16px"><b>🚀 What's Next — Centralized Exchanges (CEX)</b></p>
+    <p>After establishing strong on-chain volume, holder base and community, IGC will pursue listings on leading centralized exchanges. This will bring:</p>
+    <ul>
+      <li>Access for users who prefer CEX over DEX</li>
+      <li>Deeper liquidity and tighter spreads</li>
+      <li>Higher visibility in the global crypto market</li>
+    </ul>
+
+    <div class="trade-grid two" style="margin-top:12px">
+      <div class="trade-card planned">
+        <div class="tc-head">
+          <div class="tc-ico">🏦</div>
+          <div class="tc-name">Tier-2 CEX</div>
+          <div class="tc-status planned">PLANNED</div>
+        </div>
+        <p class="tc-desc">Mid-tier exchanges with strong Indian and Asian user base. Target after community milestones are reached.</p>
+      </div>
+
+      <div class="trade-card planned">
+        <div class="tc-head">
+          <div class="tc-ico">🌍</div>
+          <div class="tc-name">Tier-1 CEX</div>
+          <div class="tc-status planned">FUTURE</div>
+        </div>
+        <p class="tc-desc">Top global exchanges like Binance, CoinDCX, WazirX and others. Requires sustained volume and community growth.</p>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px">
+      <p style="margin:0"><b>ℹ️ How to Buy IGC Right Now:</b> Connect your Trust Wallet or MetaMask to PancakeSwap, paste the official contract address, and swap BNB or USDT for IGC. Full instructions are available on the official IGC website.</p>
+      <p style="margin:8px 0 0"><b>Official Contract Address:</b> <span style="font-family:ui-monospace,Consolas,monospace;color:var(--gold)">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</span></p>
+    </div>
+  </section>
+
+  <section class="card" id="s9">
+    <h2><span class="num">9</span>Roadmap</h2>
     <div class="phase">
       <h4>Phase 1 — Foundation</h4>
       <p>Smart contract design, testnet deployment and internal + third-party security audit.</p>
@@ -274,8 +371,8 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </div>
   </section>
 
-  <section class="card" id="s9">
-    <h2><span class="num">9</span>Security & Transparency</h2>
+  <section class="card" id="s10">
+    <h2><span class="num">10</span>Security & Transparency</h2>
     <ul>
       <li>Smart contract publicly verifiable on <b>BscScan</b>.</li>
       <li>No hidden mint function — total supply is fixed at 1,000,000,000 IGC.</li>
@@ -286,8 +383,8 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </ul>
   </section>
 
-  <section class="card" id="s10">
-    <h2><span class="num">10</span>Community & Governance</h2>
+  <section class="card" id="s11">
+    <h2><span class="num">11</span>Community & Governance</h2>
     <p>IGC is built by and for its community. Long-term direction — marketing spend, partnerships and future features — will be shaped through community polls and, eventually, a lightweight DAO where IGC holders vote on key proposals.</p>
     <ul>
       <li>Telegram & X (Twitter) community channels</li>
@@ -296,8 +393,8 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </ul>
   </section>
 
-  <section class="card" id="s11">
-    <h2><span class="num">11</span>Legal Notice & Disclaimer</h2>
+  <section class="card" id="s12">
+    <h2><span class="num">12</span>Legal Notice & Disclaimer</h2>
 
     <div class="trustpanel">
       <h3>✅ About This Project</h3>
@@ -354,4 +451,4 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   }
 </script>
 </body>
-  </html>
+                                         </html>
