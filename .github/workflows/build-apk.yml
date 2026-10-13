@@ -1,1 +1,103 @@
+name: Build Android APK
 
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "whitepaper.html"
+      - "logo.png"
+      - ".github/workflows/build-apk.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Code लें
+        uses: actions/checkout@v4
+
+      - name: Node सेट करें
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Java सेट करें
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: साइट का पता निकालें
+        id: url
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          REPO="${GITHUB_REPOSITORY#*/}"
+          if [ "${REPO,,}" = "${OWNER}.github.io" ]; then
+            URL="https://${OWNER}.github.io/"
+          else
+            URL="https://${OWNER}.github.io/${REPO}/"
+          fi
+          echo "साइट: $URL"
+          echo "site=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: ऐप प्रोजेक्ट बनाएँ
+        env:
+          SITE: ${{ steps.url.outputs.site }}
+        run: |
+          mkdir cap && cd cap
+          npm init -y
+          npm i @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          mkdir www
+          cp ../index.html ../whitepaper.html www/
+          if [ -f ../logo.png ]; then cp ../logo.png www/; fi
+          cat > capacitor.config.json <<EOF
+          {
+            "appId": "com.indianglobalcoin.app",
+            "appName": "Indian Global Coin",
+            "webDir": "www",
+            "server": { "url": "$SITE" }
+          }
+          EOF
+          npx cap add android
+
+      - name: आपके Logo से ऐप का आइकन बनाएँ
+        continue-on-error: true
+        working-directory: cap
+        env:
+          LOGO_ID: 1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa
+        run: |
+          sudo apt-get install -y imagemagick > /dev/null
+          mkdir -p assets
+          curl -fsSL "https://drive.google.com/uc?export=download&id=${LOGO_ID}" -o logo_src || true
+          if ! file logo_src | grep -Eqi 'PNG|JPEG|WebP'; then
+            echo "Drive से logo नहीं मिला (फ़ाइल 'Anyone with the link' पर शेयर होनी चाहिए)। repo का logo.png देख रहे हैं।"
+            cp ../logo.png logo_src
+          fi
+          file logo_src
+          convert logo_src -resize 1024x1024 -background none -gravity center -extent 1024x1024 assets/icon-only.png
+          convert logo_src -resize 680x680 -background none -gravity center -extent 1024x1024 assets/icon-foreground.png
+          convert -size 1024x1024 xc:'#0d1014' assets/icon-background.png
+          npm i -D @capacitor/assets@3
+          npx capacitor-assets generate --android
+
+      - name: फ़ाइलें sync करें
+        working-directory: cap
+        run: npx cap sync android
+
+      - name: APK बनाएँ
+        working-directory: cap/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: APK डाउनलोड के लिए रखें
+        uses: actions/upload-artifact@v4
+        with:
+          name: IGC-app
+          path: cap/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
