@@ -32,6 +32,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: ImageMagick install करें
+        run: sudo apt-get install -y imagemagick
+
       - name: साइट का पता निकालें
         id: url
         run: |
@@ -65,23 +68,37 @@ jobs:
           EOF
           npx cap add android
 
-      - name: आपके Logo से ऐप का आइकन बनाएँ
-        continue-on-error: true
+      - name: आपके Logo से ऐप का Icon बनाएँ
         working-directory: cap
-        env:
-          LOGO_ID: 1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa
         run: |
-          sudo apt-get install -y imagemagick > /dev/null
-          mkdir -p assets
-          curl -fsSL "https://drive.google.com/uc?export=download&id=${LOGO_ID}" -o logo_src || true
-          if ! file logo_src | grep -Eqi 'PNG|JPEG|WebP'; then
-            echo "Drive से logo नहीं मिला (फ़ाइल 'Anyone with the link' पर शेयर होनी चाहिए)। repo का logo.png देख रहे हैं।"
-            cp ../logo.png logo_src
+          # Check करें कि logo.png repo में है या नहीं
+          if [ ! -f ../logo.png ]; then
+            echo "❌ ERROR: logo.png नहीं मिला repo में।"
+            echo "कृपया logo.png file repo के root में upload कीजिए।"
+            exit 1
           fi
-          file logo_src
-          convert logo_src -resize 1024x1024 -background none -gravity center -extent 1024x1024 assets/icon-only.png
-          convert logo_src -resize 680x680 -background none -gravity center -extent 1024x1024 assets/icon-foreground.png
+          echo "✅ logo.png मिल गया — size:"
+          ls -lh ../logo.png
+          file ../logo.png
+
+          mkdir -p assets
+          cp ../logo.png assets/icon-only-src.png
+
+          # 1024x1024 icon बनाएँ (padding के साथ)
+          convert ../logo.png -resize 900x900 -background none -gravity center -extent 1024x1024 assets/icon-only.png
+
+          # Foreground (adaptive icon के लिए)
+          convert ../logo.png -resize 660x660 -background none -gravity center -extent 1024x1024 assets/icon-foreground.png
+
+          # Background (dark color)
           convert -size 1024x1024 xc:'#0d1014' assets/icon-background.png
+
+          # Splash screen (optional)
+          convert ../logo.png -resize 512x512 -background '#0d1014' -gravity center -extent 2732x2732 assets/splash.png
+
+          echo "✅ Icon assets तैयार:"
+          ls -lh assets/
+
           npm i -D @capacitor/assets@3
           npx capacitor-assets generate --android
 
@@ -95,7 +112,7 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
-      - name: APK डाउनलोड के लिए रखें
+      - name: APK upload करें
         uses: actions/upload-artifact@v4
         with:
           name: IGC-app
