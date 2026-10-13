@@ -68,7 +68,6 @@ section.card ul li{margin:6px 0}
 .note{background:var(--panel2);border-left:3px solid var(--gold);border-radius:10px;padding:12px 16px;margin-top:16px;font-size:14px;color:#d6dbe1}
 .note b{color:var(--gold)}
 
-/* === NEW: Trading & Availability Cards === */
 .trade-grid{display:grid;gap:12px;margin-top:14px}
 @media(min-width:560px){.trade-grid.two{grid-template-columns:1fr 1fr}}
 .trade-card{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;position:relative;overflow:hidden}
@@ -84,6 +83,17 @@ section.card ul li{margin:6px 0}
 .trade-card .tc-status.planned{background:rgba(240,185,11,.18);color:var(--gold);border:1px solid rgba(240,185,11,.4)}
 .trade-card .tc-desc{font-size:13px;color:#cfd5dc;margin:0;line-height:1.6}
 .trade-card a{font-size:13px;font-weight:700;display:inline-block;margin-top:6px}
+
+/* Mining section styles */
+.mine-grid{display:grid;gap:12px;margin-top:14px}
+@media(min-width:560px){.mine-grid.two{grid-template-columns:1fr 1fr}}
+.mine-card{background:var(--ink);border:1px solid rgba(240,185,11,.4);border-radius:12px;padding:16px;position:relative;overflow:hidden}
+.mine-card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
+.mine-card .mc-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.mine-card .mc-ico{font-size:22px;flex:none}
+.mine-card .mc-title{font-weight:800;font-size:15px;color:var(--gold)}
+.mine-card .mc-value{font-size:20px;font-weight:900;color:var(--text);margin:4px 0;font-family:ui-monospace,Consolas,monospace}
+.mine-card .mc-sub{font-size:12.5px;color:var(--muted);line-height:1.5}
 
 .phase{position:relative;padding-left:28px;margin:16px 0}
 .phase::before{content:"";position:absolute;left:7px;top:10px;bottom:-18px;width:2px;background:var(--line)}
@@ -115,7 +125,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   .btn{display:none !important}
   .cover{background:#fafafa;border:1px solid #ddd}
   .chip{background:#fff}
-  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel,.trade-card{background:#fff}
+  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel,.trade-card,.mine-card{background:#fff}
   .disclaimer{background:#fff7f7}
   .trustpanel{background:#f0fff8}
   a{color:#111;text-decoration:none}
@@ -148,7 +158,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     <img class="biglogo" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512" alt="IGC logo" onerror="this.src='logo.png'">
     <div class="tag">Whitepaper · Version 1.0</div>
     <h1>Indian Global Coin (IGC)</h1>
-    <p class="sub">A borderless, fast & low-cost digital payment ecosystem built on BNB Smart Chain (BEP-20).</p>
+    <p class="sub">A borderless, fast & low-cost digital payment ecosystem built on BNB Smart Chain (BEP-20) — with Daily Mining, Airdrop &amp; Referral rewards.</p>
     <div class="chips">
       <span class="chip">Network: <b>BSC (BEP-20)</b></span>
       <span class="chip">Supply: <b>1,000,000,000 IGC</b></span>
@@ -167,12 +177,13 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li><a href="#s4">Our Solution</a></li>
       <li><a href="#s5">Technology</a></li>
       <li><a href="#s6">Tokenomics</a></li>
-      <li><a href="#s7">Utility & Use Cases</a></li>
-      <li><a href="#s8">Trading & Availability</a></li>
-      <li><a href="#s9">Roadmap</a></li>
-      <li><a href="#s10">Security & Transparency</a></li>
-      <li><a href="#s11">Community & Governance</a></li>
-      <li><a href="#s12">Legal Notice & Disclaimer</a></li>
+      <li><a href="#s7">Utility &amp; Use Cases</a></li>
+      <li><a href="#s8">Airdrop, Referral &amp; Daily Mining</a></li>
+      <li><a href="#s9">Trading &amp; Availability</a></li>
+      <li><a href="#s10">Roadmap</a></li>
+      <li><a href="#s11">Security &amp; Transparency</a></li>
+      <li><a href="#s12">Community &amp; Governance</a></li>
+      <li><a href="#s13">Legal Notice &amp; Disclaimer</a></li>
     </ol>
   </div>
 
@@ -180,6 +191,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     <h2><span class="num">1</span>Executive Summary</h2>
     <p>Indian Global Coin (IGC) is a community-driven <b>BEP-20</b> token deployed on the <b>BNB Smart Chain (BSC)</b>. It is designed to serve as a fast, secure and ultra-low-cost medium of exchange for everyday digital payments, remittances and cross-border commerce.</p>
     <p>IGC is <b>live and trading today on PancakeSwap</b> — the largest decentralized exchange on BNB Smart Chain — with public liquidity, live charts on DexScreener and PooCoin, and a fully verified smart contract on BscScan.</p>
+    <p>The ecosystem offers three unique earning opportunities for the community: a <b>Welcome Airdrop</b>, a <b>Referral Program</b>, and a <b>Daily Mining System</b> — all designed to reward early supporters and encourage long-term participation.</p>
     <p>By combining the speed and affordability of BSC with a simple, transparent token model, IGC aims to bridge Indian value systems with the global crypto economy — enabling anyone, anywhere to send and receive value in seconds, for less than the cost of a cup of chai.</p>
   </section>
 
@@ -190,6 +202,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li>Make crypto payments as simple as sending a message.</li>
       <li>Empower small merchants, freelancers and families with near-zero fees.</li>
       <li>Represent Indian innovation on the global blockchain stage.</li>
+      <li>Reward active community members through mining, referrals and airdrops.</li>
     </ul>
   </section>
 
@@ -211,6 +224,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li><b>On-chain transparency:</b> Every transfer is publicly verifiable on BscScan.</li>
       <li><b>Merchant-friendly:</b> QR-based payments for shops, cafés and online stores.</li>
       <li><b>Easy onboarding:</b> Anyone with a Trust Wallet or MetaMask can use IGC today.</li>
+      <li><b>Earn while you hold:</b> Welcome airdrop, referral bonuses and daily mining rewards.</li>
     </ul>
   </section>
 
@@ -238,18 +252,19 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
 
     <p style="margin-top:18px"><b>Allocation</b></p>
     <div class="alloc">
-      <div class="row"><div class="label">Market & Community Distribution</div><div class="bar"><div class="fill" style="width:25%"></div></div><div class="pct">25%</div></div>
+      <div class="row"><div class="label">Market &amp; Community Distribution</div><div class="bar"><div class="fill" style="width:25%"></div></div><div class="pct">25%</div></div>
       <div class="row"><div class="label">Owner Wallet Reserve</div><div class="bar"><div class="fill" style="width:75%"></div></div><div class="pct">75%</div></div>
     </div>
 
     <div class="note">
-      <p style="margin:0 0 10px"><b>🔹 25% — Market & Community Distribution (250,000,000 IGC / 25 Crore)</b></p>
+      <p style="margin:0 0 10px"><b>🔹 25% — Market &amp; Community Distribution (250,000,000 IGC / 25 Crore)</b></p>
       <p style="margin:0 0 8px">This portion is allocated for everything that reaches the market and the community. It is distributed as follows:</p>
       <ul style="margin:6px 0 10px 18px;padding:0;font-size:14px;color:#d6dbe1">
-        <li><b>Liquidity Pool</b> — added to PancakeSwap for public Buy/Sell trading</li>
-        <li><b>Airdrop Campaign</b> — 50,000 IGC to the first 2,000 users</li>
-        <li><b>Referral Bonuses</b> — 10,000 IGC per successful referral</li>
-        <li><b>Marketing & Promotions</b> — community growth, influencer partnerships, ads</li>
+        <li><b>Liquidity Pool (10 Crore IGC)</b> — added to PancakeSwap for public Buy/Sell trading</li>
+        <li><b>Airdrop Campaign (10 Crore IGC)</b> — 20,000 IGC to the first 5,000 verified users</li>
+        <li><b>Referral Bonuses</b> — 5,000 IGC per successful referral</li>
+        <li><b>Mining Pool (3 Crore IGC)</b> — daily mining rewards for community members</li>
+        <li><b>Marketing &amp; Promotions</b> — community growth, influencer partnerships, ads</li>
         <li><b>Merchant Ecosystem</b> — early merchant bonuses and QR rollout</li>
         <li><b>Development</b> — website, app, wallet and future utility features</li>
         <li><b>Exchange Listings</b> — CEX listings and global partnerships</li>
@@ -263,20 +278,87 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   </section>
 
   <section class="card" id="s7">
-    <h2><span class="num">7</span>Utility & Use Cases</h2>
+    <h2><span class="num">7</span>Utility &amp; Use Cases</h2>
     <ul>
       <li><b>Peer-to-peer transfers</b> — send IGC to anyone in seconds.</li>
       <li><b>Merchant payments</b> — QR code checkout for shops and online stores.</li>
       <li><b>Cross-border remittance</b> — near-zero-fee family transfers worldwide.</li>
       <li><b>E-commerce integration</b> — pay on partner platforms using IGC.</li>
       <li><b>Community rewards</b> — airdrops, contests and loyalty rewards in IGC.</li>
+      <li><b>Daily Mining</b> — earn IGC by participating in the mining program every day.</li>
       <li><b>Future:</b> staking, governance voting and IGC Wallet App.</li>
     </ul>
   </section>
 
-  <!-- ============ NEW: Trading & Availability ============ -->
+  <!-- ============ NEW: Airdrop, Referral & Mining ============ -->
   <section class="card" id="s8">
-    <h2><span class="num">8</span>Trading & Availability</h2>
+    <h2><span class="num">8</span>Airdrop, Referral &amp; Daily Mining</h2>
+    <p>IGC rewards its community through three transparent earning programs. All rewards are recorded on the official IGC platform and delivered to the user's wallet after verification.</p>
+
+    <p style="margin-top:18px"><b>🎁 Welcome Airdrop — 20,000 IGC</b></p>
+    <p>The first <b>5,000 verified users</b> receive <b>20,000 IGC</b> simply by connecting their BSC wallet and confirming their participation. Total Airdrop Pool: <b>10 Crore IGC</b>.</p>
+
+    <p style="margin-top:18px"><b>🤝 Referral Program — 5,000 IGC per Referral</b></p>
+    <p>Every user receives a unique referral code. When a friend joins using your referral link, you earn <b>5,000 IGC</b> per successful referral. There is no cap on the number of referrals you can invite.</p>
+
+    <p style="margin-top:18px"><b>⛏️ Daily Mining — Earn Every 24 Hours</b></p>
+    <p>IGC holders can mine IGC every 24 hours from the official IGC website. Mining rewards increase with referrals, creating a strong incentive for community growth.</p>
+
+    <div class="mine-grid two">
+      <div class="mine-card">
+        <div class="mc-head">
+          <div class="mc-ico">⛏️</div>
+          <div class="mc-title">Base Mining Rate</div>
+        </div>
+        <div class="mc-value">100 IGC</div>
+        <div class="mc-sub">Per click, once every 24 hours</div>
+      </div>
+
+      <div class="mine-card">
+        <div class="mc-head">
+          <div class="mc-ico">🚀</div>
+          <div class="mc-title">Referral Boost</div>
+        </div>
+        <div class="mc-value">+50 IGC/day</div>
+        <div class="mc-sub">Added for every successful referral</div>
+      </div>
+
+      <div class="mine-card">
+        <div class="mc-head">
+          <div class="mc-ico">📊</div>
+          <div class="mc-title">Daily Maximum</div>
+        </div>
+        <div class="mc-value">2,000 IGC</div>
+        <div class="mc-sub">Maximum daily earning cap</div>
+      </div>
+
+      <div class="mine-card">
+        <div class="mc-head">
+          <div class="mc-ico">💎</div>
+          <div class="mc-title">Total Mining Pool</div>
+        </div>
+        <div class="mc-value">3 Crore IGC</div>
+        <div class="mc-sub">Reserved for the community</div>
+      </div>
+    </div>
+
+    <p style="margin-top:16px"><b>Example Earnings:</b></p>
+    <ul>
+      <li><b>0 referrals</b> → 100 IGC / day</li>
+      <li><b>5 referrals</b> → 350 IGC / day</li>
+      <li><b>20 referrals</b> → 1,100 IGC / day</li>
+      <li><b>38+ referrals</b> → 2,000 IGC / day (maximum cap)</li>
+    </ul>
+
+    <div class="note" style="margin-top:16px">
+      <p style="margin:0"><b>ℹ️ How It Works:</b> Mining rewards are recorded against the user's wallet address on the IGC platform. Mined IGC is delivered to the user's BSC wallet within 30 days. Total mined rewards are tracked publicly on the IGC dashboard.</p>
+      <p style="margin:8px 0 0"><b>Official Contract Address:</b> <span style="font-family:ui-monospace,Consolas,monospace;color:var(--gold)">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</span></p>
+    </div>
+  </section>
+
+  <!-- ============ Trading & Availability ============ -->
+  <section class="card" id="s9">
+    <h2><span class="num">9</span>Trading &amp; Availability</h2>
     <p>IGC is <b>live and publicly tradeable</b> on decentralized exchanges. Anyone can buy or sell IGC right now, 24/7, without any central authority.</p>
 
     <div class="trade-grid two">
@@ -351,19 +433,19 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </div>
   </section>
 
-  <section class="card" id="s9">
-    <h2><span class="num">9</span>Roadmap</h2>
+  <section class="card" id="s10">
+    <h2><span class="num">10</span>Roadmap</h2>
     <div class="phase">
       <h4>Phase 1 — Foundation</h4>
       <p>Smart contract design, testnet deployment and internal + third-party security audit.</p>
     </div>
     <div class="phase">
       <h4>Phase 2 — Launch</h4>
-      <p>Mainnet deployment, liquidity added on PancakeSwap, public trading begins, community setup.</p>
+      <p>Mainnet deployment, liquidity added on PancakeSwap, public trading begins, community setup. <b>Airdrop, Referral Program and Daily Mining launched.</b></p>
     </div>
     <div class="phase">
       <h4>Phase 3 — Utility</h4>
-      <p>Web wallet, merchant payment QR system, mobile app beta and first merchant partnerships.</p>
+      <p>Web wallet, merchant payment QR system, mobile app beta and first merchant partnerships. <b>Enhanced mining features and staking options.</b></p>
     </div>
     <div class="phase">
       <h4>Phase 4 — Global Expansion</h4>
@@ -371,30 +453,33 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </div>
   </section>
 
-  <section class="card" id="s10">
-    <h2><span class="num">10</span>Security & Transparency</h2>
+  <section class="card" id="s11">
+    <h2><span class="num">11</span>Security &amp; Transparency</h2>
     <ul>
       <li>Smart contract publicly verifiable on <b>BscScan</b>.</li>
       <li>No hidden mint function — total supply is fixed at 1,000,000,000 IGC.</li>
       <li>Liquidity locked with a public, verifiable locker.</li>
       <li>Anti-bot and anti-whale limits enabled during launch.</li>
       <li>Owner / Team wallet reserves (75%) remain publicly visible on-chain at all times.</li>
+      <li><b>Airdrop, Referral and Mining rewards</b> are tracked transparently on the official IGC dashboard.</li>
       <li>Community-led reporting channel for any suspicious activity.</li>
     </ul>
   </section>
 
-  <section class="card" id="s11">
-    <h2><span class="num">11</span>Community & Governance</h2>
+  <section class="card" id="s12">
+    <h2><span class="num">12</span>Community &amp; Governance</h2>
     <p>IGC is built by and for its community. Long-term direction — marketing spend, partnerships and future features — will be shaped through community polls and, eventually, a lightweight DAO where IGC holders vote on key proposals.</p>
     <ul>
-      <li>Telegram & X (Twitter) community channels</li>
+      <li>Telegram &amp; X (Twitter) community channels</li>
       <li>Open development updates</li>
+      <li>Referral Program to grow the community organically</li>
+      <li>Daily Mining to reward active participation</li>
       <li>Future on-chain governance for IGC holders</li>
     </ul>
   </section>
 
-  <section class="card" id="s12">
-    <h2><span class="num">12</span>Legal Notice & Disclaimer</h2>
+  <section class="card" id="s13">
+    <h2><span class="num">13</span>Legal Notice &amp; Disclaimer</h2>
 
     <div class="trustpanel">
       <h3>✅ About This Project</h3>
@@ -403,7 +488,8 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
         <li>The smart contract is publicly auditable on BscScan</li>
         <li>Total supply is fixed and cannot be increased (no mint function)</li>
         <li>Owner wallet reserves (75%) are visible on-chain for anyone to verify</li>
-        <li>Liquidity pool (25%) is locked with a public locker</li>
+        <li>Liquidity pool is locked with a public locker</li>
+        <li>Airdrop, Referral and Mining rewards are tracked on the public IGC dashboard</li>
         <li>We never ask for your seed phrase, private key, or funds outside the official website</li>
       </ul>
       <p style="margin-top:10px"><b>IGC is not a Ponzi scheme, investment contract, or guaranteed-return product.</b> It is a utility token designed for real-world digital payments.</p>
@@ -417,6 +503,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <ul>
         <li><b>Market Risk:</b> Token prices can rise or fall sharply and may become illiquid. You may lose some or all of your funds.</li>
         <li><b>No Guarantee:</b> IGC makes no promise of profit, price appreciation, returns, or future listings. Any future value depends entirely on market demand and community support.</li>
+        <li><b>Reward Distribution:</b> Airdrop, referral and mining rewards are subject to verification and are delivered within the stated timeframes. Abusive or fraudulent activity may result in disqualification.</li>
         <li><b>Regulatory Risk:</b> Rules for digital assets vary by country and may change. It is your responsibility to comply with the laws of your jurisdiction.</li>
         <li><b>Personal Responsibility:</b> Please do your own research (DYOR), understand the technology, and only invest what you can afford to lose.</li>
         <li><b>No Liability:</b> The IGC team, founders, and community contributors shall not be held liable for any direct or indirect loss arising from the use of this token or the information in this document.</li>
@@ -451,4 +538,4 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   }
 </script>
 </body>
-                                         </html>
+  </html>
