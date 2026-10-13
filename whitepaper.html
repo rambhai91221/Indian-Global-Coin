@@ -78,6 +78,14 @@ section.card ul li{margin:6px 0}
 .disclaimer{background:#1a1214;border:1px solid #3a1f22;border-radius:14px;padding:18px 20px}
 .disclaimer h3{color:var(--bad);margin:0 0 8px;font-size:15px}
 .disclaimer p{color:#e5c9c9;font-size:13.5px;margin:6px 0}
+.disclaimer ul{color:#e5c9c9;font-size:13.5px;margin:8px 0;padding-left:22px}
+.disclaimer ul li{margin:5px 0}
+
+.trustpanel{background:linear-gradient(135deg,rgba(61,220,151,.10),rgba(61,220,151,.02));border:1px solid rgba(61,220,151,.4);border-radius:14px;padding:18px 20px;margin-top:14px}
+.trustpanel h3{color:var(--ok);margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:8px}
+.trustpanel p{color:#d6fce9;font-size:13.5px;margin:6px 0}
+.trustpanel ul{color:#d6fce9;font-size:13.5px;margin:8px 0;padding-left:22px}
+.trustpanel ul li{margin:5px 0}
 
 footer{text-align:center;color:var(--muted);font-size:12.5px;padding:22px 0 0;border-top:1px solid var(--line);margin-top:26px}
 footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
@@ -90,8 +98,9 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   .btn{display:none !important}
   .cover{background:#fafafa;border:1px solid #ddd}
   .chip{background:#fff}
-  section.card,.toc,.kpi,.disclaimer,.note{background:#fff}
+  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel{background:#fff}
   .disclaimer{background:#fff7f7}
+  .trustpanel{background:#f0fff8}
   a{color:#111;text-decoration:none}
   .wrap{max-width:100%;padding:0}
   section.card{page-break-inside:avoid}
@@ -144,7 +153,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li><a href="#s8">Roadmap</a></li>
       <li><a href="#s9">Security & Transparency</a></li>
       <li><a href="#s10">Community & Governance</a></li>
-      <li><a href="#s11">Disclaimer</a></li>
+      <li><a href="#s11">Legal Notice & Disclaimer</a></li>
     </ol>
   </div>
 
@@ -209,13 +218,27 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
 
     <p style="margin-top:18px"><b>Allocation</b></p>
     <div class="alloc">
-      <div class="row"><div class="label">Public Liquidity (Market)</div><div class="bar"><div class="fill" style="width:10%"></div></div><div class="pct">10%</div></div>
-      <div class="row"><div class="label">Owner / Team / Project Wallet</div><div class="bar"><div class="fill" style="width:90%"></div></div><div class="pct">90%</div></div>
+      <div class="row"><div class="label">Market & Community Distribution</div><div class="bar"><div class="fill" style="width:25%"></div></div><div class="pct">25%</div></div>
+      <div class="row"><div class="label">Owner Wallet Reserve</div><div class="bar"><div class="fill" style="width:75%"></div></div><div class="pct">75%</div></div>
     </div>
 
     <div class="note">
-      <p style="margin:0"><b>10% (100,000,000 IGC / 10 Crore)</b> — allocated to the public liquidity pool for market trading (Buy/Sell) on PancakeSwap.</p>
-      <p style="margin:8px 0 0"><b>90% (900,000,000 IGC / 90 Crore)</b> — safely held in the creator/owner wallet, reserved for future use: marketing, airdrops, development, partnerships and new exchange listings.</p>
+      <p style="margin:0 0 10px"><b>🔹 25% — Market & Community Distribution (250,000,000 IGC / 25 Crore)</b></p>
+      <p style="margin:0 0 8px">This portion is allocated for everything that reaches the market and the community. It is distributed as follows:</p>
+      <ul style="margin:6px 0 10px 18px;padding:0;font-size:14px;color:#d6dbe1">
+        <li><b>Liquidity Pool</b> — added to PancakeSwap for public Buy/Sell trading</li>
+        <li><b>Airdrop Campaign</b> — 50,000 IGC to the first 2,000 users</li>
+        <li><b>Referral Bonuses</b> — 10,000 IGC per successful referral</li>
+        <li><b>Marketing & Promotions</b> — community growth, influencer partnerships, ads</li>
+        <li><b>Merchant Ecosystem</b> — early merchant bonuses and QR rollout</li>
+        <li><b>Development</b> — website, app, wallet and future utility features</li>
+        <li><b>Exchange Listings</b> — CEX listings and global partnerships</li>
+      </ul>
+
+      <p style="margin:10px 0 10px"><b>🔹 75% — Owner Wallet Reserve (750,000,000 IGC / 75 Crore)</b></p>
+      <p style="margin:0 0 8px">This portion is securely held in the project's owner wallet and remains <b>publicly visible on-chain at all times</b>. It is reserved for the long-term growth of IGC — including future strategic initiatives, large partnerships, deep liquidity expansion and any unforeseen development needs.</p>
+
+      <p style="margin:10px 0 0"><b>ℹ️ Transparency Note:</b> Both allocations are fully verifiable on BscScan. The owner wallet address and its holdings can be checked by anyone at any time. IGC has no hidden mint function — the total supply of 1,000,000,000 IGC is fixed and can never be increased.</p>
     </div>
   </section>
 
@@ -258,7 +281,7 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <li>No hidden mint function — total supply is fixed at 1,000,000,000 IGC.</li>
       <li>Liquidity locked with a public, verifiable locker.</li>
       <li>Anti-bot and anti-whale limits enabled during launch.</li>
-      <li>Owner / Team wallet reserves are publicly visible on-chain.</li>
+      <li>Owner / Team wallet reserves (75%) remain publicly visible on-chain at all times.</li>
       <li>Community-led reporting channel for any suspicious activity.</li>
     </ul>
   </section>
@@ -274,10 +297,41 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   </section>
 
   <section class="card" id="s11">
-    <div class="disclaimer">
-      <h3>11. Disclaimer</h3>
-      <p>This whitepaper is for informational purposes only and does not constitute financial, legal or investment advice. Cryptocurrency investments carry significant risk, including the possible loss of all funds. IGC price may fluctuate heavily and there is no guarantee of future value, liquidity or listings.</p>
-      <p>Nothing in this document should be interpreted as a promise of profit. Please do your own research (DYOR) and only invest what you can afford to lose. Laws regarding digital assets vary by country — ensure you comply with your local regulations before purchasing or using IGC.</p>
+    <h2><span class="num">11</span>Legal Notice & Disclaimer</h2>
+
+    <div class="trustpanel">
+      <h3>✅ About This Project</h3>
+      <p>Indian Global Coin (IGC) is a <b>legitimate, community-built BEP-20 token</b> deployed on BNB Smart Chain. All details in this document are publicly verifiable:</p>
+      <ul>
+        <li>The smart contract is publicly auditable on BscScan</li>
+        <li>Total supply is fixed and cannot be increased (no mint function)</li>
+        <li>Owner wallet reserves (75%) are visible on-chain for anyone to verify</li>
+        <li>Liquidity pool (25%) is locked with a public locker</li>
+        <li>We never ask for your seed phrase, private key, or funds outside the official website</li>
+      </ul>
+      <p style="margin-top:10px"><b>IGC is not a Ponzi scheme, investment contract, or guaranteed-return product.</b> It is a utility token designed for real-world digital payments.</p>
+    </div>
+
+    <div class="disclaimer" style="margin-top:14px">
+      <h3>⚠️ Important Notice</h3>
+      <p>This whitepaper is provided <b>for informational and educational purposes only</b>. It does not constitute financial, legal, tax, or investment advice, and it is not an offer or solicitation to buy or sell any security or financial instrument in any jurisdiction.</p>
+
+      <p>Cryptocurrency and digital assets involve significant risk. By participating in IGC, you acknowledge and accept the following:</p>
+      <ul>
+        <li><b>Market Risk:</b> Token prices can rise or fall sharply and may become illiquid. You may lose some or all of your funds.</li>
+        <li><b>No Guarantee:</b> IGC makes no promise of profit, price appreciation, returns, or future listings. Any future value depends entirely on market demand and community support.</li>
+        <li><b>Regulatory Risk:</b> Rules for digital assets vary by country and may change. It is your responsibility to comply with the laws of your jurisdiction.</li>
+        <li><b>Personal Responsibility:</b> Please do your own research (DYOR), understand the technology, and only invest what you can afford to lose.</li>
+        <li><b>No Liability:</b> The IGC team, founders, and community contributors shall not be held liable for any direct or indirect loss arising from the use of this token or the information in this document.</li>
+      </ul>
+
+      <p style="margin-top:10px"><b>No Financial Advice:</b> Nothing in this whitepaper should be interpreted as a promise of future performance. All forward-looking statements are based on current plans and may change without notice.</p>
+
+      <p><b>Not a Security:</b> IGC is a utility token intended for use within the IGC payment ecosystem. It is not intended to be, and should not be treated as, a security, share, equity, or debt instrument in any jurisdiction.</p>
+
+      <p><b>Verify Before You Buy:</b> Always confirm the official contract address, official community links, and official website before making any transaction. Beware of impersonators and fake tokens using the IGC name.</p>
+
+      <p style="margin-bottom:0"><b>Official Contract:</b> <span style="font-family:ui-monospace,Consolas,monospace;color:var(--gold)">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</span></p>
     </div>
   </section>
 
@@ -293,7 +347,6 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
 </div>
 
 <script>
-  // अगर लिंक में ?print=1 हो तो सीधे प्रिंट डायलॉग खोल दो
   if (location.search.indexOf('print') > -1) {
     window.addEventListener('load', function () {
       setTimeout(function () { window.print(); }, 700);
@@ -301,4 +354,4 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   }
 </script>
 </body>
-          </html>
+  </html>
