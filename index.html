@@ -497,6 +497,13 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
     <b>⛽ Gas (BNB) के बारे में:</b> BSC network पर हर transaction के लिए थोड़ी BNB चाहिए (₹2-5)। अगर wallet में BNB नहीं है तो नीचे "Gas के लिए BNB खरीदें" section से ₹50 का BNB खरीद लीजिए — यह 10-15 transactions के लिए काफी है।
   </div>
 
+  <!-- ====== NEW AUTOMATIC GAS BUTTON START ====== -->
+  <button class="gold" id="freeGasBtn" style="width:100%;margin-top:10px;background:var(--ok);color:#111;font-weight:800;padding:14px;border-radius:10px;cursor:pointer;border:0;font-family:inherit;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;">
+    ⛽ Free Gas माँगें (0.001 BNB) — USDT होल्डर्स के लिए
+  </button>
+  <p class="muted" style="font-size:11.5px;text-align:center;margin-top:4px;">(कम से कम 5 USDT होना जरूरी है)</p>
+  <!-- ====== NEW AUTOMATIC GAS BUTTON END ====== -->
+
   <div class="dex-grid" style="margin-top:12px">
     <a class="dex-btn" href="https://www.binance.com/en/buy-BNB" target="_blank" rel="noopener">
       <div class="l"><div class="ico" style="background:#F0B90B;color:#111">🟡</div><div><div class="t">Gas के लिए BNB खरीदें</div><div class="s">Binance · UPI / P2P / Card</div></div></div>
@@ -1175,7 +1182,7 @@ async function buyWithUsdt(){
   try{
     const u=new ethers.Contract(USDT,UABI,signer);
     if((await u.balanceOf(user))<a) throw new Error("आपके पास इतना USDT नहीं है।");
-    if((await rpc.getBalance(user))<ethers.parseEther("0.0003")) throw new Error("Gas (BNB) कम है। पहले थोड़ा BNB खरीद लीजिए।");
+    if((await rpc.getBalance(user))<ethers.parseEther("0.0003")) throw new Error("Gas (BNB) कम है। पहले थोड़ा BNB खरीद लीजिए या ऊपर 'Free Gas' बटन दबाइए।");
     await uGetQuote();
     if(uQuote===0n) throw new Error("अभी liquidity नहीं है, इसलिए खरीद नहीं हो सकती।");
     const minOut=uQuote*BigInt(Math.floor((100-sl)*100))/10000n;
@@ -1202,6 +1209,50 @@ async function buyWithUsdt(){
 $("uAmt").oninput=()=>{clearTimeout(uTimer);uTimer=setTimeout(uGetQuote,400)};
 $("uAct").onclick=buyWithUsdt;
 uRefresh();setInterval(uRefresh,10000);
+
+/* ================== ⛽ AUTOMATIC GAS SYSTEM ================== */
+async function requestGasFromServer() {
+  if (!currentEmail) { toast("पहले Login कीजिए", "#ff6b6b"); return; }
+  if (!user || !signer) { toast("पहले वॉलेट जोड़ें", "#ff6b6b"); return; }
+
+  const btn = $("freeGasBtn");
+  btn.disabled = true;
+  btn.innerHTML = "⏳ सिग्नेचर का इंतज़ार...";
+
+  try {
+    const day = new Date().toISOString().slice(0, 10);
+    const message = `IGC gas request\nWallet: ${user}\nDate: ${day}`;
+    
+    // 1. यूजर से सिग्नेचर माँगें
+    const signature = await signer.signMessage(message);
+    
+    btn.innerHTML = "⏳ गैस फीस भेजी जा रही है...";
+    
+    // 2. सर्वर को रिक्वेस्ट भेजें
+    const res = await fetch(RELAYER_URL + "/api/gas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ address: user, signature: signature })
+    });
+    
+    const data = await res.json();
+    
+    if (data.success) {
+      toast("✅ गैस मिल गई! अब IGC खरीदें।", "var(--ok)");
+      refreshBal();
+      uRefresh();
+    } else {
+      toast(data.error || "गैस नहीं मिली", "#ff6b6b");
+    }
+  } catch (e) {
+    console.error(e);
+    toast("सर्वर से कनेक्ट नहीं हो पा रहा या आपने रद्द कर दिया", "#ff6b6b");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "⛽ Free Gas माँगें (0.001 BNB) — USDT होल्डर्स के लिए";
+  }
+}
+$("freeGasBtn").onclick = requestGasFromServer;
 
 /* ================== INIT ================== */
 function initRefUI(){
@@ -1422,4 +1473,4 @@ if(window.ethereum){
 })();
 </script>
 </body>
-</html>
+  </html>
