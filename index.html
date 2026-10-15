@@ -464,7 +464,7 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
   <div class="row"><a id="trust" href="#">Trust Wallet</a><a id="mm" href="#">MetaMask</a></div>
 </section>
 
-<!-- ============ Buy/Sell ============ -->
+<!-- ============ Buy/Sell (BNB) ============ -->
 <section>
   <h2>IGC खरीदें / बेचें</h2>
   <div class="tabs"><button id="tBuy" class="on">खरीदें</button><button id="tSell">बेचें</button></div>
@@ -477,6 +477,22 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
   <input id="slip" type="number" inputmode="decimal" value="3" min="1" max="49">
   <button class="gold" id="act">वॉलेट जोड़ें</button>
   <p class="msg" id="msg"></p>
+</section>
+
+<!-- ============ USDT से खरीदें (Gas सेवा) ============ -->
+<section>
+  <h2>💵 USDT से IGC खरीदें</h2>
+  <p class="muted" style="margin:0">वॉलेट में BNB (gas) न हो तो पहले "Gas पाएँ" दबाइए। थोड़ा BNB भेज दिया जाएगा (हर वॉलेट को एक बार, कम से कम 5 USDT होने पर)।</p>
+  <button class="ghost" id="uGas" style="width:100%;margin-top:12px;padding:12px">⛽ Gas पाएँ (मुफ़्त)</button>
+  <label for="uAmt">USDT की मात्रा</label>
+  <input id="uAmt" type="number" inputmode="decimal" min="0" placeholder="0.0">
+  <p class="muted" id="uBal" style="margin:6px 0 0"></p>
+  <label>लगभग मिलेगा</label>
+  <div class="out" id="uOut">–</div>
+  <label for="uSlip">Slippage (%) — कम से कम 3 रखें</label>
+  <input id="uSlip" type="number" inputmode="decimal" value="3" min="1" max="49">
+  <button class="gold" id="uAct" style="width:100%;margin-top:14px;padding:14px;font-size:17px">USDT से IGC खरीदें</button>
+  <p class="msg" id="uMsg"></p>
 </section>
 
 <!-- ============ DEX ============ -->
@@ -685,7 +701,7 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 /* ================== CONFIG ================== */
 const IGC="0xd20068fa2d06406f20752ec8a401bf0cc3a37e15";
 const WBNB="0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-const USDT="0x55d398326f99059ffb5c1c8a2b2b8d9c1a2e1e1e";
+const USDT="0x55d398326f99059ff775485246999027b3197955";
 const ROUTER="0x10ed43c718714eb63d5aa57b78b54704e256024e";
 const FACTORY="0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73";
 const DEAD="0x000000000000000000000000000000000000dEaD";
@@ -1101,6 +1117,65 @@ $("shareCopy").onclick=async()=>{
   try{await navigator.clipboard.writeText(buildRefLink())}catch(e){}
   toast("🔗 Link copied!");
 };
+
+/* ===== USDT से खरीदें (gas सर्वर के साथ) ===== */
+const RELAYER_URL="https://your-backend-service.onrender.com"; // अपने Render सर्वर का पता डालिए, अंत में / नहीं
+const UABI=["function balanceOf(address) view returns (uint256)","function allowance(address,address) view returns (uint256)","function approve(address,uint256) returns (bool)"];
+const R2=["function getAmountsOut(uint256,address[]) view returns (uint256[])","function swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"];
+const uPath=[USDT,WBNB,IGC];
+let uTimer=null,uQuote=0n;
+function uSay(t,c){const m=$("uMsg");m.textContent=t;m.className="msg "+(c||"")}
+function uVal(){try{const v=ethers.parseUnits($("uAmt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
+async function uGetQuote(){
+  const a=uVal();uQuote=0n;
+  if(a===0n){$("uOut").textContent="–";return}
+  try{const r=await new ethers.Contract(ROUTER,R2,rpc).getAmountsOut(a,uPath);uQuote=r[2];$("uOut").textContent="≈ "+fmt(uQuote)+" IGC";uSay("")}
+  catch(e){$("uOut").textContent="–";uSay("अभी liquidity नहीं मिली, इसलिए भाव नहीं दिख रहा।","bad")}
+}
+async function uRefresh(){
+  if(!user){$("uBal").textContent="";return}
+  try{const [u,b]=await Promise.all([new ethers.Contract(USDT,UABI,rpc).balanceOf(user),rpc.getBalance(user)]);
+  $("uBal").textContent="USDT: "+fmt(u)+" · BNB (gas): "+fmt(b)}catch(e){}
+}
+async function getGas(){
+  if(!user){await connect();if(!user)return}
+  if(RELAYER_URL.includes("your-backend")){uSay("Gas सेवा अभी चालू नहीं है।","bad");return}
+  try{
+    uSay("Gas की जाँच हो रही है…");
+    const addr=ethers.getAddress(user),day=new Date().toISOString().slice(0,10);
+    const sig=await signer.signMessage("IGC gas request\nWallet: "+addr+"\nDate: "+day);
+    const r=await fetch(RELAYER_URL+"/api/gas",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({address:addr,signature:sig})});
+    const d=await r.json();
+    if(d.success){uSay("✅ Gas मिल गया। अब नीचे USDT से खरीदें।","ok");uRefresh()}
+    else uSay(d.error||"Gas नहीं मिला","bad");
+  }catch(e){uSay(/rejected|denied/i.test(e.message||"")?"आपने signature रद्द कर दिया।":"Gas नहीं मिला, फिर कोशिश करें।","bad")}
+}
+async function buyWithUsdt(){
+  if(!user){await connect();if(!user)return}
+  const a=uVal();if(a===0n){uSay("USDT की मात्रा डालिए।","bad");return}
+  const sl=Math.min(Math.max(parseFloat($("uSlip").value)||3,1),49),btn=$("uAct");btn.disabled=true;
+  try{
+    const u=new ethers.Contract(USDT,UABI,signer);
+    if((await u.balanceOf(user))<a)throw new Error("आपके पास इतना USDT नहीं है।");
+    if((await rpc.getBalance(user))<ethers.parseEther("0.0003"))throw new Error("Gas (BNB) कम है। पहले 'Gas पाएँ' दबाइए।");
+    await uGetQuote();
+    if(uQuote===0n)throw new Error("अभी liquidity नहीं है, इसलिए खरीद नहीं हो सकती।");
+    const minOut=uQuote*BigInt(Math.floor((100-sl)*100))/10000n,dl=Math.floor(Date.now()/1000)+1200;
+    if((await u.allowance(user,ROUTER))<a){uSay("पहले USDT की अनुमति (Approve) दीजिए…");await (await u.approve(ROUTER,a)).wait()}
+    uSay("अब खरीद मंज़ूर कीजिए…");
+    const tx=await new ethers.Contract(ROUTER,R2,signer).swapExactTokensForTokensSupportingFeeOnTransferTokens(a,minOut,uPath,user,dl);
+    uSay("कन्फ़र्म होने का इंतज़ार…");await tx.wait();
+    uSay("✅ IGC आपके वॉलेट में आ गया! "+short(tx.hash),"ok");
+    $("uAmt").value="";$("uOut").textContent="–";uRefresh();refreshBal();
+  }catch(e){
+    const t=(e.reason||e.shortMessage||e.message||"").toString();
+    uSay(/[\u0900-\u097F]/.test(t)?t:err(e),"bad");
+  }
+  btn.disabled=false;
+}
+$("uAmt").oninput=()=>{clearTimeout(uTimer);uTimer=setTimeout(uGetQuote,400)};
+$("uGas").onclick=getGas;$("uAct").onclick=buyWithUsdt;
+uRefresh();setInterval(uRefresh,10000);
 
 /* ================== INIT ================== */
 function initRefUI(){
