@@ -472,6 +472,13 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
   <input id="slip" type="number" inputmode="decimal" value="3" min="1" max="49">
   <button class="gold" id="act" data-i18n="connect">वॉलेट जोड़ें</button>
   <p class="msg" id="msg"></p>
+
+  <!-- ====== BNB Slippage Note START ====== -->
+  <div class="trust-note" style="margin-top:12px; border-color:var(--gold);">
+    <b data-i18n="bnbSlippageNoteTitle">⚠️ नोट:</b> 
+    <span data-i18n="bnbSlippageNoteText">अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।</span>
+  </div>
+  <!-- ====== BNB Slippage Note END ====== -->
 </section>
 
 <section>
@@ -486,6 +493,13 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
   <input id="uSlip" type="number" inputmode="decimal" value="3" min="1" max="49">
   <button class="gold" id="uAct" style="width:100%;margin-top:14px;padding:14px;font-size:17px" data-i18n="buyWithUsdt">USDT से IGC खरीदें</button>
   <p class="msg" id="uMsg"></p>
+
+  <!-- ====== USDT Slippage Note START ====== -->
+  <div class="trust-note" style="margin-top:12px; border-color:var(--gold);">
+    <b data-i18n="usdtSlippageNoteTitle">⚠️ नोट:</b> 
+    <span data-i18n="usdtSlippageNoteText">USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।</span>
+  </div>
+  <!-- ====== USDT Slippage Note END ====== -->
 
   <div class="trust-note" style="margin-top:12px">
     <b data-i18n="gasNote">⛽ Gas (BNB) के बारे में:</b> <span data-i18n="gasNoteText">BSC network पर हर transaction के लिए थोड़ी BNB चाहिए (₹2-5)। अगर wallet में BNB नहीं है तो नीचे "Gas के लिए BNB खरीदें" section से ₹50 का BNB खरीद लीजिए — यह 10-15 transactions के लिए काफी है।</span>
@@ -836,7 +850,9 @@ const TRANSLATIONS = {
     needLogin:"पहले Login कीजिए", needWallet:"पहले वॉलेट जोड़ें", needBoth:"पहले Login + Wallet जोड़ें",
     claimLockedText:"🔒 पहले Login + Wallet जोड़ें", claimReadyText:"🎁 20,000 IGC Claim कीजिए", claimLogin:"🔒 पहले Login कीजिए",
     claimWallet:"🔗 पहले वॉलेट जोड़ें", welcomeRef:"🎉 आपको", welcomeRefMid:"ने refer किया है!",
-    i18nReady:"भाषा बदल गई: हिंदी"
+    i18nReady:"भाषा बदल गई: हिंदी",
+    usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
+    bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
@@ -937,7 +953,9 @@ const TRANSLATIONS = {
     needLogin:"Please Login first", needWallet:"Please connect Wallet first", needBoth:"Login + Add Wallet first",
     claimLockedText:"🔒 Login + Wallet first", claimReadyText:"🎁 Claim 20,000 IGC", claimLogin:"🔒 Login first",
     claimWallet:"🔗 Connect Wallet first", welcomeRef:"🎉 You were referred by", welcomeRefMid:"!",
-    i18nReady:"Language changed to English"
+    i18nReady:"Language changed to English",
+    usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
+    bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts."
   }
 };
 
@@ -976,7 +994,7 @@ document.getElementById("langToggle").onclick = () => {
   toast(t("i18nReady"), "var(--ok)");
 };
 
-/* ================== REST OF SCRIPT (SAME AS BEFORE) ================== */
+/* ================== REST OF SCRIPT ================== */
 const $=id=>document.getElementById(id);
 const rpc=new ethers.JsonRpcProvider(RPC);
 const rRouter=new ethers.Contract(ROUTER,RABI,rpc);
