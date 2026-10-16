@@ -120,9 +120,13 @@
     </div>
   </section>
 
-  <!-- ================= LOGIN / SIGNUP SECTION (सिर्फ Login रहेगा) ================= -->
+  <!-- ================= LOGIN / SIGNUP SECTION ================= -->
   <section>
-    <div id="loginSection" class="login-box">
+    <div id="refWelcome" style="display:none" class="welcome-ref">
+      🎉 <span data-i18n="refWelcome1">आपको</span> <b id="refWelcomeCode">friend</b> <span data-i18n="refWelcome2">ने refer किया है! नीचे claim कीजिए और</span> <b>20,000 IGC</b> <span data-i18n="refWelcome3">पाइए।</span>
+    </div>
+
+    <div id="loginSection" class="login-box" style="margin-top:12px">
       <h3 id="loginTitle">🔐 Login / Signup</h3>
       <input id="emailInput" type="email" data-i18n-ph="emailPh" placeholder="अपना Email डालिए">
       <input id="passInput" type="password" data-i18n-ph="passPh" placeholder="Password (कम से कम 6 अक्षर)">
@@ -147,6 +151,30 @@
         <div class="dash-item"><div class="k" data-i18n="bonusIGC">Bonus IGC</div><div class="v" id="dashBonus">0</div></div>
         <div class="dash-item"><div class="k" data-i18n="claimedIGC">Claimed IGC</div><div class="v" id="dashClaimed">0</div></div>
         <div class="dash-item"><div class="k" data-i18n="status">Status</div><div class="v" id="dashStatus">-</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REFERRAL CODE BOX (Home Page) ================= -->
+  <section>
+    <div class="claim-box" style="margin-top:0">
+      <h3 data-i18n="yourRefCode">🎟️ आपका Referral Code</h3>
+      <p class="muted" style="margin:4px 0 0;font-size:12.5px" data-i18n="refDesc">इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।</p>
+      <div class="ref-code-display" id="myRefCode" data-i18n="loginToSee">Login करके देखें</div>
+      <div class="ref-copy-row">
+        <button class="b-copy" id="copyRefBtn" data-i18n="copyCode">📋 Copy Code</button>
+        <button class="b-share" id="shareRefBtn" data-i18n="shareLink">📤 Share Link</button>
+      </div>
+      <!-- WhatsApp Send Button (New) -->
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <a id="waShareRef" target="_blank" rel="noopener" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--wa);color:#0b1a10;font-weight:800;font-size:14px;border-radius:10px;text-decoration:none;font-family:inherit">
+          <span>💬</span>
+          <span data-i18n="sendWaRef">WhatsApp पर भेजें</span>
+        </a>
+        <a id="tgShareRef" target="_blank" rel="noopener" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--tg);color:#fff;font-weight:800;font-size:14px;border-radius:10px;text-decoration:none;font-family:inherit">
+          <span>✈️</span>
+          <span data-i18n="sendTgRef">Telegram पर भेजें</span>
+        </a>
       </div>
     </div>
   </section>
@@ -272,4 +300,4 @@
 
 <script src="script.js"></script>
 </body>
-  </html>
+        </html>
