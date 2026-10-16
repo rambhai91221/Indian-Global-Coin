@@ -120,15 +120,9 @@
     </div>
   </section>
 
-  <!-- ================= LOGIN / SIGNUP SECTION ================= -->
-  <section id="loginSection-home">
-    <div class="badge" data-i18n="badgeAirdrop">🎁 FREE AIRDROP LIVE</div>
-
-    <div id="refWelcome" style="display:none" class="welcome-ref">
-      🎉 <span data-i18n="refWelcome1">आपको</span> <b id="refWelcomeCode">friend</b> <span data-i18n="refWelcome2">ने refer किया है! नीचे claim कीजिए और</span> <b>20,000 IGC</b> <span data-i18n="refWelcome3">पाइए।</span>
-    </div>
-
-    <div id="loginSection" class="login-box" style="margin-top:12px">
+  <!-- ================= LOGIN / SIGNUP SECTION (सिर्फ Login रहेगा) ================= -->
+  <section>
+    <div id="loginSection" class="login-box">
       <h3 id="loginTitle">🔐 Login / Signup</h3>
       <input id="emailInput" type="email" data-i18n-ph="emailPh" placeholder="अपना Email डालिए">
       <input id="passInput" type="password" data-i18n-ph="passPh" placeholder="Password (कम से कम 6 अक्षर)">
@@ -155,28 +149,6 @@
         <div class="dash-item"><div class="k" data-i18n="status">Status</div><div class="v" id="dashStatus">-</div></div>
       </div>
     </div>
-
-    <p class="muted" style="margin:12px 0 6px" data-i18n="stepsTitle">IGC Airdrop में हिस्सा लेने के 3 आसान steps:</p>
-    <ol class="steps">
-      <li data-i18n="step1">Login कीजिए (ऊपर Email/Google से)</li>
-      <li><span data-i18n="step2a">वॉलेट जोड़िए (ऊपर</span> <b data-i18n="connect">वॉलेट जोड़ें</b> <span data-i18n="step2b">बटन)</span></li>
-      <li><span data-i18n="step3a">अपना Referral Code दोस्तों को भेजिए — हर join पर</span> <b style="color:var(--gold)" data-i18n="step3b">5,000 IGC बोनस</b></li>
-    </ol>
-
-    <!-- Referral Code Box -->
-    <div class="claim-box">
-      <h3 data-i18n="yourRefCode">🎟️ आपका Referral Code</h3>
-      <p class="muted" style="margin:4px 0 0;font-size:12.5px" data-i18n="refDesc">इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।</p>
-      <div class="ref-code-display" id="myRefCode" data-i18n="loginToSee">Login करके देखें</div>
-      <div class="ref-copy-row">
-        <button class="b-copy" id="copyRefBtn" data-i18n="copyCode">📋 Copy Code</button>
-        <button class="b-share" id="shareRefBtn" data-i18n="shareLink">📤 Share Link</button>
-      </div>
-    </div>
-
-    <a href="airdrop.html" style="display:block;text-decoration:none;margin-top:14px">
-      <button class="claim-main-btn" style="pointer-events:none" data-i18n="goToAirdropPage">🎁 Claim 20,000 IGC पेज पर जाएँ →</button>
-    </a>
   </section>
 
   <!-- ================= SHARE SECTION ================= -->
