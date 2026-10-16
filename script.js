@@ -197,7 +197,9 @@ const TRANSLATIONS = {
     claimWallet:"🔗 पहले वॉलेट जोड़ें", welcomeRef:"🎉 आपको", welcomeRefMid:"ने refer किया है!",
     i18nReady:"भाषा बदल गई: हिंदी",
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
-    bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।"
+    bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।",
+    sendWaRef:"WhatsApp पर भेजें",
+    sendTgRef:"Telegram पर भेजें"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
@@ -352,7 +354,9 @@ const TRANSLATIONS = {
     claimWallet:"🔗 Connect Wallet first", welcomeRef:"🎉 You were referred by", welcomeRefMid:"!",
     i18nReady:"Language changed to English",
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
-    bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts."
+    bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts.",
+    sendWaRef:"Send on WhatsApp",
+    sendTgRef:"Send on Telegram"
   }
 };
 
@@ -417,7 +421,8 @@ function toast(msg,color){
   setTimeout(()=>el.classList.remove("show"),3000);
 }
 
-const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",CLAIMED:"igc_claimed"};
+/* ================== LOCAL STORAGE KEYS ================== */
+const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",SESSION:"igc_session",CLAIMED:"igc_claimed"};
 
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
 function getMyCode(){let c=localStorage.getItem(K.MY_CODE);if(!c){c=genCode();localStorage.setItem(K.MY_CODE,c);}return c;}
@@ -490,85 +495,210 @@ function updateLoginUI(){
   setTimeout(()=>{const l=$("switchLink");if(l) l.onclick=()=>{isSignup=!isSignup;updateLoginUI();};},10);
 }
 
+/* ================== FIXED EMAIL/PASSWORD LOGIN ================== */
 on("loginBtn","click",()=>{
-  const em=$("emailInput") ? $("emailInput").value.trim() : "";
-  const pw=$("passInput") ? $("passInput").value.trim() : "";
-  if(!em||!em.includes("@")){toast(t("validEmail"),"#ff6b6b");return}
-  if(pw.length<6){toast(t("pwShort"),"#ff6b6b");return}
-  const savedEmail=localStorage.getItem(K.EMAIL);
-  const savedPass=localStorage.getItem(K.PASS);
+  const em = $("emailInput") ? $("emailInput").value.trim() : "";
+  const pw = $("passInput") ? $("passInput").value.trim() : "";
+  
+  if(!em || !em.includes("@")){ toast(t("validEmail"),"#ff6b6b"); return; }
+  if(pw.length < 6){ toast(t("pwShort"),"#ff6b6b"); return; }
+  
+  const savedEmail = localStorage.getItem(K.EMAIL);
+  const savedPass = localStorage.getItem(K.PASS);
+  
   if(isSignup){
-    if(savedEmail){toast(t("emailReg"),"#ff6b6b");return}
-    localStorage.setItem(K.EMAIL,em);localStorage.setItem(K.PASS,pw);
-    currentEmail=em;toast(t("signupOk"));showDashboard();
-  }else{
-    if(em!==savedEmail||pw!==savedPass){toast(t("wrongCred"),"#ff6b6b");return}
-    currentEmail=em;toast(t("loginOk"));showDashboard();
+    // ===== SIGN UP =====
+    if(savedEmail && savedEmail.toLowerCase() === em.toLowerCase()){
+      // Same email पहले से registered
+      if(savedPass === pw){
+        // Same password → direct login
+        localStorage.setItem(K.SESSION, "1");
+        currentEmail = em;
+        toast(t("loginOk"));
+        showDashboard();
+      } else {
+        toast("यह email पहले से registered है। Password गलत है या Login करें।", "#ff6b6b");
+      }
+      return;
+    }
+    // नया signup
+    localStorage.setItem(K.EMAIL, em);
+    localStorage.setItem(K.PASS, pw);
+    localStorage.setItem(K.SESSION, "1");
+    currentEmail = em;
+    toast(t("signupOk"));
+    showDashboard();
+  } else {
+    // ===== LOGIN =====
+    if(!savedEmail || !savedPass){
+      toast("पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)", "#ff6b6b");
+      return;
+    }
+    if(em.toLowerCase() !== savedEmail.toLowerCase() || pw !== savedPass){
+      toast(t("wrongCred"), "#ff6b6b");
+      return;
+    }
+    localStorage.setItem(K.SESSION, "1");
+    currentEmail = em;
+    toast(t("loginOk"));
+    showDashboard();
   }
 });
 
+/* ================== GOOGLE LOGIN (Direct OAuth — No One Tap) ================== */
 let googleReady=false;
+
 function initGoogleSignIn(){
   if(!window.google || !window.google.accounts) return false;
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")) return false;
   try{
-    google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false,cancel_on_tap_outside:true,use_fedcm_for_prompt:true});
-    googleReady=true;return true;
-  }catch(e){return false;}
+    // सिर्फ basic init — One Tap बंद
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      use_fedcm_for_prompt: false
+    });
+    googleReady = true;
+    return true;
+  }catch(e){
+    console.error("Google init error:", e);
+    return false;
+  }
 }
+
 function handleGoogleCredential(response){
   try{
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const em = payload.email;const name = payload.name || "";
-    if(!em){toast(t("googleFail"),"#ff6b6b");return}
+    const em = payload.email;
+    const name = payload.name || "";
+    if(!em){ toast(t("googleFail"),"#ff6b6b"); return; }
     currentEmail = em;
-    localStorage.setItem(K.EMAIL, em);localStorage.setItem(K.PASS, "google_oauth");localStorage.setItem("igc_gname", name);
-    toast(t("googleLogin") + em);showDashboard();
+    localStorage.setItem(K.EMAIL, em);
+    localStorage.setItem(K.PASS, "google_oauth");
+    localStorage.setItem(K.SESSION, "1");
+    localStorage.setItem("igc_gname", name);
+    toast(t("googleLogin") + em);
+    showDashboard();
     sendToSheet("googleLogin",{email:em, wallet:user||"", googleLogin:true, name:name});
-  }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
+  }catch(e){ toast(t("googleRespErr"),"#ff6b6b"); }
 }
+
 on("googleBtn","click",()=>{
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
-  if(!googleReady){initGoogleSignIn();}
-  if(googleReady && window.google && google.accounts){
-    google.accounts.id.prompt((notification)=>{
-      if(notification.isNotDisplayed() || notification.isSkippedMoment()){
-        try{
-          const client = google.accounts.oauth2.initTokenClient({
-            client_id: GOOGLE_CLIENT_ID,scope: "openid email profile",
-            callback: (resp)=>{
-              if(resp && resp.access_token){
-                fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+resp.access_token}})
-                .then(r=>r.json()).then(info=>{
-                  currentEmail = info.email;
-                  localStorage.setItem(K.EMAIL, info.email);localStorage.setItem(K.PASS, "google_oauth");localStorage.setItem("igc_gname", info.name||"");
-                  toast(t("googleLogin") + info.email);showDashboard();
-                  sendToSheet("googleLogin",{email:info.email, wallet:user||"", googleLogin:true, name:info.name||""});
-                }).catch(()=>toast("Google userinfo error","#ff6b6b"));
-              }
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){
+    toast(t("googleClientFirst"),"#ff6b6b");
+    return;
+  }
+  
+  // Google script load नहीं हुई
+  if(!window.google || !window.google.accounts || !window.google.accounts.oauth2){
+    toast("⏳ Google load हो रहा है… 2 second बाद try कीजिए", "#ff6b6b");
+    initGoogleSignIn();
+    return;
+  }
+  
+  // Button disable करें
+  const gBtn = $("googleBtn");
+  if(gBtn) gBtn.disabled = true;
+  
+  try{
+    // Direct OAuth popup — यह mobile + desktop दोनों पर काम करता है
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: "openid email profile",
+      ux_mode: "popup",
+      callback: (resp)=>{
+        if(gBtn) gBtn.disabled = false;
+        
+        if(resp && resp.error){
+          if(resp.error === "access_denied"){
+            toast("Google login cancel किया", "#ff6b6b");
+          } else {
+            toast("Google error: " + resp.error, "#ff6b6b");
+          }
+          return;
+        }
+        
+        if(resp && resp.access_token){
+          fetch("https://www.googleapis.com/oauth2/v3/userinfo",{
+            headers: { Authorization: "Bearer " + resp.access_token }
+          })
+          .then(r => r.json())
+          .then(info => {
+            if(!info || !info.email){
+              toast("Google email नहीं मिला", "#ff6b6b");
+              return;
             }
-          });
-          client.requestAccessToken();
-        }catch(e){toast(t("googleFail"),"#ff6b6b");}
+            currentEmail = info.email;
+            localStorage.setItem(K.EMAIL, info.email);
+            localStorage.setItem(K.PASS, "google_oauth");
+            localStorage.setItem(K.SESSION, "1");
+            localStorage.setItem("igc_gname", info.name || "");
+            toast(t("googleLogin") + info.email);
+            showDashboard();
+            sendToSheet("googleLogin", {
+              email: info.email,
+              wallet: user || "",
+              googleLogin: true,
+              name: info.name || ""
+            });
+          })
+          .catch(() => toast("Google userinfo error", "#ff6b6b"));
+        }
+      },
+      error_callback: (err) => {
+        if(gBtn) gBtn.disabled = false;
+        console.error("OAuth error:", err);
+        if(err && err.type === "popup_closed"){
+          toast("Google popup बंद कर दिया", "#ff6b6b");
+        } else if(err && err.type === "popup_failed_to_open"){
+          toast("Popup block हुआ — browser settings check कीजिए", "#ff6b6b");
+        } else {
+          toast("Google login fail — फिर try कीजिए", "#ff6b6b");
+        }
       }
     });
-  } else {toast(t("googleScriptLoad"),"#ff6b6b");}
+    
+    // Direct login prompt खोलें
+    client.requestAccessToken({ prompt: "select_account" });
+    
+  }catch(e){
+    if(gBtn) gBtn.disabled = false;
+    console.error(e);
+    toast(t("googleFail"), "#ff6b6b");
+  }
 });
+
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
+/* ================== FIXED LOGOUT (Keep Credentials) ================== */
 on("logoutBtn","click",()=>{
-  localStorage.removeItem(K.EMAIL);localStorage.removeItem(K.PASS);localStorage.removeItem("igc_gname");
-  currentEmail=null;
+  // ⚠️ सिर्फ SESSION delete करें — EMAIL/PASS रहने दें!
+  localStorage.removeItem(K.SESSION);
+  localStorage.removeItem("igc_gname");
+  currentEmail = null;
+  user = null;
+  signer = null;
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
-  setDisplay("loginSection","block");setDisplay("dashboardSection","none");
-  updateLoginUI();toast(t("loggedOut"));
+  setDisplay("loginSection","block");
+  setDisplay("dashboardSection","none");
+  setText("connect", t("connect"));
+  updateLoginUI();
+  updateMiningUI();
+  updateClaimBtn();
+  syncBtn();
+  toast(t("loggedOut"));
 });
 
 function showDashboard(){
-  setDisplay("loginSection","none");setDisplay("dashboardSection","block");
+  setDisplay("loginSection","none");
+  setDisplay("dashboardSection","block");
   setText("userEmail", currentEmail || "user");
   setText("myRefCode", getMyCode());
-  loadUserData();updateClaimBtn();updateMiningUI();
+  loadUserData();
+  updateClaimBtn();
+  updateMiningUI();
 }
 
 function updateClaimBtn(){
@@ -864,14 +994,24 @@ async function requestGasFromServer() {
 }
 on("freeGasBtn","click",requestGasFromServer);
 
+/* ================== FIXED INIT REF UI (Session Check) ================== */
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
   if(refBy){setDisplay("refWelcome","block");setText("refWelcomeCode", refBy);}
   setText("myRefCode", getMyCode());
-  const savedEmail=localStorage.getItem(K.EMAIL);
-  if(savedEmail){currentEmail=savedEmail;showDashboard();}
-  else updateLoginUI();
+  
+  // ✅ सिर्फ SESSION check करें — credentials नहीं
+  const savedEmail = localStorage.getItem(K.EMAIL);
+  const sessionActive = localStorage.getItem(K.SESSION);
+  
+  if(sessionActive === "1" && savedEmail && savedEmail.length > 3){
+    currentEmail = savedEmail;
+    showDashboard();
+  } else {
+    updateLoginUI();
+  }
+  
   setTimeout(()=>{const pf=$("poolFill");if(pf) pf.style.width="15%";},300);
   updateMiningUI();
 }
@@ -1087,17 +1227,14 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
 (function(){
   "use strict";
   
-  // Home page पहचानें — इन pages पर button नहीं दिखेगा
   const path = (location.pathname || "").toLowerCase();
   const isHome = path.endsWith("index.html") 
                  || path.endsWith("/") 
                  || path === "" 
                  || path.endsWith("indian-global-coin/");
   
-  // अगर home page है तो button न लगाएँ
   if(isHome) return;
   
-  // ===== CSS inject करें (एक बार) =====
   if(!document.getElementById("igc-back-css")){
     const style = document.createElement("style");
     style.id = "igc-back-css";
@@ -1142,9 +1279,7 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
     document.head.appendChild(style);
   }
   
-  // ===== Button inject करें =====
   function injectBackBtn(){
-    // अगर पहले से लगा है तो दोबारा न लगाएँ
     if(document.querySelector(".back-home-wrap")) return;
     
     const wrap = document.createElement("div");
@@ -1156,12 +1291,9 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
       </a>
     `;
     
-    // जहाँ रखना है उसकी तलाश करें
     const script = document.querySelector('script[src*="script.js"]');
     const walletModal = document.getElementById("walletModal");
-    const wrapDiv = document.querySelector(".wrap");
     
-    // Priority: walletModal से पहले > script से पहले > body के अंत में
     if(walletModal && walletModal.parentNode){
       walletModal.parentNode.insertBefore(wrap, walletModal);
     } else if(script && script.parentNode){
@@ -1171,14 +1303,12 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
     }
   }
   
-  // DOM ready होने पर लगाएँ
   if(document.readyState === "loading"){
     document.addEventListener("DOMContentLoaded", injectBackBtn);
   } else {
     injectBackBtn();
   }
   
-  // Safeguard: 500ms बाद भी check करें (अगर DOM बदला हो)
   setTimeout(injectBackBtn, 500);
   setTimeout(injectBackBtn, 1500);
 })();
