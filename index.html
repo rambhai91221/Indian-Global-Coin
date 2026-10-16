@@ -15,7 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--ink:#0d1014;--panel:#161a20;--line:#272d36;--gold:#f0b90b;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97;--tg:#229ED9;--x:#000;--wa:#25D366}
+:root{--ink:#0d1014;--panel:#161a20;--line:#272d36;--gold:#f0b90b;--text:#eef0f2;--muted:#8b93a0;--bad:#ff6b6b;--ok:#3ddc97;--tg:#229ED9;--x:#000;--wa:#25D366;--blue:#3B99FC;--purple:#7a5cff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--text);font-family:Hind,system-ui,sans-serif;line-height:1.5;padding:0 0 40px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea,select{-webkit-user-select:text !important;-moz-user-select:text !important;-ms-user-select:text !important;user-select:text !important}
@@ -24,7 +24,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;position:sticky;top:0;z-index:30;background:rgba(13,16,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 header .brandrow{display:flex;align-items:center;gap:12px;min-width:0}
 .logo{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;background:var(--gold)}
-.brand{font-size:17px;font-weight:700;line-height:1.1}.brand small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:2px}
+.brand{font-size:16px;font-weight:700;line-height:1.1}.brand small{display:block;font-size:10.5px;font-weight:400;color:var(--muted);margin-top:2px}
 button{font:inherit;cursor:pointer;border:0;border-radius:10px}
 .gold{background:var(--gold);color:#111;font-weight:700;padding:10px 16px}
 .ghost{background:transparent;color:var(--text);border:1px solid var(--line);padding:8px 12px}
@@ -32,12 +32,14 @@ button{font:inherit;cursor:pointer;border:0;border-radius:10px}
 #langToggle{padding:8px 10px;font-size:13px;font-weight:700;background:var(--panel);border:1px solid var(--line);color:var(--gold);border-radius:8px;cursor:pointer;font-family:inherit}
 #langToggle:hover{border-color:var(--gold)}
 
-/* ============ NAVIGATION BAR ============ */
-.nav-bar{position:sticky;top:71px;z-index:20;background:rgba(13,16,20,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:10px 12px;-ms-overflow-style:none;scrollbar-width:none}
-.nav-bar::-webkit-scrollbar{display:none}
-.nav-btn{flex:none;padding:9px 14px;font-size:13px;font-weight:700;background:transparent;border:1px solid transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-.nav-btn:hover{color:var(--text);background:var(--panel)}
-.nav-btn.active{background:var(--gold);color:#111;border-color:var(--gold);box-shadow:0 4px 12px rgba(240,185,11,.25)}
+/* ============ TOP 3-COLOR NAV ============ */
+.top-nav{position:sticky;top:71px;z-index:20;background:rgba(13,16,20,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;gap:6px;padding:10px 12px}
+.top-nav .tn-btn{flex:1;padding:12px 8px;font-size:13.5px;font-weight:800;border-radius:10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;border:2px solid transparent;transition:all .18s;white-space:nowrap}
+.top-nav .tn-home{background:linear-gradient(135deg,#f0b90b,#c99a08);color:#111}
+.top-nav .tn-airdrop{background:linear-gradient(135deg,#3ddc97,#1ba86f);color:#08261a}
+.top-nav .tn-mining{background:linear-gradient(135deg,#3B99FC,#2563c7);color:#fff}
+.top-nav .tn-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.top-nav .tn-btn.active{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 
 /* ============ PAGES ============ */
 .page{display:none}
@@ -104,7 +106,7 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .social-btn.tg{background:var(--tg)}
 .social-btn.x{background:var(--x);border:1px solid var(--line)}
 .social-btn.wa{background:var(--wa);color:#0b1a10}
-.social-btn.doc{background:#7a5cff}
+.social-btn.doc{background:var(--purple)}
 .merchant-box{background:var(--ink);border:1px dashed var(--line);border-radius:12px;padding:14px;margin-top:10px}
 .merchant-box p{margin:6px 0;font-size:14px;color:#d6dbe1}
 .share-row{display:flex;gap:8px;flex-wrap:wrap}
@@ -120,10 +122,6 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .ref-copy-row button{flex:1;padding:11px;border-radius:10px;font-weight:700;font-size:14px;font-family:inherit;border:0;cursor:pointer}
 .ref-copy-row .b-copy{background:var(--gold);color:#111}
 .ref-copy-row .b-share{background:var(--tg);color:#fff}
-.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.ref-stat{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
-.ref-stat .k{font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
-.ref-stat .v{font-size:16px;font-weight:800;color:var(--gold);margin-top:3px}
 .welcome-ref{background:linear-gradient(135deg,rgba(61,220,151,.16),rgba(61,220,151,.03));border:1px solid rgba(61,220,151,.45);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:14px;color:#d6fce9}
 .welcome-ref b{color:var(--ok)}
 .claim-main-btn{width:100%;margin-top:12px;padding:14px;border-radius:10px;font-size:16px;font-weight:800;background:var(--gold);color:#111;border:0;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -137,7 +135,6 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .login-box .btn-google{width:100%;margin-top:8px;padding:12px;border-radius:10px;font-weight:700;font-size:14.5px;background:#fff;color:#111;border:0;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
 .login-box .btn-google:hover{background:#f1f1f1}
 .login-box .btn-google img{width:18px;height:18px;pointer-events:auto}
-.login-box .btn-google.loading{opacity:.7;cursor:wait}
 .login-box .switch{text-align:center;font-size:13px;color:var(--muted);margin-top:10px}
 .login-box .switch a{color:var(--gold);cursor:pointer;text-decoration:underline}
 .user-badge{display:flex;align-items:center;justify-content:space-between;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:13.5px}
@@ -151,21 +148,17 @@ iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:10px;b
 .toast.show{opacity:1}
 .sec-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(61,220,151,.18),rgba(61,220,151,.05));border:1px solid rgba(61,220,151,.5);color:var(--ok);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-top:8px;letter-spacing:.3px}
 .sec-badge::before{content:"🔒"}
-body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 @media(max-width:420px){.trust-grid{grid-template-columns:1fr}}
 .trust-item{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;overflow:hidden;transition:border-color .2s;cursor:pointer;text-decoration:none;color:inherit;display:block}
 .trust-item:hover{border-color:rgba(240,185,11,.5)}
 .trust-item::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--ok);opacity:.7}
-.trust-item.warn::before{background:var(--gold)}
-.trust-item.bad::before{background:var(--bad)}
 .trust-item .ti-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .trust-item .ti-ico{font-size:18px}
 .trust-item .ti-k{font-size:11px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;font-weight:700}
 .trust-item .ti-v{font-size:15px;font-weight:800;color:var(--text);word-break:break-word;line-height:1.3}
 .trust-item .ti-v.gold{color:var(--gold)}
 .trust-item .ti-v.ok{color:var(--ok)}
-.trust-item .ti-v.mono{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
 .trust-item .ti-sub{font-size:11px;color:var(--muted);margin-top:3px}
 .trust-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .tbadge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;letter-spacing:.3px}
@@ -178,55 +171,35 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 .trust-note b{color:var(--gold)}
 @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(61,220,151,.4)}50%{box-shadow:0 0 0 8px rgba(61,220,151,0)}}
 .trust-item.live::after{content:"";position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse-glow 2s infinite}
-.wallet-modal{position:fixed;inset:0;background:rgba(5,7,10,.85);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:flex-end;justify-content:center;padding:0}
-@media(min-width:520px){.wallet-modal{align-items:center;padding:20px}}
-.wallet-modal.show{display:flex;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-.wallet-sheet{background:var(--panel);border:1px solid var(--line);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:22px 20px 28px;animation:slideUp .3s ease}
-@media(min-width:520px){.wallet-sheet{border-radius:20px}}
-.wallet-sheet .wm-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
-.wallet-sheet .wm-title{font-size:19px;font-weight:800;color:var(--text);margin:0}
-.wallet-sheet .wm-sub{font-size:12.5px;color:var(--muted);margin:4px 0 16px;line-height:1.5}
-.wallet-sheet .wm-close{background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
-.wallet-sheet .wm-close:hover{color:var(--bad);border-color:var(--bad)}
-.wallet-list{display:flex;flex-direction:column;gap:8px}
-.wallet-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--ink);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:all .18s;text-decoration:none;color:var(--text);font-family:inherit;font-size:15px;font-weight:700;text-align:left;width:100%}
-.wallet-item:hover,.wallet-item:focus-visible{border-color:var(--gold);background:#1a2029;transform:translateX(2px);outline:none}
-.wallet-item .wico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;background:var(--panel2)}
-.wallet-item .wmeta{flex:1;min-width:0}
-.wallet-item .wname{font-size:15px;font-weight:800;color:var(--text);line-height:1.15}
-.wallet-item .wtag{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:500}
-.wallet-item .wchev{color:var(--muted);font-size:18px;flex:none}
-.wallet-item:hover .wchev{color:var(--gold)}
-.wallet-item.recommended{background:linear-gradient(135deg,rgba(240,185,11,.12),rgba(240,185,11,.02));border-color:rgba(240,185,11,.5)}
-.wallet-item.recommended::after{content:"✓ Recommended";position:absolute;top:-8px;right:12px;background:var(--gold);color:#111;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;letter-spacing:.4px}
-.wallet-modal.show .wallet-item.recommended{position:relative}
-.wm-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11.5px;font-weight:700;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.6px}
-.wm-divider::before,.wm-divider::after{content:"";flex:1;height:1px;background:var(--line)}
-.wm-note{background:var(--ink);border:1px dashed var(--line);border-radius:10px;padding:12px;margin-top:16px;font-size:12px;color:var(--muted);line-height:1.6}
-.wm-note b{color:var(--gold)}
-.wm-note a{color:var(--gold)}
-.nwmodal{position:fixed;inset:0;background:rgba(5,7,10,.9);backdrop-filter:blur(10px);z-index:2100;display:none;align-items:center;justify-content:center;padding:20px}
-.nwmodal.show{display:flex;animation:fadeIn .25s ease}
-.nwbox{background:var(--panel);border:1px solid var(--line);border-radius:18px;width:100%;max-width:440px;padding:24px 22px;animation:slideUp .3s ease;max-height:90vh;overflow-y:auto}
-.nwbox h3{margin:0 0 8px;font-size:19px;color:var(--gold);font-weight:800;display:flex;align-items:center;gap:10px}
-.nwbox .nwlead{font-size:14px;color:var(--text);margin:0 0 16px;line-height:1.6}
-.nwbox .nwlead b{color:var(--gold)}
-.nwbox .nw-close{position:absolute;top:14px;right:14px;background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
-.nwbox .nw-close:hover{color:var(--bad);border-color:var(--bad)}
-.nwbox-inner{position:relative}
-.nwlinks{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-.nwlinks a{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:var(--ink);border:1px solid var(--line);text-decoration:none;color:var(--text);font-weight:700;font-size:15px;transition:all .2s}
-.nwlinks a:hover{border-color:var(--gold);background:#1a2029;transform:translateY(-1px)}
-.nwlinks .nl-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
-.nwlinks .nl-txt{flex:1;min-width:0}
-.nwlinks .nl-name{font-weight:800;font-size:14.5px;line-height:1.15}
-.nwlinks .nl-sub{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:500}
-.nwlinks .nl-arrow{color:var(--muted);font-size:18px}
-.nwlinks a:hover .nl-arrow{color:var(--gold)}
-.nwtip{background:linear-gradient(135deg,rgba(61,220,151,.10),rgba(61,220,151,.02));border:1px solid rgba(61,220,151,.35);border-radius:10px;padding:12px 14px;margin-top:16px;font-size:12.5px;color:#d6fce9;line-height:1.6}
-.nwtip b{color:var(--ok)}
+
+/* ============ DROPDOWN MENU (in Home) ============ */
+.dropdown-group{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.dd-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;cursor:pointer;font-weight:800;font-size:15px;color:var(--text);background:var(--panel);transition:background .2s;user-select:none}
+.dd-header:hover{background:#1a2029}
+.dd-header .dd-title{display:flex;align-items:center;gap:10px}
+.dd-header .dd-title .dd-ico{font-size:20px;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:rgba(240,185,11,.12);color:var(--gold);flex:none}
+.dd-header .dd-arrow{color:var(--muted);font-size:14px;transition:transform .25s;flex:none}
+.dd-header.open .dd-arrow{transform:rotate(180deg);color:var(--gold)}
+.dd-content{display:none;padding:4px 12px 14px;background:rgba(0,0,0,.18)}
+.dd-content.open{display:block;animation:ddFade .2s ease}
+@keyframes ddFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.dd-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:10px;background:var(--ink);border:1px solid var(--line);margin:8px 0;cursor:pointer;text-decoration:none;color:var(--text);font-family:inherit;text-align:left;width:100%;transition:border-color .2s}
+.dd-item:hover{border-color:var(--gold)}
+.dd-item .di-l{display:flex;align-items:center;gap:10px;min-width:0}
+.dd-item .di-ico{font-size:18px;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(240,185,11,.1);flex:none}
+.dd-item .di-t{font-weight:700;font-size:14px;line-height:1.15}
+.dd-item .di-s{font-size:11.5px;color:var(--muted);margin-top:2px}
+.dd-item .di-arrow{color:var(--gold);font-size:16px;font-weight:800;flex:none}
+
+/* Quick links on home */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:400px){.quick-grid{grid-template-columns:1fr}}
+.quick-card{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--text);transition:all .2s;cursor:pointer;font-family:inherit;text-align:left}
+.quick-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.quick-card .qc-ico{font-size:26px;margin-bottom:6px}
+.quick-card .qc-t{font-weight:800;font-size:15px;color:var(--text);margin-bottom:2px}
+.quick-card .qc-s{font-size:12px;color:var(--muted);line-height:1.4}
+
 .mine-box{background:linear-gradient(135deg,rgba(240,185,11,.14),rgba(240,185,11,.02));border:1px solid rgba(240,185,11,.4);border-radius:12px;padding:14px;margin-bottom:12px}
 .mine-stats{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .mine-k{font-size:13px;color:var(--muted)}
@@ -244,14 +217,8 @@ body.sec-blur section:not(.sec-allow){filter:blur(14px);pointer-events:none}
 .mine-progress .mp-fill{height:100%;background:linear-gradient(90deg,var(--ok),#5ee8a8);transition:width .6s;width:0%}
 .mine-progress .mp-foot{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
 
-/* Quick links on home */
-.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:400px){.quick-grid{grid-template-columns:1fr}}
-.quick-card{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--text);transition:all .2s;cursor:pointer;font-family:inherit;text-align:left}
-.quick-card:hover{border-color:var(--gold);transform:translateY(-2px)}
-.quick-card .qc-ico{font-size:26px;margin-bottom:6px}
-.quick-card .qc-t{font-weight:800;font-size:15px;color:var(--text);margin-bottom:2px}
-.quick-card .qc-s{font-size:12px;color:var(--muted);line-height:1.4}
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--ink);border:1px solid var(--line);color:var(--gold);font-weight:700;font-size:13px;border-radius:10px;cursor:pointer;font-family:inherit;margin-bottom:14px}
+.back-btn:hover{border-color:var(--gold)}
 
 footer{text-align:center;color:var(--muted);font-size:12.5px;padding:22px 16px 0;border-top:1px solid var(--line);margin-top:26px}
 footer .flinks{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
@@ -272,16 +239,11 @@ footer .flinks a{color:var(--gold)}
   </div>
 </header>
 
-<!-- ============ NAVIGATION BAR ============ -->
-<nav class="nav-bar" id="navBar">
-  <button class="nav-btn active" data-page="home">🏠 <span data-i18n="navHome">होम</span></button>
-  <button class="nav-btn" data-page="airdrop">🎁 <span data-i18n="navAirdrop">एयरड्रॉप</span></button>
-  <button class="nav-btn" data-page="mining">⛏️ <span data-i18n="navMining">माइनिंग</span></button>
-  <button class="nav-btn" data-page="trade">💱 <span data-i18n="navTrade">ट्रेड</span></button>
-  <button class="nav-btn" data-page="security">🛡️ <span data-i18n="navSecurity">सुरक्षा</span></button>
-  <button class="nav-btn" data-page="merchant">🏪 <span data-i18n="navMerchant">मर्चेंट</span></button>
-  <button class="nav-btn" data-page="community">💬 <span data-i18n="navCommunity">कम्युनिटी</span></button>
-  <button class="nav-btn" data-page="whitepaper">📄 <span data-i18n="navWhitepaper">व्हाइटपेपर</span></button>
+<!-- ============ TOP 3-COLOR NAV ============ -->
+<nav class="top-nav">
+  <button class="tn-btn tn-home active" data-page="home">🏠 <span data-i18n="navHome">होम</span></button>
+  <button class="tn-btn tn-airdrop" data-page="airdrop">🎁 <span data-i18n="navAirdrop">एयरड्रॉप</span></button>
+  <button class="tn-btn tn-mining" data-page="mining">⛏️ <span data-i18n="navMining">माइनिंग</span></button>
 </nav>
 
 <div class="wrap">
@@ -314,18 +276,93 @@ footer .flinks a{color:var(--gold)}
         <div class="qc-t" data-i18n="quickMining">Daily Mining</div>
         <div class="qc-s" data-i18n="quickMiningSub">रोज़ 100 IGC कमाइए</div>
       </button>
-      <button class="quick-card" onclick="showPage('trade')">
-        <div class="qc-ico">💱</div>
-        <div class="qc-t" data-i18n="quickTrade">Trade IGC</div>
-        <div class="qc-s" data-i18n="quickTradeSub">BNB / USDT से खरीदें या बेचें</div>
-      </button>
-      <button class="quick-card" onclick="showPage('security')">
-        <div class="qc-ico">🛡️</div>
-        <div class="qc-t" data-i18n="quickSecurity">Security</div>
-        <div class="qc-s" data-i18n="quickSecuritySub">Live blockchain data &amp; proof</div>
-      </button>
     </div>
   </section>
+
+  <!-- DROPDOWN MENUS -->
+  <h2 style="margin:8px 0 10px 4px;font-size:15px;color:var(--gold)" data-i18n="moreTitle">📂 और भी बहुत कुछ — क्लिक करके खोलें</h2>
+
+  <!-- DROPDOWN: TRADE -->
+  <div class="dropdown-group">
+    <div class="dd-header" onclick="toggleDD(this)">
+      <div class="dd-title"><div class="dd-ico">💱</div><span data-i18n="ddTradeTitle">Trade / खरीद-बिक्री</span></div>
+      <span class="dd-arrow">▼</span>
+    </div>
+    <div class="dd-content">
+      <button class="dd-item" onclick="showPage('trade')">
+        <div class="di-l"><div class="di-ico">🟡</div><div><div class="di-t" data-i18n="ddBnb">BNB से खरीदें / बेचें</div><div class="di-s" data-i18n="ddBnbSub">PancakeSwap पर सीधा ट्रेड</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+      <button class="dd-item" onclick="showPage('trade-usdt')">
+        <div class="di-l"><div class="di-ico">💵</div><div><div class="di-t" data-i18n="ddUsdt">USDT से खरीदें</div><div class="di-s" data-i18n="ddUsdtSub">USDT (BEP-20) से सीधे IGC</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+      <button class="dd-item" onclick="showPage('trade-dex')">
+        <div class="di-l"><div class="di-ico">🥞</div><div><div class="di-t" data-i18n="ddDex">अन्य DEX से खरीदें</div><div class="di-s" data-i18n="ddDexSub">PancakeSwap / PooCoin</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+      <button class="dd-item" onclick="showPage('trade-ex')">
+        <div class="di-l"><div class="di-ico">🔄</div><div><div class="di-t" data-i18n="ddExchange">अन्य Exchange / Card से</div><div class="di-s" data-i18n="ddExchangeSub">Binance, CoinDCX, WazirX, Transak</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- DROPDOWN: SECURITY -->
+  <div class="dropdown-group">
+    <div class="dd-header" onclick="toggleDD(this)">
+      <div class="dd-title"><div class="dd-ico">🛡️</div><span data-i18n="ddSecurityTitle">Security &amp; Transparency</span></div>
+      <span class="dd-arrow">▼</span>
+    </div>
+    <div class="dd-content">
+      <button class="dd-item" onclick="showPage('security')">
+        <div class="di-l"><div class="di-ico">📊</div><div><div class="di-t" data-i18n="ddSecurity">Live Blockchain Data</div><div class="di-s" data-i18n="ddSecuritySub">Supply · Burned · Holders · Liquidity</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- DROPDOWN: MERCHANT -->
+  <div class="dropdown-group">
+    <div class="dd-header" onclick="toggleDD(this)">
+      <div class="dd-title"><div class="dd-ico">🏪</div><span data-i18n="ddMerchantTitle">Merchant Program</span></div>
+      <span class="dd-arrow">▼</span>
+    </div>
+    <div class="dd-content">
+      <button class="dd-item" onclick="showPage('merchant')">
+        <div class="di-l"><div class="di-ico">🏪</div><div><div class="di-t" data-i18n="ddMerchant">दुकानदारों के लिए</div><div class="di-s" data-i18n="ddMerchantSub">0% setup fee · IGC QR · Instant payment</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- DROPDOWN: COMMUNITY -->
+  <div class="dropdown-group">
+    <div class="dd-header" onclick="toggleDD(this)">
+      <div class="dd-title"><div class="dd-ico">💬</div><span data-i18n="ddCommunityTitle">Community &amp; Share</span></div>
+      <span class="dd-arrow">▼</span>
+    </div>
+    <div class="dd-content">
+      <button class="dd-item" onclick="showPage('community')">
+        <div class="di-l"><div class="di-ico">💬</div><div><div class="di-t" data-i18n="ddCommunity">Community से जुड़िए</div><div class="di-s" data-i18n="ddCommunitySub">Telegram · X · WhatsApp · Share</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- DROPDOWN: WHITEPAPER -->
+  <div class="dropdown-group">
+    <div class="dd-header" onclick="toggleDD(this)">
+      <div class="dd-title"><div class="dd-ico">📄</div><span data-i18n="ddWhitepaperTitle">Whitepaper &amp; Docs</span></div>
+      <span class="dd-arrow">▼</span>
+    </div>
+    <div class="dd-content">
+      <button class="dd-item" onclick="showPage('whitepaper')">
+        <div class="di-l"><div class="di-ico">📄</div><div><div class="di-t" data-i18n="ddWhitepaper">व्हाइटपेपर पढ़ें</div><div class="di-s" data-i18n="ddWhitepaperSub">Full details · PDF download</div></div></div>
+        <div class="di-arrow">→</div>
+      </button>
+    </div>
+  </div>
 
   <!-- Live Chart Preview -->
   <section>
@@ -349,6 +386,7 @@ footer .flinks a{color:var(--gold)}
 
 <!-- ==================== AIRDROP PAGE ==================== -->
 <div class="page" id="page-airdrop">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <div class="badge" data-i18n="badgeAirdrop">🎁 FREE AIRDROP LIVE</div>
   <div class="airdrop-head">
     <div class="gift">🎁</div>
@@ -428,6 +466,7 @@ footer .flinks a{color:var(--gold)}
 
 <!-- ==================== MINING PAGE ==================== -->
 <div class="page" id="page-mining">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <div class="badge" data-i18n="badgeMining">⛏️ DAILY MINING LIVE</div>
   <div class="airdrop-head">
     <div class="gift">⛏️</div>
@@ -493,8 +532,9 @@ footer .flinks a{color:var(--gold)}
   <p class="muted" style="margin-top:12px;font-size:12px" data-i18n="miningNote">⚠️ Note: Mining से कमाए IGC wallet में 30 दिन के अंदर भेजे जाएँगे।</p>
 </div>
 
-<!-- ==================== TRADE PAGE ==================== -->
+<!-- ==================== TRADE (BNB) PAGE ==================== -->
 <div class="page" id="page-trade">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="buySellTitle">IGC खरीदें / बेचें</h2>
   <div class="tabs"><button id="tBuy" class="on" data-i18n="buy">खरीदें</button><button id="tSell" data-i18n="sell">बेचें</button></div>
   <label id="inLabel" for="amt" data-i18n="bnbAmount">BNB की मात्रा</label>
@@ -513,7 +553,9 @@ footer .flinks a{color:var(--gold)}
   </div>
 </div>
 
+<!-- ==================== TRADE (USDT) PAGE ==================== -->
 <div class="page" id="page-trade-usdt">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="usdtTitle">💵 USDT से IGC खरीदें</h2>
   <p class="muted" style="margin:0" data-i18n="usdtDesc">USDT से सीधे IGC खरीदिए। एक बार Approve कीजिए, फिर हर बार सीधे खरीद सकते हैं।</p>
   <label for="uAmt" data-i18n="usdtAmount">USDT की मात्रा</label>
@@ -548,7 +590,9 @@ footer .flinks a{color:var(--gold)}
   </div>
 </div>
 
+<!-- ==================== TRADE (DEX) PAGE ==================== -->
 <div class="page" id="page-trade-dex">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="dexTitle">अन्य जगह से खरीदें (DEX)</h2>
   <div class="dex-grid">
     <a class="dex-btn" id="pcsBnb" target="_blank" rel="noopener"><div class="l"><div class="ico">🥞</div><div><div class="t" data-i18n="pancakeTradeBNB">PancakeSwap — BNB से ट्रेडिंग करें</div><div class="s" data-i18n="pancakeTradeBNBSub">BNB/IGC खरीदें या बेचें</div></div></div><div class="arrow">→</div></a>
@@ -557,7 +601,9 @@ footer .flinks a{color:var(--gold)}
   </div>
 </div>
 
+<!-- ==================== TRADE (EXCHANGE) PAGE ==================== -->
 <div class="page" id="page-trade-ex">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="otherExTitle">🔄 अन्य Exchange / Card से खरीदें</h2>
   <p class="muted" style="margin:0 0 12px;font-size:13px" data-i18n="otherExSub">क्या आपके पास पहले से Bitcoin, USDT, ETH या INR किसी exchange पर है? नीचे से अपना तरीका चुनिए और IGC खरीदिए।</p>
 
@@ -592,6 +638,7 @@ footer .flinks a{color:var(--gold)}
 
 <!-- ==================== SECURITY PAGE ==================== -->
 <div class="page" id="page-security">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="securityTitle">🛡️ Security & Transparency</h2>
   <p class="muted" style="margin:0 0 6px;font-size:13px" data-i18n="securitySub">IGC के बारे में live blockchain data — BscScan से सीधे। कोई भी verify कर सकता है।</p>
 
@@ -648,6 +695,7 @@ footer .flinks a{color:var(--gold)}
 
 <!-- ==================== MERCHANT PAGE ==================== -->
 <div class="page" id="page-merchant">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="merchantTitle">🏪 दुकानदारों के लिए — Merchant Program</h2>
   <div class="merchant-box">
     <p>✅ <b data-i18n="merchant1">0% setup fee</b></p>
@@ -660,6 +708,7 @@ footer .flinks a{color:var(--gold)}
 
 <!-- ==================== COMMUNITY PAGE ==================== -->
 <div class="page" id="page-community">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="communityTitle">💬 हमारी Community से जुड़िए</h2>
   <div class="social-grid">
     <a class="social-btn tg" id="tgBtn" href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener"><div class="sico">✈️</div><div data-i18n="telegramGroup">Telegram Group</div></a>
@@ -679,6 +728,7 @@ footer .flinks a{color:var(--gold)}
 
 <!-- ==================== WHITEPAPER PAGE ==================== -->
 <div class="page" id="page-whitepaper">
+  <button class="back-btn" onclick="showPage('home')">← <span data-i18n="backHome">होम</span></button>
   <h2 data-i18n="whitepaperTitle">व्हाइटपेपर</h2>
   <p class="muted" style="margin:0 0 12px">IGC की पूरी जानकारी — Tokenomics, Roadmap, Security, Airdrop, Mining और Legal Notice के साथ।</p>
   <div class="doc-actions">
@@ -804,28 +854,44 @@ footer .flinks a{color:var(--gold)}
 </div>
 
 <script>
-/* ================== PAGE NAVIGATION ================== */
+/* ================== PAGE NAVIGATION + DROPDOWN ================== */
 function showPage(pageId){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   const target = document.getElementById("page-"+pageId);
   if(target) target.classList.add("active");
-  document.querySelectorAll(".nav-btn").forEach(b=>{
+  // Only highlight top-nav for home/airdrop/mining
+  document.querySelectorAll(".top-nav .tn-btn").forEach(b=>{
     b.classList.toggle("active", b.getAttribute("data-page")===pageId);
   });
   window.scrollTo({top:0,behavior:"smooth"});
-  // Save last page in localStorage
   try{ localStorage.setItem("igc_last_page", pageId); }catch(e){}
-  // Refresh balances/UI when specific pages open
   try{
-    if(pageId==="trade"){ refreshBal(); uRefresh(); }
+    if(pageId==="trade"){ refreshBal(); }
+    if(pageId==="trade-usdt"){ uRefresh(); }
     if(pageId==="security"){ loadTrustData(); }
     if(pageId==="mining"){ updateMiningUI(); }
     if(pageId==="airdrop"){ updateClaimBtn(); }
   }catch(e){}
 }
-document.querySelectorAll(".nav-btn").forEach(btn=>{
+document.querySelectorAll(".top-nav .tn-btn").forEach(btn=>{
   btn.addEventListener("click", ()=>showPage(btn.getAttribute("data-page")));
 });
+
+function toggleDD(headerEl){
+  const content = headerEl.nextElementSibling;
+  const isOpen = headerEl.classList.contains("open");
+  // Close all other dropdowns in the same parent
+  document.querySelectorAll(".dd-header.open").forEach(h=>{
+    if(h!==headerEl){ h.classList.remove("open"); h.nextElementSibling.classList.remove("open"); }
+  });
+  if(isOpen){
+    headerEl.classList.remove("open");
+    content.classList.remove("open");
+  } else {
+    headerEl.classList.add("open");
+    content.classList.add("open");
+  }
+}
 
 /* ================== CONFIG ================== */
 const IGC="0xd20068fa2d06406f20752ec8a401bf0cc3a37e15";
@@ -863,19 +929,27 @@ const MINE_KEY = "igc_last_mine";
 const MINE_TOTAL_KEY = "igc_total_mined";
 let cooldownInterval = null;
 
-/* ================== 🌐 TRANSLATIONS ================== */
+/* ================== TRANSLATIONS ================== */
 const TRANSLATIONS = {
   hi: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"वॉलेट जोड़ें",
-    navHome:"होम", navAirdrop:"एयरड्रॉप", navMining:"माइनिंग", navTrade:"ट्रेड", navSecurity:"सुरक्षा", navMerchant:"मर्चेंट", navCommunity:"कम्युनिटी", navWhitepaper:"व्हाइटपेपर",
+    navHome:"होम", navAirdrop:"एयरड्रॉप", navMining:"माइनिंग",
+    backHome:"होम",
+    moreTitle:"📂 और भी बहुत कुछ — क्लिक करके खोलें",
+    ddTradeTitle:"Trade / खरीद-बिक्री", ddBnb:"BNB से खरीदें / बेचें", ddBnbSub:"PancakeSwap पर सीधा ट्रेड",
+    ddUsdt:"USDT से खरीदें", ddUsdtSub:"USDT (BEP-20) से सीधे IGC",
+    ddDex:"अन्य DEX से खरीदें", ddDexSub:"PancakeSwap / PooCoin",
+    ddExchange:"अन्य Exchange / Card से", ddExchangeSub:"Binance, CoinDCX, WazirX, Transak",
+    ddSecurityTitle:"Security & Transparency", ddSecurity:"Live Blockchain Data", ddSecuritySub:"Supply · Burned · Holders · Liquidity",
+    ddMerchantTitle:"Merchant Program", ddMerchant:"दुकानदारों के लिए", ddMerchantSub:"0% setup fee · IGC QR · Instant payment",
+    ddCommunityTitle:"Community & Share", ddCommunity:"Community से जुड़िए", ddCommunitySub:"Telegram · X · WhatsApp · Share",
+    ddWhitepaperTitle:"Whitepaper & Docs", ddWhitepaper:"व्हाइटपेपर पढ़ें", ddWhitepaperSub:"Full details · PDF download",
     quickTitle:"⚡ तेज़ लिंक — कहाँ जाना है?", quickAirdrop:"Free Airdrop", quickAirdropSub:"20,000 IGC मुफ़्त — पहले 5,000 को",
     quickMining:"Daily Mining", quickMiningSub:"रोज़ 100 IGC कमाइए",
-    quickTrade:"Trade IGC", quickTradeSub:"BNB / USDT से खरीदें या बेचें",
-    quickSecurity:"Security", quickSecuritySub:"Live blockchain data & proof",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
-    switchLogin:"अकाउंट है? Login कीजिए", switchSignup:"नया user? Sign Up", bankEncryption:"Bank-Level Encryption",
+    switchLogin:"अकाउंट है? Login कीजिए", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
     stepsTitle:"IGC Airdrop में हिस्सा लेने के 3 आसान steps:",
     step1:"Login कीजिए (ऊपर Email/Google से)", step2a:"वॉलेट जोड़िए (ऊपर", step2b:"बटन)",
@@ -946,7 +1020,7 @@ const TRANSLATIONS = {
     gasError:"Gas (BNB) कम है। पहले थोड़ा BNB खरीद लीजिए या ऊपर 'Free Gas' बटन दबाइए।",
     gasSuccess:"✅ गैस मिल गई! अब IGC खरीदें।", gasServerFail:"सर्वर से कनेक्ट नहीं हो पा रहा या आपने रद्द कर दिया",
     signing:"⏳ सिग्नेचर का इंतज़ार...", sendingGas:"⏳ गैस फीस भेजी जा रही है...", gasBtnText:"⛽ Free Gas माँगें (0.001 BNB) — USDT होल्डर्स के लिए",
-    walletConnected:"✅ Wallet जुड़ गया!", loginFirst:"पहले Login कीजिए", walletFirst:"पहले वॉलेट जोड़ें",
+    walletConnected:"✅ Wallet जुड़ गया!", needLogin:"पहले Login कीजिए", needWallet:"पहले वॉलेट जोड़ें",
     walletAlready:"✅ Wallet पहले से जुड़ा है: ", welcomeWallet:"वॉलेट ऐप चुनिए…", noLiquidity:"अभी liquidity नहीं मिली।",
     approve:"Approve कीजिए…", confirm:"वॉलेट में मंज़ूर कीजिए…", sellConfirm:"बिक्री मंज़ूर कीजिए…", waitingConfirm:"कन्फ़र्म होने का इंतज़ार…",
     done:"पूरा हुआ! ✔ ", notEnoughUSDT:"आपके पास इतना USDT नहीं है।", noLiquidityBuy:"अभी liquidity नहीं है, इसलिए खरीद नहीं हो सकती।",
@@ -966,24 +1040,30 @@ const TRANSLATIONS = {
     googleClientFirst:"पहले Google Client ID setup कीजिए", googleScriptLoad:"Google script load हो रहा है… फिर try कीजिए",
     loggedOut:"Logged out", rightClickOff:"🚫 Right-click disabled for security", devToolsOff:"🚫 DevTools disabled",
     viewSourceOff:"🚫 View source disabled", printOff:"🚫 Print disabled", copyNotAllowed:"🚫 कॉपी की अनुमति नहीं है",
-    needLogin:"पहले Login कीजिए", needWallet:"पहले वॉलेट जोड़ें", needBoth:"पहले Login + Wallet जोड़ें",
-    claimLockedText:"🔒 पहले Login + Wallet जोड़ें", claimReadyText:"🎁 20,000 IGC Claim कीजिए", claimLogin:"🔒 पहले Login कीजिए",
-    claimWallet:"🔗 पहले वॉलेट जोड़ें", welcomeRef:"🎉 आपको", welcomeRefMid:"ने refer किया है!",
+    claimLogin:"🔒 पहले Login कीजिए", claimWallet:"🔗 पहले वॉलेट जोड़ें", claimReadyText:"🎁 20,000 IGC Claim कीजिए",
     i18nReady:"भाषा बदल गई: हिंदी",
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
     bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
-    navHome:"Home", navAirdrop:"Airdrop", navMining:"Mining", navTrade:"Trade", navSecurity:"Security", navMerchant:"Merchant", navCommunity:"Community", navWhitepaper:"Whitepaper",
+    navHome:"Home", navAirdrop:"Airdrop", navMining:"Mining",
+    backHome:"Home",
+    moreTitle:"📂 More Options — Click to Expand",
+    ddTradeTitle:"Trade / Buy & Sell", ddBnb:"Buy / Sell with BNB", ddBnbSub:"Direct trade on PancakeSwap",
+    ddUsdt:"Buy with USDT", ddUsdtSub:"Direct IGC with USDT (BEP-20)",
+    ddDex:"Buy from Other DEX", ddDexSub:"PancakeSwap / PooCoin",
+    ddExchange:"Other Exchange / Card", ddExchangeSub:"Binance, CoinDCX, WazirX, Transak",
+    ddSecurityTitle:"Security & Transparency", ddSecurity:"Live Blockchain Data", ddSecuritySub:"Supply · Burned · Holders · Liquidity",
+    ddMerchantTitle:"Merchant Program", ddMerchant:"For Shopkeepers", ddMerchantSub:"0% setup fee · IGC QR · Instant payment",
+    ddCommunityTitle:"Community & Share", ddCommunity:"Join Community", ddCommunitySub:"Telegram · X · WhatsApp · Share",
+    ddWhitepaperTitle:"Whitepaper & Docs", ddWhitepaper:"Read Whitepaper", ddWhitepaperSub:"Full details · PDF download",
     quickTitle:"⚡ Quick Links — Where to go?", quickAirdrop:"Free Airdrop", quickAirdropSub:"20,000 IGC free — first 5,000 only",
     quickMining:"Daily Mining", quickMiningSub:"Earn 100 IGC every day",
-    quickTrade:"Trade IGC", quickTradeSub:"Buy or Sell with BNB / USDT",
-    quickSecurity:"Security", quickSecuritySub:"Live blockchain data & proof",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
-    switchLogin:"Have an account? Login", switchSignup:"New user? Sign Up", bankEncryption:"Bank-Level Encryption",
+    switchLogin:"Have an account? Login", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
     stepsTitle:"3 easy steps to join IGC Airdrop:",
     step1:"Login (with Email/Google above)", step2a:"Add Wallet (click", step2b:"button above)",
@@ -1054,7 +1134,7 @@ const TRANSLATIONS = {
     gasError:"Gas (BNB) is low. Buy some BNB first or tap 'Free Gas' button above.",
     gasSuccess:"✅ Gas received! Now buy IGC.", gasServerFail:"Cannot connect to server or you cancelled",
     signing:"⏳ Waiting for signature...", sendingGas:"⏳ Sending gas fee...", gasBtnText:"⛽ Get Free Gas (0.001 BNB) — For USDT Holders",
-    walletConnected:"✅ Wallet connected!", loginFirst:"Please Login first", walletFirst:"Please connect Wallet first",
+    walletConnected:"✅ Wallet connected!", needLogin:"Please Login first", needWallet:"Please connect Wallet first",
     walletAlready:"✅ Wallet already connected: ", welcomeWallet:"Choose wallet app…", noLiquidity:"No liquidity found yet.",
     approve:"Approve…", confirm:"Confirm in wallet…", sellConfirm:"Confirm sell…", waitingConfirm:"Waiting for confirmation…",
     done:"Done! ✔ ", notEnoughUSDT:"You don't have enough USDT.", noLiquidityBuy:"No liquidity available, cannot buy now.",
@@ -1074,9 +1154,7 @@ const TRANSLATIONS = {
     googleClientFirst:"Setup Google Client ID first", googleScriptLoad:"Google script is loading… try again",
     loggedOut:"Logged out", rightClickOff:"🚫 Right-click disabled for security", devToolsOff:"🚫 DevTools disabled",
     viewSourceOff:"🚫 View source disabled", printOff:"🚫 Print disabled", copyNotAllowed:"🚫 Copy not allowed",
-    needLogin:"Please Login first", needWallet:"Please connect Wallet first", needBoth:"Login + Add Wallet first",
-    claimLockedText:"🔒 Login + Wallet first", claimReadyText:"🎁 Claim 20,000 IGC", claimLogin:"🔒 Login first",
-    claimWallet:"🔗 Connect Wallet first", welcomeRef:"🎉 You were referred by", welcomeRefMid:"!",
+    claimLogin:"🔒 Login first", claimWallet:"🔗 Connect Wallet first", claimReadyText:"🎁 Claim 20,000 IGC",
     i18nReady:"Language changed to English",
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
     bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts."
@@ -1162,8 +1240,6 @@ noWalletModal.addEventListener("click", (e)=>{ if(e.target === noWalletModal) cl
   const mmFoot = $("mm");
   if(mmFoot){mmFoot.href = "https://metamask.app.link/dapp/" + cleanHost;mmFoot.target = "_blank"; mmFoot.rel = "noopener";}
 })();
-
-function isMobile(){return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
 
 document.querySelectorAll(".wallet-item").forEach(el => {
   el.addEventListener("click", async (e) => {
@@ -1601,12 +1677,6 @@ $("tItemBurned").href="https://bscscan.com/token/"+checksum+"?a="+DEAD;
 $("tItemHolders").href="https://bscscan.com/token/"+checksum+"#balances";
 $("tItemLiquidity").href="https://dexscreener.com/bsc/"+checksum;
 
-const fmtShort=(n)=>{
-  if(n>=1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,"")+" B";
-  if(n>=1e6) return (n/1e6).toFixed(2).replace(/\.?0+$/,"")+" M";
-  if(n>=1e3) return n.toLocaleString("en-IN",{maximumFractionDigits:2});
-  return n.toLocaleString("en-IN",{maximumFractionDigits:2});
-};
 const fmtFull=(n)=>{return Math.round(n).toLocaleString("en-IN");};
 
 async function loadTrustData(){
@@ -1652,8 +1722,8 @@ function say(t2,c){const m=$("msg");m.textContent=t2;m.className="msg "+(c||"")}
 const short=a=>a.slice(0,6)+"…"+a.slice(-4);
 const fmt=(v)=>{const n=Number(ethers.formatUnits(v,18));return n>=1000?n.toLocaleString("en-IN",{maximumFractionDigits:2}):n.toPrecision(6).replace(/\.?0+$/,"")};
 function setMode(m){mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");$("inLabel").textContent=m==="buy"?t("bnbAmount"):(currentLang==="hi"?"IGC की मात्रा":"IGC Amount");$("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
-function syncBtn(){$("act").textContent=user?(mode==="buy"?t("buy"):t("sell")):t("connect")}
-async function refreshBal(){if(!user){$("bal").textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);$("bal").textContent=t("tokenBalance")+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
+function syncBtn(){const btn=$("act");if(btn) btn.textContent=user?(mode==="buy"?t("buy"):t("sell")):t("connect")}
+async function refreshBal(){if(!user){const b=$("bal");if(b)b.textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);$("bal").textContent=t("tokenBalance")+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
 
 async function connect(){
   if(!window.ethereum){openWalletModal();say(t("welcomeWallet"),"bad");return false;}
@@ -1751,10 +1821,7 @@ if(window.ethereum){
   function detectDevTools(){
     const threshold = 170;const wDiff = window.outerWidth - window.innerWidth;const hDiff = window.outerHeight - window.innerHeight;
     const isOpen = wDiff > threshold || hDiff > threshold;
-    if (isOpen && !devtoolsWarned) {
-      devtoolsWarned = true;console.clear();
-      console.log('%c🛑 STOP!', 'color:#f0b90b;font-size:60px;font-weight:900;text-shadow:3px 3px 0 #000;');
-    }
+    if (isOpen && !devtoolsWarned) { devtoolsWarned = true;console.clear(); }
   }
   setInterval(detectDevTools, 1500);
   console.clear();
