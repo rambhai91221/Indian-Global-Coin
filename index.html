@@ -32,7 +32,7 @@
   </div>
 </header>
 
-<!-- साइडबार मेनू (ड्रॉपडाउन की तरह साइड में खुलेगा) -->
+<!-- साइडबार मेनू -->
 <div id="sidebar" class="sidebar">
   <div class="sidebar-header">
     <h3>Menu</h3>
@@ -52,8 +52,10 @@
 <!-- ====== MAIN CONTENT WRAPPER ====== -->
 <div class="wrap">
 
-  <!-- ====== HOME VIEW (Banner + Quick Buttons) ====== -->
+  <!-- ====== HOME VIEW (Banner + Login + Dashboard + Quick Buttons) ====== -->
   <div id="view-home" class="view-section active">
+    
+    <!-- Banner -->
     <div class="banner">
       <img src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w1024" alt="IGC Banner" class="banner-img">
       <div class="banner-text">
@@ -61,17 +63,53 @@
         <p>The Future of Decentralized Finance</p>
       </div>
     </div>
-    
-    <div class="quick-nav">
-      <button class="q-btn q-blue" onclick="navigateTo('view-home')">🏠 Home</button>
-      <button class="q-btn q-green" onclick="navigateTo('view-airdrop')">🎁 Airdrop</button>
-      <button class="q-btn q-gold" onclick="navigateTo('view-mining')">⛏️ Mining</button>
+
+    <!-- 🔐 LOGIN / DASHBOARD SECTION (Home Page पर) -->
+    <div id="loginSection" class="login-box">
+      <h3 id="loginTitle">🔐 Login / Signup</h3>
+      <input id="emailInput" type="email" data-i18n-ph="emailPh" placeholder="अपना Email डालिए">
+      <input id="passInput" type="password" data-i18n-ph="passPh" placeholder="Password (कम से कम 6 अक्षर)">
+      <button class="btn-full" id="loginBtn">Sign Up / Login</button>
+      <div style="text-align:center;color:var(--muted);font-size:12px;margin:8px 0" data-i18n="or">— या —</div>
+      <button class="btn-google" id="googleBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> <span data-i18n="continueGoogle">Continue with Google</span>
+      </button>
+      <div class="switch">
+        <span id="switchText">अकाउंट है? Login कीजिए</span>
+      </div>
+      <div style="text-align:center"><span class="sec-badge" data-i18n="bankEncryption">Bank-Level Encryption</span></div>
     </div>
 
-    <section class="info-card">
-      <h2>Welcome to IGC</h2>
-      <p>Indian Global Coin (IGC) BNB Smart Chain पर एक नया BEP-20 टोकन है। यहाँ आप Airdrop क्लेम कर सकते हैं, Mining कर सकते हैं और ट्रेडिंग कर सकते हैं।</p>
-      <button class="claim-main-btn" onclick="navigateTo('view-airdrop')">🎁 Claim Airdrop Now</button>
+    <div id="dashboardSection" style="display:none">
+      <div class="user-badge">
+        <div>👤 <span class="em" id="userEmail">user@email.com</span></div>
+        <div class="logout" id="logoutBtn" data-i18n="logout">Logout</div>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-item"><div class="k" data-i18n="myRefs">My Referrals</div><div class="v" id="dashRefs">0</div></div>
+        <div class="dash-item"><div class="k" data-i18n="bonusIGC">Bonus IGC</div><div class="v" id="dashBonus">0</div></div>
+        <div class="dash-item"><div class="k" data-i18n="claimedIGC">Claimed IGC</div><div class="v" id="dashClaimed">0</div></div>
+        <div class="dash-item"><div class="k" data-i18n="status">Status</div><div class="v" id="dashStatus">-</div></div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation (यहाँ से सीधे पेज खुलेंगे) -->
+    <h3 style="margin: 20px 0 10px; font-size: 16px; color: var(--muted);">Quick Actions</h3>
+    <div class="quick-nav">
+      <button class="q-btn q-green" onclick="navigateTo('view-airdrop')">🎁 Airdrop</button>
+      <button class="q-btn q-gold" onclick="navigateTo('view-mining')">⛏️ Mining</button>
+      <button class="q-btn q-blue" onclick="navigateTo('view-trade')">💱 BNB Trade</button>
+      <button class="q-btn" style="background:#229ED9;color:#fff" onclick="navigateTo('view-usdt')">💵 USDT Trade</button>
+    </div>
+
+    <!-- Help / Support Button -->
+    <section class="info-card" style="margin-top: 20px;">
+      <h2>❓ Need Help?</h2>
+      <p>अगर आपको किसी भी चीज़ में मदद चाहिए, तो हमारे Telegram ग्रुप में जुड़ें।</p>
+      <button class="social-btn tg" id="helpHomeBtn" style="margin-top: 10px;">
+        <div class="sico">💬</div>
+        <div data-i18n="helpTelegram">Telegram पर Help लें</div>
+      </button>
     </section>
   </div>
 
@@ -91,38 +129,10 @@
         🎉 <span data-i18n="refWelcome1">आपको</span> <b id="refWelcomeCode">friend</b> <span data-i18n="refWelcome2">ने refer किया है! नीचे claim कीजिए और</span> <b>20,000 IGC</b> <span data-i18n="refWelcome3">पाइए।</span>
       </div>
 
-      <div id="loginSection" class="login-box">
-        <h3 id="loginTitle">🔐 Login / Signup</h3>
-        <input id="emailInput" type="email" data-i18n-ph="emailPh" placeholder="अपना Email डालिए">
-        <input id="passInput" type="password" data-i18n-ph="passPh" placeholder="Password (कम से कम 6 अक्षर)">
-        <button class="btn-full" id="loginBtn">Sign Up / Login</button>
-        <div style="text-align:center;color:var(--muted);font-size:12px;margin:8px 0" data-i18n="or">— या —</div>
-        <button class="btn-google" id="googleBtn">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> <span data-i18n="continueGoogle">Continue with Google</span>
-        </button>
-        <div class="switch">
-          <span id="switchText">अकाउंट है? Login कीजिए</span>
-        </div>
-        <div style="text-align:center"><span class="sec-badge" data-i18n="bankEncryption">Bank-Level Encryption</span></div>
-      </div>
-
-      <div id="dashboardSection" style="display:none">
-        <div class="user-badge">
-          <div>👤 <span class="em" id="userEmail">user@email.com</span></div>
-          <div class="logout" id="logoutBtn" data-i18n="logout">Logout</div>
-        </div>
-        <div class="dash-grid">
-          <div class="dash-item"><div class="k" data-i18n="myRefs">My Referrals</div><div class="v" id="dashRefs">0</div></div>
-          <div class="dash-item"><div class="k" data-i18n="bonusIGC">Bonus IGC</div><div class="v" id="dashBonus">0</div></div>
-          <div class="dash-item"><div class="k" data-i18n="claimedIGC">Claimed IGC</div><div class="v" id="dashClaimed">0</div></div>
-          <div class="dash-item"><div class="k" data-i18n="status">Status</div><div class="v" id="dashStatus">-</div></div>
-        </div>
-      </div>
-
       <p class="muted" style="margin:12px 0 6px" data-i18n="stepsTitle">IGC Airdrop में हिस्सा लेने के 3 आसान steps:</p>
 
       <ol class="steps">
-        <li data-i18n="step1">Login कीजिए (ऊपर Email/Google से)</li>
+        <li data-i18n="step1">Login कीजिए (Home page पर)</li>
         <li><span data-i18n="step2a">वॉलेट जोड़िए (ऊपर</span> <b data-i18n="connect">वॉलेट जोड़ें</b> <span data-i18n="step2b">बटन)</span></li>
         <li><span data-i18n="step3a">अपना Referral Code दोस्तों को भेजिए — हर join पर</span> <b style="color:var(--gold)" data-i18n="step3b">5,000 IGC बोनस</b></li>
       </ol>
@@ -220,7 +230,6 @@
           <span data-i18n="now">अभी:</span> <b id="myMiningRate">100</b> IGC/day · <span data-i18n="refs">Referrals:</span> <b id="myRefCountMining">0</b>
         </div>
       </div>
-
       <p class="muted" style="margin-top:12px;font-size:12px" data-i18n="miningNote">⚠️ Note: Mining से कमाए IGC wallet में 30 दिन के अंदर भेजे जाएँगे।</p>
     </section>
   </div>
@@ -351,7 +360,8 @@
         <a class="social-btn tg" id="tgBtn" href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener"><div class="sico">✈️</div><div data-i18n="telegramGroup">Telegram Group</div></a>
         <a class="social-btn x" id="xBtn" href="https://x.com/Rambhai91221" target="_blank" rel="noopener"><div class="sico">𝕏</div><div>X (Twitter)</div></a>
         <a class="social-btn wa" id="waBtn" href="https://whatsapp.com/channel/" target="_blank" rel="noopener"><div class="sico">💬</div><div data-i18n="whatsappChannel">WhatsApp Channel</div></a>
-        <a class="social-btn doc" href="whitepaper.html" target="_blank" rel="noopener"><div class="sico">📄</div><div data-i18n="whitepaper">Whitepaper</div></a>
+        <!-- Help Button instead of Whitepaper -->
+        <button class="social-btn tg" id="helpCommunityBtn"><div class="sico">❓</div><div data-i18n="helpTelegram">Telegram पर Help लें</div></button>
       </div>
     </section>
 
@@ -478,4 +488,4 @@
 
 <script src="script.js"></script>
 </body>
-  </html>
+        </html>
