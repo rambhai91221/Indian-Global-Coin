@@ -3,69 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Indian Global Coin (IGC)</title>
+<title>Indian Global Coin (IGC) — Home</title>
 
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self'">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="robots" content="nosnippet, noarchive">
+<meta name="description" content="Indian Global Coin (IGC) — BNB Smart Chain पर BEP-20 टोकन। 20,000 IGC FREE Airdrop और Daily Mining।">
 
-<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div id="toast" class="toast"></div>
 
-<!-- ====== TOP NAVBAR & SIDEBAR ====== -->
-<header class="main-header">
-  <div class="brandrow" onclick="navigateTo('view-home')">
-    <img id="logo" class="logo" alt="IGC लोगो" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w256">
-    <div class="brand"><span data-i18n="brand">Indian Global Coin</span><small data-i18n="tagline">IGC · BNB Smart Chain</small></div>
-  </div>
-  <div class="header-actions">
-    <button id="langToggle" title="Change Language">🌐 <span id="langLabel">EN</span></button>
-    <button class="gold" id="connect" data-i18n="connect">वॉलेट जोड़ें</button>
-    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-  </div>
-</header>
+<!-- ================= TOP NAVIGATION ================= -->
+<nav class="topnav">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <img id="logo" alt="IGC" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w256">
+      <span>
+        <span data-i18n="brand">Indian Global Coin</span>
+        <small data-i18n="tagline">IGC · BNB Smart Chain (BEP-20)</small>
+      </span>
+    </a>
 
-<!-- साइडबार मेनू -->
-<div id="sidebar" class="sidebar">
-  <div class="sidebar-header">
-    <h3>Menu</h3>
-    <button onclick="toggleSidebar()">✕</button>
-  </div>
-  <a href="#" onclick="navigateTo('view-home')">🏠 Home</a>
-  <a href="#" onclick="navigateTo('view-airdrop')">🎁 Airdrop</a>
-  <a href="#" onclick="navigateTo('view-mining')">⛏️ Mining</a>
-  <a href="#" onclick="navigateTo('view-security')">🛡️ Security</a>
-  <a href="#" onclick="navigateTo('view-trade')">💱 BNB Trade</a>
-  <a href="#" onclick="navigateTo('view-usdt')">💵 USDT Trade</a>
-  <a href="#" onclick="navigateTo('view-community')">💬 Community</a>
-  <a href="whitepaper.html" target="_blank">📄 Whitepaper</a>
-</div>
-<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-<!-- ====== MAIN CONTENT WRAPPER ====== -->
-<div class="wrap">
-
-  <!-- ====== HOME VIEW ====== -->
-  <div id="view-home" class="view-section active">
-    
-    <!-- Banner -->
-    <div class="banner">
-      <img src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w1024" alt="IGC Banner" class="banner-img">
-      <div class="banner-text">
-        <h1>Indian Global Coin</h1>
-        <p>The Future of Decentralized Finance</p>
-      </div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="active" data-nav="home">होम</a>
+      <a href="airdrop.html" data-nav="airdrop">एयरड्रॉप</a>
+      <a href="mining.html" data-nav="mining">माइनिंग</a>
+      <a href="buy-sell.html" data-nav="buysell">खरीदें/बेचें</a>
+      <a href="security.html" data-nav="security">सुरक्षा</a>
+      <a href="community.html" data-nav="community">कम्युनिटी</a>
+      <a href="chart.html" data-nav="chart">चार्ट</a>
+      <a href="merchant.html" data-nav="merchant">मर्चेंट</a>
+      <a href="whitepaper.html" data-nav="whitepaper">व्हाइटपेपर</a>
     </div>
 
-    <!-- 🔐 LOGIN / DASHBOARD SECTION (Home Page पर) -->
-    <div id="loginSection" class="login-box">
+    <div class="nav-actions">
+      <button id="langToggle" title="Change Language">🌐 <span id="langLabel">EN</span></button>
+      <button class="gold" id="connect" data-i18n="connect">वॉलेट जोड़ें</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:16px">
+
+  <!-- ================= HERO BANNER ================= -->
+  <div class="hero-banner">
+    <div class="hero-inner">
+      <img class="hero-coin" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512" alt="IGC Coin">
+      <h1 class="hero-title" data-i18n="brand">Indian Global Coin</h1>
+      <p class="hero-sub" data-i18n="heroSub">🚀 BNB Smart Chain पर भरोसेमंद BEP-20 टोकन — भारत से दुनिया तक</p>
+      <div class="hero-badges">
+        <span>🎁 20,000 IGC FREE</span>
+        <span>⛏️ Daily Mining</span>
+        <span>🛡️ Contract Verified</span>
+        <span>🔒 No Mint Function</span>
+      </div>
+      <div class="hero-cta">
+        <a href="airdrop.html" class="cta-gold">🎁 Claim 20,000 IGC</a>
+        <a href="buy-sell.html" class="cta-ghost">💰 अभी खरीदें</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= QUICK NAV CARDS ================= -->
+  <section>
+    <h2>⚡ क्विक एक्शन — अपना काम चुनें</h2>
+    <div class="quick-grid">
+      <a href="airdrop.html" class="quick-card">
+        <div class="qc-ico">🎁</div>
+        <div class="qc-t">एयरड्रॉप</div>
+        <div class="qc-s">20,000 IGC FREE पाएँ</div>
+      </a>
+      <a href="mining.html" class="quick-card">
+        <div class="qc-ico">⛏️</div>
+        <div class="qc-t">डेली माइनिंग</div>
+        <div class="qc-s">रोज़ 100 IGC कमाएँ</div>
+      </a>
+      <a href="buy-sell.html" class="quick-card">
+        <div class="qc-ico">💱</div>
+        <div class="qc-t">खरीदें / बेचें</div>
+        <div class="qc-s">BNB या USDT से</div>
+      </a>
+      <a href="chart.html" class="quick-card">
+        <div class="qc-ico">📈</div>
+        <div class="qc-t">लाइव चार्ट</div>
+        <div class="qc-s">DexScreener पर देखें</div>
+      </a>
+      <a href="security.html" class="quick-card">
+        <div class="qc-ico">🛡️</div>
+        <div class="qc-t">सुरक्षा</div>
+        <div class="qc-s">On-chain verification</div>
+      </a>
+      <a href="community.html" class="quick-card">
+        <div class="qc-ico">💬</div>
+        <div class="qc-t">कम्युनिटी</div>
+        <div class="qc-s">Telegram · X · WhatsApp</div>
+      </a>
+      <a href="merchant.html" class="quick-card">
+        <div class="qc-ico">🏪</div>
+        <div class="qc-t">मर्चेंट</div>
+        <div class="qc-s">दुकानदारों के लिए</div>
+      </a>
+      <a href="whitepaper.html" class="quick-card">
+        <div class="qc-ico">📄</div>
+        <div class="qc-t">व्हाइटपेपर</div>
+        <div class="qc-s">पूरी जानकारी पढ़ें</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= LOGIN / SIGNUP SECTION ================= -->
+  <section id="loginSection-home">
+    <div class="badge" data-i18n="badgeAirdrop">🎁 FREE AIRDROP LIVE</div>
+
+    <div id="refWelcome" style="display:none" class="welcome-ref">
+      🎉 <span data-i18n="refWelcome1">आपको</span> <b id="refWelcomeCode">friend</b> <span data-i18n="refWelcome2">ने refer किया है! नीचे claim कीजिए और</span> <b>20,000 IGC</b> <span data-i18n="refWelcome3">पाइए।</span>
+    </div>
+
+    <div id="loginSection" class="login-box" style="margin-top:12px">
       <h3 id="loginTitle">🔐 Login / Signup</h3>
       <input id="emailInput" type="email" data-i18n-ph="emailPh" placeholder="अपना Email डालिए">
       <input id="passInput" type="password" data-i18n-ph="passPh" placeholder="Password (कम से कम 6 अक्षर)">
@@ -93,300 +156,104 @@
       </div>
     </div>
 
-    <!-- Quick Navigation (यहाँ से सीधे पेज खुलेंगे) -->
-    <h3 style="margin: 20px 0 10px; font-size: 16px; color: var(--muted);">Quick Actions</h3>
-    <div class="quick-nav">
-      <button class="q-btn q-green" onclick="navigateTo('view-airdrop')">🎁 Airdrop</button>
-      <button class="q-btn q-gold" onclick="navigateTo('view-mining')">⛏️ Mining</button>
-      <button class="q-btn q-blue" onclick="navigateTo('view-trade')">💱 BNB Trade</button>
-      <button class="q-btn" style="background:#229ED9;color:#fff" onclick="navigateTo('view-usdt')">💵 USDT Trade</button>
+    <p class="muted" style="margin:12px 0 6px" data-i18n="stepsTitle">IGC Airdrop में हिस्सा लेने के 3 आसान steps:</p>
+    <ol class="steps">
+      <li data-i18n="step1">Login कीजिए (ऊपर Email/Google से)</li>
+      <li><span data-i18n="step2a">वॉलेट जोड़िए (ऊपर</span> <b data-i18n="connect">वॉलेट जोड़ें</b> <span data-i18n="step2b">बटन)</span></li>
+      <li><span data-i18n="step3a">अपना Referral Code दोस्तों को भेजिए — हर join पर</span> <b style="color:var(--gold)" data-i18n="step3b">5,000 IGC बोनस</b></li>
+    </ol>
+
+    <!-- Referral Code Box -->
+    <div class="claim-box">
+      <h3 data-i18n="yourRefCode">🎟️ आपका Referral Code</h3>
+      <p class="muted" style="margin:4px 0 0;font-size:12.5px" data-i18n="refDesc">इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।</p>
+      <div class="ref-code-display" id="myRefCode" data-i18n="loginToSee">Login करके देखें</div>
+      <div class="ref-copy-row">
+        <button class="b-copy" id="copyRefBtn" data-i18n="copyCode">📋 Copy Code</button>
+        <button class="b-share" id="shareRefBtn" data-i18n="shareLink">📤 Share Link</button>
+      </div>
     </div>
 
-    <!-- Help / Support Button -->
-    <section class="info-card" style="margin-top: 20px;">
-      <h2>❓ Need Help?</h2>
-      <p>अगर आपको किसी भी चीज़ में मदद चाहिए, तो हमारे Telegram ग्रुप में जुड़ें।</p>
-      <button class="social-btn tg" id="helpHomeBtn" style="margin-top: 10px;">
-        <div class="sico">💬</div>
-        <div data-i18n="helpTelegram">Telegram पर Help लें</div>
-      </button>
-    </section>
-  </div>
+    <a href="airdrop.html" style="display:block;text-decoration:none;margin-top:14px">
+      <button class="claim-main-btn" style="pointer-events:none">🎁 Claim 20,000 IGC पेज पर जाएँ →</button>
+    </a>
+  </section>
 
-  <!-- ====== AIRDROP VIEW ====== -->
-  <div id="view-airdrop" class="view-section">
-    <section>
-      <div class="badge" data-i18n="badgeAirdrop">🎁 FREE AIRDROP LIVE</div>
-      <div class="airdrop-head">
-        <div class="gift">🎁</div>
-        <div class="txt">
-          <div class="t1"><span data-i18n="get">पाएँ</span> <span style="color:var(--gold)">20,000 IGC</span> <span data-i18n="free">मुफ़्त!</span></div>
-          <div class="t2" data-i18n="onlyFirst">सिर्फ पहले 5,000 लोगों के लिए</div>
-        </div>
-      </div>
+  <!-- ================= SHARE SECTION ================= -->
+  <section>
+    <h2 data-i18n="shareTitle">📢 दोस्तों के साथ शेयर कीजिए</h2>
+    <div class="share-row">
+      <a class="s-wa" id="shareWa" target="_blank" rel="noopener" data-i18n="whatsapp">💬 WhatsApp</a>
+      <a class="s-x" id="shareX" target="_blank" rel="noopener" data-i18n="twitter">𝕏 Twitter</a>
+      <a class="s-tg" id="shareTg" target="_blank" rel="noopener" data-i18n="telegram">✈️ Telegram</a>
+      <button class="s-copy" id="shareCopy" data-i18n="copyLink">🔗 Link कॉपी</button>
+    </div>
+  </section>
 
-      <div id="refWelcome" style="display:none" class="welcome-ref">
-        🎉 <span data-i18n="refWelcome1">आपको</span> <b id="refWelcomeCode">friend</b> <span data-i18n="refWelcome2">ने refer किया है! नीचे claim कीजिए और</span> <b>20,000 IGC</b> <span data-i18n="refWelcome3">पाइए।</span>
-      </div>
+  <!-- ================= TRUST / SECURITY SUMMARY ================= -->
+  <section>
+    <h2 data-i18n="securityTitle">🛡️ Security & Transparency</h2>
+    <p class="muted" style="margin:0 0 6px;font-size:13px" data-i18n="securitySub">IGC के बारे में live blockchain data — BscScan से सीधे। कोई भी verify कर सकता है।</p>
 
-      <p class="muted" style="margin:12px 0 6px" data-i18n="stepsTitle">IGC Airdrop में हिस्सा लेने के 3 आसान steps:</p>
-      <ol class="steps">
-        <li data-i18n="step1">Login कीजिए (Home page पर)</li>
-        <li><span data-i18n="step2a">वॉलेट जोड़िए (ऊपर</span> <b data-i18n="connect">वॉलेट जोड़ें</b> <span data-i18n="step2b">बटन)</span></li>
-        <li><span data-i18n="step3a">अपना Referral Code दोस्तों को भेजिए — हर join पर</span> <b style="color:var(--gold)" data-i18n="step3b">5,000 IGC बोनस</b></li>
-      </ol>
+    <div class="trust-grid">
+      <a class="trust-item live" id="tItemSupply" href="#" target="_blank" rel="noopener">
+        <div class="ti-top"><div class="ti-ico">💰</div><div class="ti-k" data-i18n="totalSupply">Total Supply</div></div>
+        <div class="ti-v gold" id="tiSupply">1,000,000,000 IGC</div>
+        <div class="ti-sub" data-i18n="fixedNoMint">Fixed · No Mint Function</div>
+      </a>
+      <a class="trust-item live" id="tItemBurned" href="#" target="_blank" rel="noopener">
+        <div class="ti-top"><div class="ti-ico">🔥</div><div class="ti-k" data-i18n="burned">Burned</div></div>
+        <div class="ti-v" id="tiBurned">0 IGC</div>
+        <div class="ti-sub" data-i18n="permanentlyRemoved">Permanently Removed</div>
+      </a>
+      <a class="trust-item live" id="tItemHolders" href="#" target="_blank" rel="noopener">
+        <div class="ti-top"><div class="ti-ico">👥</div><div class="ti-k" data-i18n="holders">Holders</div></div>
+        <div class="ti-v" id="tiHolders">500+</div>
+        <div class="ti-sub" data-i18n="onBSC">On BNB Smart Chain</div>
+      </a>
+      <a class="trust-item live" id="tItemLiquidity" href="#" target="_blank" rel="noopener">
+        <div class="ti-top"><div class="ti-ico">💧</div><div class="ti-k" data-i18n="liquidityPool">Liquidity Pool</div></div>
+        <div class="ti-v" id="tiLiquidity">Loading…</div>
+        <div class="ti-sub" data-i18n="pancakeV2">PancakeSwap V2</div>
+      </a>
+    </div>
 
-      <div style="background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px">
-          <span data-i18n="totalPool">Total Airdrop Pool</span>
-          <span style="color:var(--gold);font-weight:700">10,00,00,000 IGC</span>
-        </div>
-        <div class="pool-bar"><div class="pool-fill" id="poolFill"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px">
-          <span>🎯 <span data-i18n="seats">सीटें:</span> <b style="color:var(--gold)">5,000</b></span>
-          <span>🪙 <span data-i18n="perPerson">प्रति व्यक्ति:</span> <b style="color:var(--gold)">20,000 IGC</b></span>
-        </div>
-      </div>
+    <div class="trust-badges">
+      <span class="tbadge ok" data-i18n="verified">✅ Contract Verified</span>
+      <span class="tbadge ok" data-i18n="noMint">✅ No Mint Function</span>
+      <span class="tbadge ok" data-i18n="bep20">✅ BEP-20 Standard</span>
+      <span class="tbadge gold" data-i18n="liqLocked">🔒 Liquidity Locked</span>
+      <span class="tbadge gold" data-i18n="ownerLocked">🔒 Owner Tokens Timelocked</span>
+      <span class="tbadge dim" data-i18n="antiBot">🛡️ Anti-Bot Enabled</span>
+    </div>
 
-      <div class="claim-box">
-        <h3 data-i18n="yourRefCode">🎟️ आपका Referral Code</h3>
-        <p class="muted" style="margin:4px 0 0;font-size:12.5px" data-i18n="refDesc">इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।</p>
-        <div class="ref-code-display" id="myRefCode" data-i18n="loginToSee">Login करके देखें</div>
-        <div class="ref-copy-row">
-          <button class="b-copy" id="copyRefBtn" data-i18n="copyCode">📋 Copy Code</button>
-          <button class="b-share" id="shareRefBtn" data-i18n="shareLink">📤 Share Link</button>
-        </div>
-      </div>
+    <div style="text-align:center;margin-top:14px">
+      <a href="security.html" style="color:var(--gold);text-decoration:none;font-weight:700;font-size:14px">पूरी सुरक्षा जानकारी देखें →</a>
+    </div>
+  </section>
 
-      <button class="claim-main-btn" id="claimBtn" disabled data-i18n="claimLocked">🔒 पहले Login + Wallet जोड़ें</button>
-      <p class="muted" id="claimMsg" style="margin-top:8px;font-size:12.5px;text-align:center"></p>
-      <p class="muted" style="margin-top:10px;font-size:12px"><span data-i18n="airdropNote">⚠️ Note: Airdrop tokens PancakeSwap listing के 7 दिन के अंदर भेजे जाएँगे।</span></p>
-    </section>
-  </div>
+  <!-- ================= COMMUNITY QUICK ================= -->
+  <section>
+    <h2 data-i18n="communityTitle">💬 हमारी Community से जुड़िए</h2>
+    <div class="social-grid">
+      <a class="social-btn tg" id="tgBtn" href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener"><div class="sico">✈️</div><div data-i18n="telegramGroup">Telegram Group</div></a>
+      <a class="social-btn x" id="xBtn" href="https://x.com/Rambhai91221" target="_blank" rel="noopener"><div class="sico">𝕏</div><div>X (Twitter)</div></a>
+      <a class="social-btn wa" id="waBtn" href="https://whatsapp.com/channel/" target="_blank" rel="noopener"><div class="sico">💬</div><div data-i18n="whatsappChannel">WhatsApp Channel</div></a>
+      <a class="social-btn doc" href="whitepaper.html" target="_blank" rel="noopener"><div class="sico">📄</div><div data-i18n="whitepaper">Whitepaper</div></a>
+    </div>
+  </section>
 
-  <!-- ====== MINING VIEW ====== -->
-  <div id="view-mining" class="view-section">
-    <section id="miningSection">
-      <div class="badge" data-i18n="badgeMining">⛏️ DAILY MINING LIVE</div>
-      <div class="airdrop-head">
-        <div class="gift">⛏️</div>
-        <div class="txt">
-          <div class="t1"><span data-i18n="mineDaily">रोज़</span> <span style="color:var(--gold)">100 IGC</span> <span data-i18n="earn">कमाइए!</span></div>
-          <div class="t2" data-i18n="mineSub">सिर्फ 1 click — हर 24 घंटे में</div>
-        </div>
-      </div>
-
-      <div id="miningLoginWarn" style="background:var(--ink);border:1px dashed var(--line);border-radius:10px;padding:12px;text-align:center;font-size:13px;color:var(--muted);margin-bottom:12px">
-        <span data-i18n="miningWarn">🔒 पहले Login + Wallet जोड़ें — फिर mining शुरू कर सकते हैं</span>
-      </div>
-
-      <div id="miningPanel" style="display:none">
-        <div class="mine-box">
-          <div class="mine-stats">
-            <div class="mine-k" data-i18n="totalMined">Total Mined</div>
-            <div class="mine-v" id="minedTotal">0 IGC</div>
-          </div>
-          <div class="mine-stats" style="margin-bottom:0">
-            <div class="mine-k" data-i18n="dailyRate">Daily Rate</div>
-            <div style="font-size:15px;font-weight:800;color:var(--text)" id="miningRate">100 IGC/day</div>
-          </div>
-        </div>
-
-        <button id="mineBtn" class="mine-btn">
-          <span class="mico">⛏️</span>
-          <span id="mineBtnText" data-i18n="mineNow100">अभी Mine कीजिए — 100 IGC</span>
-        </button>
-
-        <div id="mineCooldown" class="mine-cooldown">
-          <div class="cd-k" data-i18n="nextMining">⏳ अगली mining के लिए</div>
-          <div class="cd-v" id="cooldownTimer">--:--:--</div>
-        </div>
-
-        <div class="mine-progress" id="lifetimeProgressBox">
-          <div class="mp-head">
-            <span data-i18n="lifetimeProgress">Lifetime Mining Progress</span>
-            <span style="color:var(--gold);font-weight:700" id="lifetimeText">0 / 30,000 IGC</span>
-          </div>
-          <div class="mp-bar"><div class="mp-fill" id="lifetimeFill"></div></div>
-          <div class="mp-foot">
-            <span><span data-i18n="remaining">बचा:</span> <b style="color:var(--ok)" id="lifetimeRemaining">30,000 IGC</b></span>
-            <span><span data-i18n="cap">Cap:</span> <b style="color:var(--gold)">30,000 IGC</b></span>
-          </div>
-        </div>
-
-        <div class="trust-note" style="margin-top:12px;font-size:12px">
-          <b data-i18n="howItWorks">💡 कैसे काम करता है:</b><br>
-          <span data-i18n="mine1">• हर 24 घंटे में 1 बार mine करें — 100 IGC मिलेंगे</span><br>
-          <span data-i18n="mine2">• हर सफल referral = +50 IGC/day extra</span><br>
-          <span data-i18n="mine3">• Max limit: 1,000 IGC/day</span><br>
-          <span data-i18n="mine4">• Lifetime Cap: 30,000 IGC per user</span><br>
-          <span data-i18n="mine5">• Mined IGC आपके wallet में 30 दिन के अंदर भेजे जाएँगे</span>
-        </div>
-
-        <div style="background:linear-gradient(135deg,rgba(61,220,151,.10),rgba(61,220,151,.02));border:1px solid rgba(61,220,151,.35);border-radius:10px;padding:12px;margin-top:12px;font-size:13px;color:#d6fce9;text-align:center">
-          <span data-i18n="refBoost">🚀 Referral से mining rate बढ़ाइए!</span><br>
-          <span data-i18n="now">अभी:</span> <b id="myMiningRate">100</b> IGC/day · <span data-i18n="refs">Referrals:</span> <b id="myRefCountMining">0</b>
-        </div>
-      </div>
-      <p class="muted" style="margin-top:12px;font-size:12px" data-i18n="miningNote">⚠️ Note: Mining से कमाए IGC wallet में 30 दिन के अंदर भेजे जाएँगे।</p>
-    </section>
-  </div>
-
-  <!-- ====== SECURITY VIEW ====== -->
-  <div id="view-security" class="view-section">
-    <section id="securitySection">
-      <h2 data-i18n="securityTitle">🛡️ Security & Transparency</h2>
-      <p class="muted" style="margin:0 0 6px;font-size:13px" data-i18n="securitySub">IGC के बारे में live blockchain data — BscScan से सीधे। कोई भी verify कर सकता है।</p>
-
-      <div class="trust-grid">
-        <a class="trust-item live" id="tItemSupply" href="#" target="_blank" rel="noopener">
-          <div class="ti-top"><div class="ti-ico">💰</div><div class="ti-k" data-i18n="totalSupply">Total Supply</div></div>
-          <div class="ti-v gold" id="tiSupply">1,000,000,000 IGC</div>
-          <div class="ti-sub" data-i18n="fixedNoMint">Fixed · No Mint Function</div>
-        </a>
-        <a class="trust-item live" id="tItemBurned" href="#" target="_blank" rel="noopener">
-          <div class="ti-top"><div class="ti-ico">🔥</div><div class="ti-k" data-i18n="burned">Burned</div></div>
-          <div class="ti-v" id="tiBurned">0 IGC</div>
-          <div class="ti-sub" data-i18n="permanentlyRemoved">Permanently Removed</div>
-        </a>
-        <a class="trust-item live" id="tItemHolders" href="#" target="_blank" rel="noopener">
-          <div class="ti-top"><div class="ti-ico">👥</div><div class="ti-k" data-i18n="holders">Holders</div></div>
-          <div class="ti-v" id="tiHolders">500+</div>
-          <div class="ti-sub" data-i18n="onBSC">On BNB Smart Chain</div>
-        </a>
-        <a class="trust-item live" id="tItemLiquidity" href="#" target="_blank" rel="noopener">
-          <div class="ti-top"><div class="ti-ico">💧</div><div class="ti-k" data-i18n="liquidityPool">Liquidity Pool</div></div>
-          <div class="ti-v" id="tiLiquidity">Loading…</div>
-          <div class="ti-sub" data-i18n="pancakeV2">PancakeSwap V2</div>
-        </a>
-      </div>
-
-      <div class="trust-badges">
-        <span class="tbadge ok" data-i18n="verified">✅ Contract Verified</span>
-        <span class="tbadge ok" data-i18n="noMint">✅ No Mint Function</span>
-        <span class="tbadge ok" data-i18n="bep20">✅ BEP-20 Standard</span>
-        <span class="tbadge gold" data-i18n="liqLocked">🔒 Liquidity Locked</span>
-        <span class="tbadge gold" data-i18n="ownerLocked">🔒 Owner Tokens Timelocked</span>
-        <span class="tbadge dim" data-i18n="antiBot">🛡️ Anti-Bot Enabled</span>
-      </div>
-
-      <div class="trust-note">
-        <b data-i18n="commitment">🛡️ हमारा Commitment:</b><br>
-        <span data-i18n="c1">✅ हम कभी आपका seed phrase या private key नहीं माँगते</span><br>
-        <span data-i18n="c2">✅ सारे tokens public blockchain पर हैं — कोई छुपा नहीं</span><br>
-        <span data-i18n="c3">✅ Owner wallet और liquidity pool — दोनों on-chain verified</span><br>
-        <span data-i18n="c4">✅ Contract BscScan पर verified है — कोई hidden function नहीं</span>
-      </div>
-
-      <div class="links" style="margin-top:10px">
-        <a id="tiScanContract" target="_blank" rel="noopener" data-i18n="viewContract">📜 BscScan पर Contract देखें</a>
-        <a id="tiScanOwner" target="_blank" rel="noopener" data-i18n="viewOwner">👤 Owner Wallet देखें</a>
-      </div>
-
-      <div class="trust-refresh">
-        <span id="lastRefresh" data-i18n="liveData">Live data · </span>
-        <button id="refreshTrust" data-i18n="refresh">🔄 Refresh</button>
-      </div>
-    </section>
-  </div>
-
-  <!-- ====== BNB TRADE VIEW ====== -->
-  <div id="view-trade" class="view-section">
-    <section>
-      <h2 data-i18n="buySellTitle">IGC खरीदें / बेचें (BNB)</h2>
-      <div class="tabs"><button id="tBuy" class="on" data-i18n="buy">खरीदें</button><button id="tSell" data-i18n="sell">बेचें</button></div>
-      <label id="inLabel" for="amt" data-i18n="bnbAmount">BNB की मात्रा</label>
-      <div class="row"><input id="amt" type="number" inputmode="decimal" min="0" placeholder="0.0"><button class="ghost" id="max">Max</button></div>
-      <p class="muted" id="bal" style="margin:6px 0 0"></p>
-      <label data-i18n="willGet">लगभग मिलेगा</label>
-      <div class="out" id="out">–</div>
-      <label for="slip" data-i18n="slippage">Slippage (%) — कम से कम 3 रखें</label>
-      <input id="slip" type="number" inputmode="decimal" value="3" min="1" max="49">
-      <button class="gold" id="act" data-i18n="connect">वॉलेट जोड़ें</button>
-      <p class="msg" id="msg"></p>
-
-      <div class="trust-note" style="margin-top:12px; border-color:var(--gold);">
-        <b data-i18n="bnbSlippageNoteTitle">⚠️ नोट:</b> 
-        <span data-i18n="bnbSlippageNoteText">अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।</span>
-      </div>
-    </section>
-  </div>
-
-  <!-- ====== USDT TRADE VIEW ====== -->
-  <div id="view-usdt" class="view-section">
-    <section>
-      <h2 data-i18n="usdtTitle">💵 USDT से IGC खरीदें</h2>
-      <p class="muted" style="margin:0" data-i18n="usdtDesc">USDT से सीधे IGC खरीदिए। एक बार Approve कीजिए, फिर हर बार सीधे खरीद सकते हैं।</p>
-      <label for="uAmt" data-i18n="usdtAmount">USDT की मात्रा</label>
-      <input id="uAmt" type="number" inputmode="decimal" min="0" placeholder="0.0">
-      <p class="muted" id="uBal" style="margin:6px 0 0"></p>
-      <label data-i18n="willGet">लगभग मिलेगा</label>
-      <div class="out" id="uOut">–</div>
-      <label for="uSlip" data-i18n="slippage">Slippage (%) — कम से कम 3 रखें</label>
-      <input id="uSlip" type="number" inputmode="decimal" value="3" min="1" max="49">
-      <button class="gold" id="uAct" style="width:100%;margin-top:14px;padding:14px;font-size:17px" data-i18n="buyWithUsdt">USDT से IGC खरीदें</button>
-      <p class="msg" id="uMsg"></p>
-
-      <div class="trust-note" style="margin-top:12px; border-color:var(--gold);">
-        <b data-i18n="usdtSlippageNoteTitle">⚠️ नोट:</b> 
-        <span data-i18n="usdtSlippageNoteText">USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।</span>
-      </div>
-
-      <div class="trust-note" style="margin-top:12px">
-        <b data-i18n="gasNote">⛽ Gas (BNB) के बारे में:</b> <span data-i18n="gasNoteText">BSC network पर हर transaction के लिए थोड़ी BNB चाहिए (₹2-5)। अगर wallet में BNB नहीं है तो नीचे "Gas के लिए BNB खरीदें" section से ₹50 का BNB खरीद लीजिए — यह 10-15 transactions के लिए काफी है।</span>
-      </div>
-
-      <button class="gold" id="freeGasBtn" style="width:100%;margin-top:10px;background:var(--ok);color:#111;font-weight:800;padding:14px;border-radius:10px;cursor:pointer;border:0;font-family:inherit;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;" data-i18n="freeGas">
-        ⛽ Free Gas माँगें (0.001 BNB) — USDT होल्डर्स के लिए
-      </button>
-      <p class="muted" style="font-size:11.5px;text-align:center;margin-top:4px;" data-i18n="freeGasNote">(कम से कम 5 USDT होना जरूरी है)</p>
-
-      <div class="dex-grid" style="margin-top:12px">
-        <a class="dex-btn" href="https://www.binance.com/en/buy-BNB" target="_blank" rel="noopener">
-          <div class="l"><div class="ico" style="background:#F0B90B;color:#111">🟡</div><div><div class="t" data-i18n="buyGasBNB">Gas के लिए BNB खरीदें</div><div class="s" data-i18n="binanceUPI">Binance · UPI / P2P / Card</div></div></div>
-          <div class="arrow">→</div>
-        </a>
-      </div>
-    </section>
-  </div>
-
-  <!-- ====== COMMUNITY VIEW ====== -->
-  <div id="view-community" class="view-section">
-    <section>
-      <h2 data-i18n="communityTitle">💬 हमारी Community से जुड़िए</h2>
-      <div class="social-grid">
-        <a class="social-btn tg" id="tgBtn" href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener"><div class="sico">✈️</div><div data-i18n="telegramGroup">Telegram Group</div></a>
-        <a class="social-btn x" id="xBtn" href="https://x.com/Rambhai91221" target="_blank" rel="noopener"><div class="sico">𝕏</div><div>X (Twitter)</div></a>
-        <a class="social-btn wa" id="waBtn" href="https://whatsapp.com/channel/" target="_blank" rel="noopener"><div class="sico">💬</div><div data-i18n="whatsappChannel">WhatsApp Channel</div></a>
-        <button class="social-btn tg" id="helpCommunityBtn"><div class="sico">❓</div><div data-i18n="helpTelegram">Telegram पर Help लें</div></button>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="shareTitle">📢 दोस्तों के साथ शेयर कीजिए</h2>
-      <div class="share-row">
-        <a class="s-wa" id="shareWa" target="_blank" rel="noopener" data-i18n="whatsapp">💬 WhatsApp</a>
-        <a class="s-x" id="shareX" target="_blank" rel="noopener" data-i18n="twitter">𝕏 Twitter</a>
-        <a class="s-tg" id="shareTg" target="_blank" rel="noopener" data-i18n="telegram">✈️ Telegram</a>
-        <button class="s-copy" id="shareCopy" data-i18n="copyLink">🔗 Link कॉपी</button>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="merchantTitle">🏪 दुकानदारों के लिए — Merchant Program</h2>
-      <div class="merchant-box">
-        <p>✅ <b data-i18n="merchant1">0% setup fee</b></p>
-        <p>✅ <b data-i18n="merchant2">QR Code</b> — <span data-i18n="merchant2b">IGC QR पाएँ</span></p>
-        <p>✅ <b data-i18n="merchant3">Instant payment</b></p>
-        <p>✅ <b data-i18n="merchant4">Early merchant bonus</b> — <span data-i18n="merchant4b">पहले 100 को 50,000 IGC</span></p>
-      </div>
-      <button class="social-btn tg" id="merchantBtn" style="margin-top:12px"><div class="sico">🏪</div><div data-i18n="merchantContact">Merchant बनने के लिए संपर्क करें</div></button>
-    </section>
-  </div>
+  <!-- ================= CONTRACT ADDRESS ================= -->
+  <section>
+    <h2 data-i18n="contractTitle">कॉन्ट्रैक्ट एड्रेस</h2>
+    <div class="addr" id="addr">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</div>
+    <button class="ghost" id="copy" data-i18n="copyAddress">एड्रेस कॉपी करें</button>
+    <p class="muted" style="margin-top:8px" data-i18n="verifiedNote">✅ Contract verified on BscScan · ✅ No mint function</p>
+  </section>
 
 </div>
 
-<!-- ====== MODALS (Wallet & No Wallet) ====== -->
+<!-- ================= WALLET MODAL ================= -->
 <div id="walletModal" class="wallet-modal" role="dialog" aria-modal="true">
   <div class="wallet-sheet">
     <div class="wm-head">
@@ -451,6 +318,7 @@
   </div>
 </div>
 
+<!-- ================= NO WALLET MODAL ================= -->
 <div id="noWalletModal" class="nwmodal" role="dialog" aria-modal="true">
   <div class="nwbox">
     <div class="nwbox-inner">
@@ -485,4 +353,4 @@
 
 <script src="script.js"></script>
 </body>
-  </html>
+                                                   </html>
