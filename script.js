@@ -34,7 +34,15 @@ const MINE_KEY = "igc_last_mine";
 const MINE_TOTAL_KEY = "igc_total_mined";
 let cooldownInterval = null;
 
-/* ================== 🌐 TRANSLATIONS ================== */
+/* ================== HELPERS ================== */
+const $=id=>document.getElementById(id);
+function on(id,ev,fn){const el=$(id);if(el)el.addEventListener(ev,fn);}
+function setHTML(id,html){const el=$(id);if(el)el.innerHTML=html;}
+function setText(id,txt){const el=$(id);if(el)el.textContent=txt;}
+function setDisplay(id,disp){const el=$(id);if(el)el.style.display=disp;}
+function setHref(id,url){const el=$(id);if(el)el.href=url;}
+
+/* ================== TRANSLATIONS ================== */
 const TRANSLATIONS = {
   hi: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"वॉलेट जोड़ें",
@@ -44,7 +52,7 @@ const TRANSLATIONS = {
     switchLogin:"अकाउंट है? Login कीजिए", switchSignup:"नया user? Sign Up", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
     stepsTitle:"IGC Airdrop में हिस्सा लेने के 3 आसान steps:",
-    step1:"Login कीजिए (Home page पर)", step2a:"वॉलेट जोड़िए (ऊपर", step2b:"बटन)",
+    step1:"Login कीजिए (ऊपर Email/Google से)", step2a:"वॉलेट जोड़िए (ऊपर", step2b:"बटन)",
     step3a:"अपना Referral Code दोस्तों को भेजिए — हर join पर", step3b:"5,000 IGC बोनस",
     totalPool:"Total Airdrop Pool", seats:"सीटें:", perPerson:"प्रति व्यक्ति:", yourRefCode:"🎟️ आपका Referral Code",
     refDesc:"इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।", loginToSee:"Login करके देखें",
@@ -147,7 +155,7 @@ const TRANSLATIONS = {
     switchLogin:"Have an account? Login", switchSignup:"New user? Sign Up", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
     stepsTitle:"3 easy steps to join IGC Airdrop:",
-    step1:"Login (on Home page)", step2a:"Add Wallet (click", step2b:"button above)",
+    step1:"Login (with Email/Google above)", step2a:"Add Wallet (click", step2b:"button above)",
     step3a:"Share your Referral Code — for every join", step3b:"5,000 IGC bonus",
     totalPool:"Total Airdrop Pool", seats:"Seats:", perPerson:"Per user:", yourRefCode:"🎟️ Your Referral Code",
     refDesc:"Share with friends — get 5,000 IGC bonus per join.", loginToSee:"Login to see",
@@ -271,36 +279,26 @@ function applyLang(lang){
   updateLoginUI();
   updateClaimBtn();
   syncBtn();
+  updateNavLabels();
 }
 
-document.getElementById("langToggle").onclick = () => {
+function updateNavLabels(){
+  const map = currentLang === "hi"
+    ? {home:"होम", airdrop:"एयरड्रॉप", mining:"माइनिंग", buysell:"खरीदें/बेचें", security:"सुरक्षा", community:"कम्युनिटी", chart:"चार्ट", merchant:"मर्चेंट", whitepaper:"व्हाइटपेपर"}
+    : {home:"Home", airdrop:"Airdrop", mining:"Mining", buysell:"Buy/Sell", security:"Security", community:"Community", chart:"Chart", merchant:"Merchant", whitepaper:"Whitepaper"};
+  document.querySelectorAll("[data-nav]").forEach(el=>{
+    const k = el.getAttribute("data-nav");
+    if(map[k]) el.textContent = map[k];
+  });
+}
+
+on("langToggle","click",() => {
   const next = (currentLang === "hi") ? "en" : "hi";
   applyLang(next);
   toast(t("i18nReady"), "var(--ok)");
-};
+});
 
-/* ================== NAVIGATION & SIDEBAR ================== */
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  sidebar.classList.toggle("show");
-  overlay.classList.toggle("show");
-}
-
-function navigateTo(viewId) {
-  document.querySelectorAll(".view-section").forEach(el => el.classList.remove("active"));
-  const target = document.getElementById(viewId);
-  if (target) {
-    target.classList.add("active");
-  }
-  if (window.innerWidth < 768) {
-    toggleSidebar();
-  }
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-/* ================== REST OF SCRIPT ================== */
-const $=id=>document.getElementById(id);
+/* ================== RPC Setup ================== */
 const rpc=new ethers.JsonRpcProvider(RPC);
 const rRouter=new ethers.Contract(ROUTER,RABI,rpc);
 const rToken=new ethers.Contract(IGC,TABI,rpc);
@@ -309,7 +307,8 @@ let mode="buy",user=null,signer=null,timer=null,quote=0n;
 let currentEmail=null;
 
 function toast(msg,color){
-  const el=$("toast");el.textContent=msg;el.style.background=color||"var(--gold)";
+  const el=$("toast");if(!el)return;
+  el.textContent=msg;el.style.background=color||"var(--gold)";
   el.style.color=color?"#fff":"#111";el.classList.add("show");
   setTimeout(()=>el.classList.remove("show"),3000);
 }
@@ -322,14 +321,14 @@ function captureRef(){const u=new URL(location.href);const r=u.searchParams.get(
 
 const walletModal = $("walletModal");
 const noWalletModal = $("noWalletModal");
-function openWalletModal(){walletModal.classList.add("show");document.body.style.overflow = "hidden";}
-function closeWalletModal(){walletModal.classList.remove("show");document.body.style.overflow = "";}
-function openNoWalletModal(){noWalletModal.classList.add("show");document.body.style.overflow = "hidden";}
-function closeNoWalletModal(){noWalletModal.classList.remove("show");document.body.style.overflow = "";}
-$("walletClose").onclick = closeWalletModal;
-walletModal.addEventListener("click", (e)=>{ if(e.target === walletModal) closeWalletModal(); });
-$("nwClose").onclick = closeNoWalletModal;
-noWalletModal.addEventListener("click", (e)=>{ if(e.target === noWalletModal) closeNoWalletModal(); });
+function openWalletModal(){if(walletModal){walletModal.classList.add("show");document.body.style.overflow = "hidden";}}
+function closeWalletModal(){if(walletModal){walletModal.classList.remove("show");document.body.style.overflow = "";}}
+function openNoWalletModal(){if(noWalletModal){noWalletModal.classList.add("show");document.body.style.overflow = "hidden";}}
+function closeNoWalletModal(){if(noWalletModal){noWalletModal.classList.remove("show");document.body.style.overflow = "";}}
+on("walletClose","click",closeWalletModal);
+if(walletModal) walletModal.addEventListener("click", (e)=>{ if(e.target === walletModal) closeWalletModal(); });
+on("nwClose","click",closeNoWalletModal);
+if(noWalletModal) noWalletModal.addEventListener("click", (e)=>{ if(e.target === noWalletModal) closeNoWalletModal(); });
 
 (function(){
   const baseUrl = location.origin + location.pathname.replace(/\/$/, "") + "/";
@@ -363,7 +362,7 @@ document.querySelectorAll(".wallet-item").forEach(el => {
   });
 });
 
-$("wOpenInBrowser").addEventListener("click", async (e) => {
+on("wOpenInBrowser","click", async (e) => {
   e.preventDefault();e.stopPropagation();
   const hasEth = (typeof window.ethereum !== "undefined" && window.ethereum !== null);
   closeWalletModal();
@@ -387,9 +386,9 @@ function updateLoginUI(){
   setTimeout(()=>{const l=$("switchLink");if(l) l.onclick=()=>{isSignup=!isSignup;updateLoginUI();};},10);
 }
 
-$("loginBtn").onclick=()=>{
-  const em=$("emailInput").value.trim();
-  const pw=$("passInput").value.trim();
+on("loginBtn","click",()=>{
+  const em=$("emailInput") ? $("emailInput").value.trim() : "";
+  const pw=$("passInput") ? $("passInput").value.trim() : "";
   if(!em||!em.includes("@")){toast(t("validEmail"),"#ff6b6b");return}
   if(pw.length<6){toast(t("pwShort"),"#ff6b6b");return}
   const savedEmail=localStorage.getItem(K.EMAIL);
@@ -402,7 +401,7 @@ $("loginBtn").onclick=()=>{
     if(em!==savedEmail||pw!==savedPass){toast(t("wrongCred"),"#ff6b6b");return}
     currentEmail=em;toast(t("loginOk"));showDashboard();
   }
-};
+});
 
 let googleReady=false;
 function initGoogleSignIn(){
@@ -424,7 +423,7 @@ function handleGoogleCredential(response){
     sendToSheet("googleLogin",{email:em, wallet:user||"", googleLogin:true, name:name});
   }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
 }
-$("googleBtn").onclick=()=>{
+on("googleBtn","click",()=>{
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
   if(!googleReady){initGoogleSignIn();}
   if(googleReady && window.google && google.accounts){
@@ -450,25 +449,27 @@ $("googleBtn").onclick=()=>{
       }
     });
   } else {toast(t("googleScriptLoad"),"#ff6b6b");}
-};
+});
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
-$("logoutBtn").onclick=()=>{
+on("logoutBtn","click",()=>{
   localStorage.removeItem(K.EMAIL);localStorage.removeItem(K.PASS);localStorage.removeItem("igc_gname");
   currentEmail=null;
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
-  $("loginSection").style.display="block";$("dashboardSection").style.display="none";
+  setDisplay("loginSection","block");setDisplay("dashboardSection","none");
   updateLoginUI();toast(t("loggedOut"));
-};
+});
 
 function showDashboard(){
-  $("loginSection").style.display="none";$("dashboardSection").style.display="block";
-  $("userEmail").textContent=currentEmail||"user";$("myRefCode").textContent=getMyCode();
+  setDisplay("loginSection","none");setDisplay("dashboardSection","block");
+  setText("userEmail", currentEmail || "user");
+  setText("myRefCode", getMyCode());
   loadUserData();updateClaimBtn();updateMiningUI();
 }
 
 function updateClaimBtn(){
-  const hasUser=!!currentEmail;const hasWallet=!!user;const btn=$("claimBtn");
+  const btn=$("claimBtn");if(!btn)return;
+  const hasUser=!!currentEmail;const hasWallet=!!user;
   if(!hasUser){btn.disabled=true;btn.textContent=t("claimLogin");return}
   if(!hasWallet){btn.disabled=true;btn.textContent=t("claimWallet");return}
   btn.disabled=false;btn.textContent=t("claimReadyText");
@@ -483,7 +484,7 @@ async function sendToSheet(action,payload){
   }catch(e){return null;}
 }
 
-$("claimBtn").onclick=async()=>{
+on("claimBtn","click",async()=>{
   if(!currentEmail){toast(t("needLogin"),"#ff6b6b");return}
   if(!user){toast(t("needWallet"),"#ff6b6b");openWalletModal();return}
   if(localStorage.getItem(K.CLAIMED)){toast(t("alreadyClaimed"),"#ff6b6b");return}
@@ -491,62 +492,66 @@ $("claimBtn").onclick=async()=>{
   const result=await sendToSheet("claim",{email:currentEmail,wallet:user,googleLogin:localStorage.getItem(K.PASS)==="google_oauth"});
   if(result && result.success){
     localStorage.setItem(K.CLAIMED,"1");toast(t("claimSuccess"));
-    $("claimMsg").innerHTML=t("claimSaved");$("claimMsg").style.color="var(--ok)";
+    setHTML("claimMsg", t("claimSaved"));
+    const cm = $("claimMsg"); if(cm) cm.style.color="var(--ok)";
     btn.textContent=t("claimDone");loadUserData();updateMiningUI();
   }else{
     toast(result && result.message ? result.message : t("claimFailed"),"#ff6b6b");
     btn.disabled=false;btn.textContent=t("claimReadyText");
   }
-};
+});
 
 async function loadUserData(){
   if(!user){return}
   const result=await sendToSheet("getUser",{wallet:user});
   if(result && result.success && result.user){
     const u=result.user;
-    $("dashRefs").textContent=u.refCount||0;
-    $("dashBonus").textContent=(u.bonusIGC||0).toLocaleString("en-IN");
-    $("dashClaimed").textContent=(u.claimedIGC||0).toLocaleString("en-IN");
-    $("dashStatus").textContent=u.status||"-";
+    setText("dashRefs", u.refCount||0);
+    setText("dashBonus", (u.bonusIGC||0).toLocaleString("en-IN"));
+    setText("dashClaimed", (u.claimedIGC||0).toLocaleString("en-IN"));
+    setText("dashStatus", u.status||"-");
     localStorage.setItem("igc_ref_count", (u.refCount||0).toString());
   }else{
-    $("dashRefs").textContent="0";$("dashBonus").textContent="0";
-    $("dashClaimed").textContent=localStorage.getItem(K.CLAIMED)?"20,000":"0";
-    $("dashStatus").textContent=localStorage.getItem(K.CLAIMED)?"Claimed":"-";
+    setText("dashRefs","0");setText("dashBonus","0");
+    setText("dashClaimed", localStorage.getItem(K.CLAIMED)?"20,000":"0");
+    setText("dashStatus", localStorage.getItem(K.CLAIMED)?"Claimed":"-");
   }
   updateMiningUI();
 }
 
 function updateMiningUI(){
+  const panel = $("miningPanel"); if(!panel) return;
   const hasUser = !!currentEmail;
   const hasWallet = !!user;
   if(!hasUser || !hasWallet){
-    $("miningPanel").style.display = "none";
-    $("miningLoginWarn").style.display = "block";
+    panel.style.display = "none";
+    setDisplay("miningLoginWarn","block");
     return;
   }
-  $("miningPanel").style.display = "block";
-  $("miningLoginWarn").style.display = "none";
+  panel.style.display = "block";
+  setDisplay("miningLoginWarn","none");
   const totalMined = parseInt(localStorage.getItem(MINE_TOTAL_KEY) || "0");
   const lastMine = parseInt(localStorage.getItem(MINE_KEY) || "0");
   const refCount = parseInt(localStorage.getItem("igc_ref_count") || "0");
-  $("minedTotal").textContent = totalMined.toLocaleString("en-IN") + " IGC";
-  $("myRefCountMining").textContent = refCount;
+  setText("minedTotal", totalMined.toLocaleString("en-IN") + " IGC");
+  setText("myRefCountMining", refCount);
   const dailyRate = Math.min(MINING_PER_CLICK + (refCount * REF_BOOST_PER), MAX_DAILY);
-  $("miningRate").textContent = dailyRate + " IGC/day";
-  $("myMiningRate").textContent = dailyRate;
+  setText("miningRate", dailyRate + " IGC/day");
+  setText("myMiningRate", dailyRate);
   const capUsed = Math.min(totalMined, MINING_LIFETIME_CAP);
   const pct = Math.min((capUsed / MINING_LIFETIME_CAP) * 100, 100);
-  $("lifetimeText").textContent = capUsed.toLocaleString("en-IN") + " / " + MINING_LIFETIME_CAP.toLocaleString("en-IN") + " IGC";
-  $("lifetimeFill").style.width = pct + "%";
+  setText("lifetimeText", capUsed.toLocaleString("en-IN") + " / " + MINING_LIFETIME_CAP.toLocaleString("en-IN") + " IGC");
+  const lf=$("lifetimeFill");if(lf) lf.style.width = pct + "%";
   const remaining = Math.max(MINING_LIFETIME_CAP - totalMined, 0);
-  $("lifetimeRemaining").textContent = remaining.toLocaleString("en-IN") + " IGC";
+  setText("lifetimeRemaining", remaining.toLocaleString("en-IN") + " IGC");
+  const btn = $("mineBtn");
+  if(!btn) return;
   if(totalMined >= MINING_LIFETIME_CAP){
-    $("mineBtn").disabled = true;
-    $("mineBtn").style.opacity = "0.55";
-    $("mineBtn").style.cursor = "not-allowed";
-    $("mineBtnText").textContent = t("lifetimeCapDone");
-    $("mineCooldown").style.display = "none";
+    btn.disabled = true;
+    btn.style.opacity = "0.55";
+    btn.style.cursor = "not-allowed";
+    setText("mineBtnText", t("lifetimeCapDone"));
+    setDisplay("mineCooldown","none");
     if(cooldownInterval){clearInterval(cooldownInterval);cooldownInterval=null;}
     return;
   }
@@ -554,19 +559,19 @@ function updateMiningUI(){
   const elapsed = now - lastMine;
   const cooldownMs = 24 * 60 * 60 * 1000;
   if(lastMine === 0 || elapsed >= cooldownMs){
-    $("mineBtn").disabled = false;
-    $("mineBtn").style.opacity = "1";
-    $("mineBtn").style.cursor = "pointer";
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
     const willEarn = Math.min(dailyRate, remaining);
-    $("mineBtnText").textContent = t("mineBtnGo") + willEarn + " IGC";
-    $("mineCooldown").style.display = "none";
+    setText("mineBtnText", t("mineBtnGo") + willEarn + " IGC");
+    setDisplay("mineCooldown","none");
     if(cooldownInterval){clearInterval(cooldownInterval);cooldownInterval=null;}
   } else {
-    $("mineBtn").disabled = true;
-    $("mineBtn").style.opacity = "0.55";
-    $("mineBtn").style.cursor = "not-allowed";
-    $("mineBtnText").textContent = t("wait");
-    $("mineCooldown").style.display = "block";
+    btn.disabled = true;
+    btn.style.opacity = "0.55";
+    btn.style.cursor = "not-allowed";
+    setText("mineBtnText", t("wait"));
+    setDisplay("mineCooldown","block");
     startCooldownTimer(cooldownMs - elapsed);
   }
 }
@@ -583,17 +588,17 @@ function startCooldownTimer(remainingMs){
     const h = Math.floor(remainingMs / 3600000);
     const m = Math.floor((remainingMs % 3600000) / 60000);
     const s = Math.floor((remainingMs % 60000) / 1000);
-    $("cooldownTimer").textContent =
+    setText("cooldownTimer",
       String(h).padStart(2,"0") + ":" +
       String(m).padStart(2,"0") + ":" +
-      String(s).padStart(2,"0");
+      String(s).padStart(2,"0"));
     remainingMs -= 1000;
   }
   tick();
   cooldownInterval = setInterval(tick, 1000);
 }
 
-$("mineBtn").onclick = async () => {
+on("mineBtn","click", async () => {
   if(!currentEmail){toast(t("needLogin"),"#ff6b6b");return}
   if(!user){toast(t("needWallet"),"#ff6b6b");return}
   const totalMined = parseInt(localStorage.getItem(MINE_TOTAL_KEY) || "0");
@@ -601,8 +606,8 @@ $("mineBtn").onclick = async () => {
     toast(t("lifetimeCapToast"),"#ff6b6b");
     return;
   }
-  $("mineBtn").disabled = true;
-  $("mineBtnText").textContent = t("mineNowText");
+  const btn = $("mineBtn"); if(btn) btn.disabled = true;
+  setText("mineBtnText", t("mineNowText"));
   const result = await sendToSheet("mine", {email: currentEmail, wallet: user});
   if(result && result.success){
     localStorage.setItem(MINE_KEY, Date.now().toString());
@@ -619,28 +624,31 @@ $("mineBtn").onclick = async () => {
     toast(result && result.message ? result.message : "Mining failed","#ff6b6b");
     updateMiningUI();
   }
-};
+});
 
-$("copyRefBtn").onclick=async()=>{
+on("copyRefBtn","click",async()=>{
   const code=getMyCode();
   try{await navigator.clipboard.writeText(code)}catch(e){}
   toast(t("codeCopied")+code);
-};
+});
 function buildRefLink(){const u=new URL(location.href);u.searchParams.set("ref",getMyCode());return u.toString();}
-$("shareRefBtn").onclick=()=>{
+on("shareRefBtn","click",()=>{
   const link=buildRefLink();
   const txt=t("refShareText");
   if(navigator.share){navigator.share({title:"IGC Airdrop",text:txt,url:link}).catch(()=>{});}
   else{window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+link),"_blank");}
-};
+});
 
-$("shareWa").href="https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink());
-$("shareX").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink());
-$("shareTg").href="https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText"));
-$("shareCopy").onclick=async()=>{
+(function(){
+  const wa=$("shareWa"),x=$("shareX"),tg=$("shareTg");
+  if(wa) wa.href="https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink());
+  if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink());
+  if(tg) tg.href="https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText"));
+})();
+on("shareCopy","click",async()=>{
   try{await navigator.clipboard.writeText(buildRefLink())}catch(e){}
   toast(t("linkCopied"));
-};
+});
 
 const UABI=["function balanceOf(address) view returns (uint256)","function allowance(address,address) view returns (uint256)","function approve(address,uint256) returns (bool)"];
 const R2=[
@@ -650,10 +658,11 @@ const R2=[
 const uPath=[USDT,WBNB,IGC];
 let uTimer=null,uQuote=0n;
 
-function uSay(t2,c){const m=$("uMsg");m.textContent=t2;m.className="msg "+(c||"")}
-function uVal(){try{const v=ethers.parseUnits($("uAmt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
+function uSay(t2,c){const m=$("uMsg");if(!m)return;m.textContent=t2;m.className="msg "+(c||"")}
+function uVal(){const el=$("uAmt");if(!el)return 0n;try{const v=ethers.parseUnits(el.value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
 
 async function uGetQuote(){
+  if(!$("uOut")) return;
   const a=uVal();uQuote=0n;
   if(a===0n){$("uOut").textContent="–";return}
   try{
@@ -668,13 +677,13 @@ async function uGetQuote(){
 }
 
 async function uRefresh(){
-  if(!user){$("uBal").textContent="";return}
+  if(!user){const el=$("uBal");if(el) el.textContent="";return}
   try{
     const [u,b]=await Promise.all([
       new ethers.Contract(USDT,UABI,rpc).balanceOf(user),
       rpc.getBalance(user)
     ]);
-    $("uBal").textContent="USDT: "+fmt(u)+" · BNB (gas): "+fmt(b);
+    setText("uBal","USDT: "+fmt(u)+" · BNB (gas): "+fmt(b));
   }catch(e){}
 }
 
@@ -682,8 +691,9 @@ async function buyWithUsdt(){
   if(!user){await connect();if(!user)return}
   const a=uVal();
   if(a===0n){uSay(t("sendAmount"),"bad");return}
-  const sl=Math.min(Math.max(parseFloat($("uSlip").value)||3,1),49);
-  const btn=$("uAct");btn.disabled=true;
+  const slipEl=$("uSlip");
+  const sl=Math.min(Math.max(parseFloat(slipEl?slipEl.value:"3")||3,1),49);
+  const btn=$("uAct");if(btn) btn.disabled=true;
   try{
     const u=new ethers.Contract(USDT,UABI,signer);
     if((await u.balanceOf(user))<a) throw new Error(t("notEnoughUSDT"));
@@ -702,23 +712,25 @@ async function buyWithUsdt(){
     uSay(t("waitingConfirm"));
     await tx.wait();
     uSay(t("igcGot")+short(tx.hash),"ok");
-    $("uAmt").value="";$("uOut").textContent="–";
+    if($("uAmt")) $("uAmt").value="";
+    if($("uOut")) $("uOut").textContent="–";
     uRefresh();refreshBal();
   }catch(e){
     const tt=(e.reason||e.shortMessage||e.message||"").toString();
     uSay(/[\u0900-\u097F]/.test(tt)?tt:err(e),"bad");
   }
-  btn.disabled=false;
+  if(btn) btn.disabled=false;
 }
 
-$("uAmt").oninput=()=>{clearTimeout(uTimer);uTimer=setTimeout(uGetQuote,400)};
-$("uAct").onclick=buyWithUsdt;
-uRefresh();setInterval(uRefresh,10000);
+on("uAmt","input",()=>{clearTimeout(uTimer);uTimer=setTimeout(uGetQuote,400)});
+on("uAct","click",buyWithUsdt);
+if($("uAct")){uRefresh();setInterval(uRefresh,10000);}
 
 async function requestGasFromServer() {
   if (!currentEmail) { toast(t("needLogin"), "#ff6b6b"); return; }
   if (!user || !signer) { toast(t("needWallet"), "#ff6b6b"); return; }
   const btn = $("freeGasBtn");
+  if(!btn) return;
   btn.disabled = true;
   btn.innerHTML = t("signing");
   try {
@@ -746,43 +758,46 @@ async function requestGasFromServer() {
     btn.innerHTML = t("gasBtnText");
   }
 }
-$("freeGasBtn").onclick = requestGasFromServer;
+on("freeGasBtn","click",requestGasFromServer);
 
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
-  if(refBy){$("refWelcome").style.display="block";$("refWelcomeCode").textContent=refBy;}
-  $("myRefCode").textContent=getMyCode();
+  if(refBy){setDisplay("refWelcome","block");setText("refWelcomeCode", refBy);}
+  setText("myRefCode", getMyCode());
   const savedEmail=localStorage.getItem(K.EMAIL);
   if(savedEmail){currentEmail=savedEmail;showDashboard();}
   else updateLoginUI();
-  setTimeout(()=>{$("poolFill").style.width="15%";},300);
+  setTimeout(()=>{const pf=$("poolFill");if(pf) pf.style.width="15%";},300);
   updateMiningUI();
 }
 
 const DRIVE_PRIMARY="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512";
 const DRIVE_ALT="https://drive.google.com/uc?export=view&id=1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa";
-const lg=$("logo");lg.src=DRIVE_PRIMARY;let logoTry=0;
-lg.onerror=()=>{logoTry++;if(logoTry===1){lg.src=DRIVE_ALT;return}if(logoTry===2){lg.src="logo.png";return}if(logoTry===3){lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';}};
+(function(){
+  const lg=$("logo");if(!lg)return;
+  lg.src=DRIVE_PRIMARY;let logoTry=0;
+  lg.onerror=()=>{logoTry++;if(logoTry===1){lg.src=DRIVE_ALT;return}if(logoTry===2){lg.src="logo.png";return}if(logoTry===3){lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';}};
+})();
 
 const checksum=ethers.getAddress(IGC);
-$("addr").textContent=checksum;
-$("dex").href="https://dexscreener.com/bsc/"+checksum;
-$("scan").href="https://bscscan.com/token/"+checksum;
-$("poocoin").href="https://poocoin.app/tokens/"+checksum;
-$("poocoinLnk").href="https://poocoin.app/tokens/"+checksum;
-$("chart").src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trades=0&info=0";
-$("pcsBnb").href="https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum;
-$("pcsUsdt").href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+ethers.getAddress(USDT)+"&outputCurrency="+checksum;
-$("tgBtn").href=SOCIAL.telegram;$("xBtn").href=SOCIAL.twitter;$("waBtn").href=SOCIAL.whatsapp;
-$("merchantBtn").onclick=()=>window.open(SOCIAL.merchant,"_blank");
-$("helpBuyBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
-$("helpHomeBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
-$("helpCommunityBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
-$("tItemSupply").href="https://bscscan.com/token/"+checksum;
-$("tItemBurned").href="https://bscscan.com/token/"+checksum+"?a="+DEAD;
-$("tItemHolders").href="https://bscscan.com/token/"+checksum+"#balances";
-$("tItemLiquidity").href="https://dexscreener.com/bsc/"+checksum;
+setText("addr", checksum);
+setHref("dex","https://dexscreener.com/bsc/"+checksum);
+setHref("scan","https://bscscan.com/token/"+checksum);
+setHref("poocoin","https://poocoin.app/tokens/"+checksum);
+setHref("poocoinLnk","https://poocoin.app/tokens/"+checksum);
+const chartIframe=$("chart");if(chartIframe) chartIframe.src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trades=0&info=0";
+setHref("pcsBnb","https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum);
+setHref("pcsUsdt","https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+ethers.getAddress(USDT)+"&outputCurrency="+checksum);
+setHref("tgBtn",SOCIAL.telegram);setHref("xBtn",SOCIAL.twitter);setHref("waBtn",SOCIAL.whatsapp);
+on("merchantBtn","click",()=>window.open(SOCIAL.merchant,"_blank"));
+on("helpBuyBtn","click",()=>window.open(SOCIAL.telegram,"_blank"));
+setHref("tItemSupply","https://bscscan.com/token/"+checksum);
+setHref("tItemBurned","https://bscscan.com/token/"+checksum+"?a="+DEAD);
+setHref("tItemHolders","https://bscscan.com/token/"+checksum+"#balances");
+setHref("tItemLiquidity","https://dexscreener.com/bsc/"+checksum);
+setHref("tiScanContract","https://bscscan.com/token/"+checksum+"#code");
+setHref("tiScanOwner","https://bscscan.com/token/"+checksum+"#balances");
 
 const fmtShort=(n)=>{
   if(n>=1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,"")+" B";
@@ -793,19 +808,21 @@ const fmtShort=(n)=>{
 const fmtFull=(n)=>{return Math.round(n).toLocaleString("en-IN");};
 
 async function loadTrustData(){
+  if(!$("tiSupply")) return;
   let supplyLoaded=false;
   try{
     const ts=await rToken.totalSupply();
     const num=Number(ethers.formatUnits(ts,18));
-    if(num>0){$("tiSupply").textContent = fmtFull(num)+" IGC";supplyLoaded=true;}
+    if(num>0){setText("tiSupply", fmtFull(num)+" IGC");supplyLoaded=true;}
   }catch(e){ }
-  if(!supplyLoaded){$("tiSupply").textContent = fmtFull(FALLBACK_TOTAL_SUPPLY)+" IGC";}
+  if(!supplyLoaded){setText("tiSupply", fmtFull(FALLBACK_TOTAL_SUPPLY)+" IGC");}
   try{
     const deadBal=await rToken.balanceOf(DEAD);
     const num=Number(ethers.formatUnits(deadBal,18));
-    $("tiBurned").textContent = num>0 ? fmtFull(num)+" IGC" : "0 IGC";
-    if(num===0) $("tiBurned").style.color="var(--muted)";
-  }catch(e){ $("tiBurned").textContent="0 IGC"; }
+    setText("tiBurned", num>0 ? fmtFull(num)+" IGC" : "0 IGC");
+    const be=$("tiBurned");
+    if(num===0 && be) be.style.color="var(--muted)";
+  }catch(e){ setText("tiBurned","0 IGC"); }
   try{
     const pairAddr=await rFactory.getPair(IGC,WBNB);
     if(pairAddr && pairAddr!=="0x0000000000000000000000000000000000000000"){
@@ -814,29 +831,26 @@ async function loadTrustData(){
       const reserves=await rPair.getReserves();
       const igcReserve = (t0.toLowerCase()===IGC.toLowerCase()) ? reserves[0] : reserves[1];
       const igcAmt=Number(ethers.formatUnits(igcReserve,18));
-      $("tiLiquidity").textContent=fmtFull(igcAmt)+" IGC";
-      $("tiLiquidity").style.color="var(--ok)";
+      setText("tiLiquidity", fmtFull(igcAmt)+" IGC");
+      const lq=$("tiLiquidity");if(lq) lq.style.color="var(--ok)";
     }else{
-      $("tiLiquidity").textContent=(currentLang==="hi")?"जल्द जुड़ेगी":"Coming soon";
-      $("tiLiquidity").style.color="var(--gold)";
+      setText("tiLiquidity", (currentLang==="hi")?"जल्द जुड़ेगी":"Coming soon");
+      const lq=$("tiLiquidity");if(lq) lq.style.color="var(--gold)";
     }
-  }catch(e){ $("tiLiquidity").textContent="—"; }
-  $("tiHolders").textContent="500+";
+  }catch(e){ setText("tiLiquidity","—"); }
+  setText("tiHolders","500+");
   const now=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
-  $("lastRefresh").textContent=t("liveData")+"updated "+now+" · ";
+  setText("lastRefresh", t("liveData")+"updated "+now+" · ");
 }
-$("refreshTrust").onclick=()=>{toast(t("refreshing"));loadTrustData();};
-$("tiScanContract").href="https://bscscan.com/token/"+checksum+"#code";
-$("tiScanOwner").href="https://bscscan.com/token/"+checksum+"#balances";
-loadTrustData();
-setInterval(loadTrustData, 60000);
+on("refreshTrust","click",()=>{toast(t("refreshing"));loadTrustData();});
+if($("tiSupply")){loadTrustData();setInterval(loadTrustData, 60000);}
 
-function say(t2,c){const m=$("msg");m.textContent=t2;m.className="msg "+(c||"")}
+function say(t2,c){const m=$("msg");if(!m)return;m.textContent=t2;m.className="msg "+(c||"")}
 const short=a=>a.slice(0,6)+"…"+a.slice(-4);
 const fmt=(v)=>{const n=Number(ethers.formatUnits(v,18));return n>=1000?n.toLocaleString("en-IN",{maximumFractionDigits:2}):n.toPrecision(6).replace(/\.?0+$/,"")};
-function setMode(m){mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");$("inLabel").textContent=m==="buy"?t("bnbAmount"):(currentLang==="hi"?"IGC की मात्रा":"IGC Amount");$("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
-function syncBtn(){$("act").textContent=user?(mode==="buy"?t("buy"):t("sell")):t("connect")}
-async function refreshBal(){if(!user){$("bal").textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);$("bal").textContent=t("tokenBalance")+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
+function setMode(m){mode=m;const tb=$("tBuy"),ts=$("tSell");if(tb)tb.classList.toggle("on",m==="buy");if(ts)ts.classList.toggle("on",m==="sell");setText("inLabel", m==="buy"?t("bnbAmount"):(currentLang==="hi"?"IGC की मात्रा":"IGC Amount"));if($("amt"))$("amt").value="";if($("out"))$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
+function syncBtn(){const b=$("act");if(b) b.textContent=user?(mode==="buy"?t("buy"):t("sell")):t("connect")}
+async function refreshBal(){const el=$("bal");if(!el)return;if(!user){el.textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);el.textContent=t("tokenBalance")+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
 
 async function connect(){
   if(!window.ethereum){openWalletModal();say(t("welcomeWallet"),"bad");return false;}
@@ -846,8 +860,8 @@ async function connect(){
     catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}
     signer=await new ethers.BrowserProvider(window.ethereum).getSigner();
     user=await signer.getAddress();
-    $("connect").textContent=short(user);
-    $("nowallet").style.display="none";
+    setText("connect", short(user));
+    setDisplay("nowallet","none");
     syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();updateMiningUI();
     toast(t("walletConnected"));
     return true;
@@ -857,14 +871,15 @@ async function connect(){
   }
 }
 
-function parseAmt(){try{const v=ethers.parseUnits($("amt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
-async function getQuote(){const a=parseAmt();quote=0n;if(a===0n){$("out").textContent="–";return}const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];try{const r=await rRouter.getAmountsOut(a,path);quote=r[1];$("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");}catch(e){$("out").textContent="–";say(t("noLiquidity"),"bad")}}
+function parseAmt(){const el=$("amt");if(!el)return 0n;try{const v=ethers.parseUnits(el.value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
+async function getQuote(){if(!$("out"))return;const a=parseAmt();quote=0n;if(a===0n){$("out").textContent="–";return}const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];try{const r=await rRouter.getAmountsOut(a,path);quote=r[1];$("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");}catch(e){$("out").textContent="–";say(t("noLiquidity"),"bad")}}
 function err(e){const tt=(e.reason||e.shortMessage||e.message||"").toString();if(/trading not enabled/i.test(tt))return currentLang==="hi"?"ट्रेडिंग अभी शुरू नहीं हुई है।":"Trading not enabled yet.";if(/Max Tx/i.test(tt))return currentLang==="hi"?"मात्रा घटाइए।":"Reduce amount.";if(/Max Wallet/i.test(tt))return currentLang==="hi"?"वॉलेट सीमा पूरी।":"Wallet limit reached.";if(/user rejected|denied|ACTION_REJECTED/i.test(tt))return currentLang==="hi"?"ट्रांज़ैक्शन रद्द किया।":"Transaction cancelled.";if(/INSUFFICIENT_OUTPUT|K\b|execution reverted/i.test(tt))return currentLang==="hi"?"Slippage बढ़ाइए (3–5%)।":"Increase Slippage (3-5%).";return tt||(currentLang==="hi"?"कुछ गड़बड़ हुई।":"Something went wrong.")}
 async function act(){
   if(!user){await connect();return}
   const a=parseAmt();if(a===0n){say(t("sendAmount"),"bad");return}
-  const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);
-  const btn=$("act");btn.disabled=true;
+  const slipEl=$("slip");
+  const sl=Math.min(Math.max(parseFloat(slipEl?slipEl.value:"3")||3,1),49);
+  const btn=$("act");if(btn) btn.disabled=true;
   try{
     await getQuote();
     if(quote===0n){throw new Error(t("noLiquidityBuy"))}
@@ -876,23 +891,25 @@ async function act(){
     else{const tok=new ethers.Contract(IGC,TABI,signer);if((await tok.allowance(user,ROUTER))<a){say(t("approve"));await (await tok.approve(ROUTER,a)).wait()}say(t("sellConfirm"));tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl)}
     say(t("waitingConfirm"));await tx.wait();
     say(t("done")+short(tx.hash),"ok");
-    $("amt").value="";$("out").textContent="–";refreshBal();
+    if($("amt")) $("amt").value="";
+    if($("out")) $("out").textContent="–";refreshBal();
   }catch(e){say(err(e),"bad")}
-  btn.disabled=false;
+  if(btn) btn.disabled=false;
 }
-$("tBuy").onclick=()=>setMode("buy");$("tSell").onclick=()=>setMode("sell");
-$("connect").onclick=()=>{
+on("tBuy","click",()=>setMode("buy"));on("tSell","click",()=>setMode("sell"));
+on("connect","click",()=>{
   if(user){toast(t("walletAlready")+short(user));return}
   if(!window.ethereum){openWalletModal();return}
   connect();
-};
-$("act").onclick=act;
-$("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
-$("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
-$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
+});
+on("act","click",act);
+on("amt","input",()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)});
+on("max","click",async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");if($("amt"))$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{if($("amt"))$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}});
+on("copy","click",async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};setText("copy", t("copyOk"));setTimeout(()=>setText("copy", t("copyAddress")),1800)});
 
+/* ================== INIT ================== */
 applyLang(currentLang);
-
+updateNavLabels();
 initRefUI();
 
 if(window.ethereum){
@@ -901,6 +918,7 @@ if(window.ethereum){
   window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
 }
 
+/* ================== SECURITY LAYER ================== */
 (function(){
   "use strict";
   try { if (window.top !== window.self) { window.top.location = window.self.location.href; } }
@@ -948,3 +966,15 @@ if(window.ethereum){
   document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
   document.addEventListener('auxclick', function(e){if (e.button === 1) { e.preventDefault(); }});
 })();
+
+/* ================== MOBILE NAV TOGGLE ================== */
+on("navToggle","click",()=>{
+  const nl=document.querySelector(".nav-links");
+  if(nl) nl.classList.toggle("open");
+});
+document.querySelectorAll(".nav-links a").forEach(a=>{
+  a.addEventListener("click",()=>{
+    const nl=document.querySelector(".nav-links");
+    if(nl) nl.classList.remove("open");
+  });
+});
