@@ -34,10 +34,48 @@ const MINE_KEY = "igc_last_mine";
 const MINE_TOTAL_KEY = "igc_total_mined";
 let cooldownInterval = null;
 
-/* ================== 🌐 TRANSLATIONS ================== */
+/* ================== HELPERS ================== */
+const $=id=>document.getElementById(id);
+function on(id,ev,fn){const el=$(id);if(el)el.addEventListener(ev,fn);}
+function setHTML(id,html){const el=$(id);if(el)el.innerHTML=html;}
+function setText(id,txt){const el=$(id);if(el)el.textContent=txt;}
+function setDisplay(id,disp){const el=$(id);if(el)el.style.display=disp;}
+function setHref(id,url){const el=$(id);if(el)el.href=url;}
+
+/* ================== TRANSLATIONS ================== */
 const TRANSLATIONS = {
   hi: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"वॉलेट जोड़ें",
+    heroSub:"🚀 BNB Smart Chain पर भरोसेमंद BEP-20 टोकन — भारत से दुनिया तक",
+    heroBadge1:"🎁 20,000 IGC FREE",
+    heroBadge2:"⛏️ डेली माइनिंग",
+    heroBadge3:"🛡️ Contract Verified",
+    heroBadge4:"🔒 No Mint Function",
+    claimAirdropBtn:"🎁 Claim 20,000 IGC",
+    buyNowBtn:"💰 अभी खरीदें",
+    goToAirdropPage:"🎁 Claim 20,000 IGC पेज पर जाएँ →",
+    quickTitle:"⚡ क्विक एक्शन — अपना काम चुनें",
+    qcAirdrop:"एयरड्रॉप", qcAirdropSub:"20,000 IGC FREE पाएँ",
+    qcMining:"डेली माइनिंग", qcMiningSub:"रोज़ 100 IGC कमाएँ",
+    qcBuySell:"खरीदें / बेचें", qcBuySellSub:"BNB या USDT से",
+    qcChart:"लाइव चार्ट", qcChartSub:"DexScreener पर देखें",
+    qcSecurity:"सुरक्षा", qcSecuritySub:"On-chain verification",
+    qcCommunity:"कम्युनिटी", qcCommunitySub:"Telegram · X · WhatsApp",
+    qcMerchant:"मर्चेंट", qcMerchantSub:"दुकानदारों के लिए",
+    qcWhitepaper:"व्हाइटपेपर", qcWhitepaperSub:"पूरी जानकारी पढ़ें",
+    airdropPageTitle:"🎁 IGC Airdrop — 20,000 IGC FREE",
+    airdropPageSub:"सिर्फ पहले 5,000 लोगों के लिए · हर सफल referral पर +5,000 IGC बोनस",
+    miningPageTitle:"⛏️ Daily Mining — रोज़ 100 IGC",
+    miningPageSub:"सिर्फ 1 click · हर 24 घंटे में · हर referral पर +50 IGC/day",
+    buySellPageTitle:"💱 IGC खरीदें / बेचें",
+    buySellPageSub:"BNB या USDT से सीधे PancakeSwap के ज़रिए — 30 seconds में",
+    communityPageSub:"Telegram · X · WhatsApp — सब एक जगह",
+    chartPageSub:"DexScreener · PooCoin · BscScan — सब एक जगह",
+    merchantPageSub:"IGC payments accept कीजिए · 0% setup fee · Instant settlement",
+    whitepaperPageSub:"Indian Global Coin — पूरी तकनीकी जानकारी, vision और roadmap",
+    claimSection:"🎯 अभी Claim कीजिए",
+    shareWhitepaper:"📢 Share Whitepaper",
+    printPdf:"⬇ PDF के रूप में प्रिंट करें",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
@@ -59,6 +97,7 @@ const TRANSLATIONS = {
     mine5:"• Mined IGC आपके wallet में 30 दिन के अंदर भेजे जाएँगे", refBoost:"🚀 Referral से mining rate बढ़ाइए!",
     now:"अभी:", refs:"Referrals:", miningNote:"⚠️ Note: Mining से कमाए IGC wallet में 30 दिन के अंदर भेजे जाएँगे।",
     securityTitle:"🛡️ Security & Transparency", securitySub:"IGC के बारे में live blockchain data — BscScan से सीधे। कोई भी verify कर सकता है।",
+    liveOnChainData:"📊 Live On-Chain Data", securityBadges:"✅ Security Badges",
     totalSupply:"Total Supply", fixedNoMint:"Fixed · No Mint Function", burned:"Burned", permanentlyRemoved:"Permanently Removed",
     holders:"Holders", onBSC:"On BNB Smart Chain", liquidityPool:"Liquidity Pool", pancakeV2:"PancakeSwap V2",
     verified:"✅ Contract Verified", noMint:"✅ No Mint Function", bep20:"✅ BEP-20 Standard", liqLocked:"🔒 Liquidity Locked",
@@ -67,6 +106,13 @@ const TRANSLATIONS = {
     c3:"✅ Owner wallet और liquidity pool — दोनों on-chain verified", c4:"✅ Contract BscScan पर verified है — कोई hidden function नहीं",
     viewContract:"📜 BscScan पर Contract देखें", viewOwner:"👤 Owner Wallet देखें", liveData:"Live data · ", refresh:"🔄 Refresh",
     communityTitle:"💬 हमारी Community से जुड़िए", telegramGroup:"Telegram Group", whatsappChannel:"WhatsApp Channel", whitepaper:"Whitepaper",
+    officialChannels:"📱 Official Channels",
+    communityGuideTitle:"🎯 Community Guidelines",
+    guide1:"✅ कोई भी scam / fake link शेयर न करें",
+    guide2:"✅ किसी से भी seed phrase या private key न माँगें",
+    guide3:"✅ सभी को respect करें — कोई spam नहीं",
+    guide4:"✅ सिर्फ official channels पर भरोसा करें",
+    guide5:"✅ किसी भी समस्या के लिए admin से contact करें",
     shareTitle:"📢 दोस्तों के साथ शेयर कीजिए", whatsapp:"💬 WhatsApp", twitter:"𝕏 Twitter", telegram:"✈️ Telegram", copyLink:"🔗 Link कॉपी",
     openInWallet:"वॉलेट ऐप में खोलें", noWalletMsg:"इस ब्राउज़र में वॉलेट नहीं मिला। खरीद-बिक्री के लिए यह पेज अपने वॉलेट के ब्राउज़र में खोलें।",
     buySellTitle:"IGC खरीदें / बेचें", buy:"खरीदें", sell:"बेचें", bnbAmount:"BNB की मात्रा", willGet:"लगभग मिलेगा",
@@ -92,10 +138,24 @@ const TRANSLATIONS = {
     buyBNBMetamask:"MetaMask के अंदर से BNB खरीदें", metamaskDesc:"Card से · MetaMask app में built-in",
     fastestWay:"💡 सबसे तेज़ तरीका:", fastestWayText:"अगर आपके पास Binance app है — उसमें P2P से BNB खरीदिए (UPI से), फिर MetaMask में withdraw कर दीजिए। पूरा process 5 मिनट में हो जाता है।",
     needHelp:"❓ Help चाहिए?", needHelpText:"हमारे Telegram group में message कीजिए — हम step-by-step guide कर देंगे।",
-    helpTelegram:"Telegram पर Help लें", merchantTitle:"🏪 दुकानदारों के लिए — Merchant Program",
+    helpTelegram:"Telegram पर Help लें",
+    merchantTitle:"🏪 दुकानदारों के लिए — Merchant Program",
     merchant1:"0% setup fee", merchant2:"QR Code", merchant2b:"IGC QR पाएँ", merchant3:"Instant payment",
     merchant4:"Early merchant bonus", merchant4b:"पहले 100 को 50,000 IGC", merchantContact:"Merchant बनने के लिए संपर्क करें",
-    whitepaperTitle:"व्हाइटपेपर", read:"📖 पढ़ें", pdf:"⬇ PDF", liveChartTitle:"लाइव प्राइस चार्ट",
+    merchantBenefits:"🎁 Merchant Benefits",
+    merchantSteps:"📋 Merchant कैसे बनें — 3 Step",
+    merchantStep1:"नीचे \"Merchant बनने के लिए संपर्क करें\" बटन दबाइए",
+    merchantStep2:"Telegram पर हमें अपनी दुकान की जानकारी भेजिए",
+    merchantStep3:"24 घंटे में आपका QR Code + Merchant ID तैयार हो जाएगा",
+    contactTitle:"📞 Contact",
+    merchant1b:"0% setup fee — कोई भी upfront charge नहीं",
+    merchant2c:"QR Code — IGC QR तुरंत पाएँ",
+    merchant3b:"Instant payment — customer से payment सीधे आपके wallet में",
+    merchant4c:"Early merchant bonus — पहले 100 merchants को 50,000 IGC",
+    whitepaperTitle:"व्हाइटपेपर", read:"📖 पढ़ें", pdf:"⬇ PDF",
+    liveChartTitle:"लाइव प्राइस चार्ट",
+    dexScreenerChart:"📊 DexScreener Live Chart",
+    quickLinks:"🔍 Quick Links",
     contractTitle:"कॉन्ट्रैक्ट एड्रेस", copyAddress:"एड्रेस कॉपी करें", verifiedNote:"✅ Contract verified on BscScan · ✅ No mint function",
     chooseWallet:"🔐 अपना Wallet चुनिए", walletSub:"IGC खरीदने, बेचने और airdrop claim करने के लिए वॉलेट चुनिए। सबसे नीचे दिए विकल्प भी काम करते हैं।",
     mmTag:"सबसे popular · Browser extension + Mobile", twTag:"Binance का official · Mobile पर best",
@@ -127,7 +187,7 @@ const TRANSLATIONS = {
     claimSuccess:"✅ Claim successful! 20,000 IGC", claimSaved:"✅ आपका claim हो गया! Google Sheet में save हो गया।",
     claimDone:"✔ Claimed", alreadyClaimed:"आप पहले ही claim कर चुके हैं", claimFailed:"Claim failed — फिर कोशिश कीजिए",
     signupOk:"✅ Signup successful!", loginOk:"✅ Login successful!", wrongCred:"Email या Password गलत है",
-    emailReg:"यह email पहले से registered है — password गलत है या Login कीजिए", validEmail:"सही Email डालिए", pwShort:"Password कम से कम 6 अक्षर",
+    emailReg:"यह email पहले से registered है", validEmail:"सही Email डालिए", pwShort:"Password कम से कम 6 अक्षर",
     googleLogin:"✅ Google Login: ", googleFail:"Google login failed", googleRespErr:"Google response error",
     googleClientFirst:"पहले Google Client ID setup कीजिए", googleScriptLoad:"Google script load हो रहा है… फिर try कीजिए",
     loggedOut:"Logged out", rightClickOff:"🚫 Right-click disabled for security", devToolsOff:"🚫 DevTools disabled",
@@ -138,10 +198,41 @@ const TRANSLATIONS = {
     i18nReady:"भाषा बदल गई: हिंदी",
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
     bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।",
-    firstSignup:"पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)"
+    sendWaRef:"WhatsApp पर भेजें",
+    sendTgRef:"Telegram पर भेजें"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
+    heroSub:"🚀 Trusted BEP-20 Token on BNB Smart Chain — From India to the World",
+    heroBadge1:"🎁 20,000 IGC FREE",
+    heroBadge2:"⛏️ Daily Mining",
+    heroBadge3:"🛡️ Contract Verified",
+    heroBadge4:"🔒 No Mint Function",
+    claimAirdropBtn:"🎁 Claim 20,000 IGC",
+    buyNowBtn:"💰 Buy Now",
+    goToAirdropPage:"🎁 Go to Claim 20,000 IGC Page →",
+    quickTitle:"⚡ Quick Actions — Choose Your Task",
+    qcAirdrop:"Airdrop", qcAirdropSub:"Get 20,000 IGC FREE",
+    qcMining:"Daily Mining", qcMiningSub:"Earn 100 IGC daily",
+    qcBuySell:"Buy / Sell", qcBuySellSub:"With BNB or USDT",
+    qcChart:"Live Chart", qcChartSub:"View on DexScreener",
+    qcSecurity:"Security", qcSecuritySub:"On-chain verification",
+    qcCommunity:"Community", qcCommunitySub:"Telegram · X · WhatsApp",
+    qcMerchant:"Merchant", qcMerchantSub:"For Shopkeepers",
+    qcWhitepaper:"Whitepaper", qcWhitepaperSub:"Read full details",
+    airdropPageTitle:"🎁 IGC Airdrop — 20,000 IGC FREE",
+    airdropPageSub:"Only for first 5,000 users · +5,000 IGC bonus per successful referral",
+    miningPageTitle:"⛏️ Daily Mining — 100 IGC Daily",
+    miningPageSub:"Just 1 click · Every 24 hours · +50 IGC/day per referral",
+    buySellPageTitle:"💱 Buy / Sell IGC",
+    buySellPageSub:"Directly via PancakeSwap with BNB or USDT — in 30 seconds",
+    communityPageSub:"Telegram · X · WhatsApp — All in one place",
+    chartPageSub:"DexScreener · PooCoin · BscScan — all in one place",
+    merchantPageSub:"Accept IGC payments · 0% setup fee · Instant settlement",
+    whitepaperPageSub:"Indian Global Coin — Full technical details, vision and roadmap",
+    claimSection:"🎯 Claim Now",
+    shareWhitepaper:"📢 Share Whitepaper",
+    printPdf:"⬇ Print as PDF",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
@@ -163,6 +254,7 @@ const TRANSLATIONS = {
     mine5:"• Mined IGC will be sent to your wallet within 30 days", refBoost:"🚀 Increase mining rate with Referrals!",
     now:"Now:", refs:"Referrals:", miningNote:"⚠️ Note: Mined IGC will be sent to your wallet within 30 days.",
     securityTitle:"🛡️ Security & Transparency", securitySub:"Live blockchain data for IGC — directly from BscScan. Anyone can verify.",
+    liveOnChainData:"📊 Live On-Chain Data", securityBadges:"✅ Security Badges",
     totalSupply:"Total Supply", fixedNoMint:"Fixed · No Mint Function", burned:"Burned", permanentlyRemoved:"Permanently Removed",
     holders:"Holders", onBSC:"On BNB Smart Chain", liquidityPool:"Liquidity Pool", pancakeV2:"PancakeSwap V2",
     verified:"✅ Contract Verified", noMint:"✅ No Mint Function", bep20:"✅ BEP-20 Standard", liqLocked:"🔒 Liquidity Locked",
@@ -171,6 +263,13 @@ const TRANSLATIONS = {
     c3:"✅ Owner wallet and liquidity pool — both on-chain verified", c4:"✅ Contract is verified on BscScan — no hidden functions",
     viewContract:"📜 View Contract on BscScan", viewOwner:"👤 View Owner Wallet", liveData:"Live data · ", refresh:"🔄 Refresh",
     communityTitle:"💬 Join Our Community", telegramGroup:"Telegram Group", whatsappChannel:"WhatsApp Channel", whitepaper:"Whitepaper",
+    officialChannels:"📱 Official Channels",
+    communityGuideTitle:"🎯 Community Guidelines",
+    guide1:"✅ Don't share any scam / fake links",
+    guide2:"✅ Never ask anyone for seed phrase or private key",
+    guide3:"✅ Respect everyone — no spam",
+    guide4:"✅ Only trust official channels",
+    guide5:"✅ Contact admin for any problem",
     shareTitle:"📢 Share with Friends", whatsapp:"💬 WhatsApp", twitter:"𝕏 Twitter", telegram:"✈️ Telegram", copyLink:"🔗 Copy Link",
     openInWallet:"Open in Wallet App", noWalletMsg:"No wallet found in this browser. Open this page in your wallet's browser to trade.",
     buySellTitle:"Buy / Sell IGC", buy:"Buy", sell:"Sell", bnbAmount:"BNB Amount", willGet:"You'll approximately get",
@@ -196,10 +295,24 @@ const TRANSLATIONS = {
     buyBNBMetamask:"Buy BNB inside MetaMask", metamaskDesc:"Via Card · Built-in in MetaMask app",
     fastestWay:"💡 Fastest way:", fastestWayText:"If you have Binance app — buy BNB via P2P (using UPI), then withdraw to MetaMask. Whole process takes 5 minutes.",
     needHelp:"❓ Need Help?", needHelpText:"Message us on Telegram group — we'll guide you step-by-step.",
-    helpTelegram:"Get Help on Telegram", merchantTitle:"🏪 For Shopkeepers — Merchant Program",
+    helpTelegram:"Get Help on Telegram",
+    merchantTitle:"🏪 For Shopkeepers — Merchant Program",
     merchant1:"0% setup fee", merchant2:"QR Code", merchant2b:"Get IGC QR", merchant3:"Instant payment",
     merchant4:"Early merchant bonus", merchant4b:"50,000 IGC for first 100", merchantContact:"Contact to become a Merchant",
-    whitepaperTitle:"Whitepaper", read:"📖 Read", pdf:"⬇ PDF", liveChartTitle:"Live Price Chart",
+    merchantBenefits:"🎁 Merchant Benefits",
+    merchantSteps:"📋 How to Become Merchant — 3 Steps",
+    merchantStep1:"Tap \"Contact to become a Merchant\" button below",
+    merchantStep2:"Send us your shop details on Telegram",
+    merchantStep3:"Your QR Code + Merchant ID ready within 24 hours",
+    contactTitle:"📞 Contact",
+    merchant1b:"0% setup fee — no upfront charge",
+    merchant2c:"QR Code — Get IGC QR instantly",
+    merchant3b:"Instant payment — payment goes directly to your wallet",
+    merchant4c:"Early merchant bonus — 50,000 IGC for first 100 merchants",
+    whitepaperTitle:"Whitepaper", read:"📖 Read", pdf:"⬇ PDF",
+    liveChartTitle:"Live Price Chart",
+    dexScreenerChart:"📊 DexScreener Live Chart",
+    quickLinks:"🔍 Quick Links",
     contractTitle:"Contract Address", copyAddress:"Copy Address", verifiedNote:"✅ Contract verified on BscScan · ✅ No mint function",
     chooseWallet:"🔐 Choose Your Wallet", walletSub:"Choose a wallet to buy, sell and claim airdrop of IGC. Options at the bottom also work.",
     mmTag:"Most popular · Browser extension + Mobile", twTag:"Binance official · Best on Mobile",
@@ -231,7 +344,7 @@ const TRANSLATIONS = {
     claimSuccess:"✅ Claim successful! 20,000 IGC", claimSaved:"✅ Your claim is done! Saved in Google Sheet.",
     claimDone:"✔ Claimed", alreadyClaimed:"You've already claimed", claimFailed:"Claim failed — please try again",
     signupOk:"✅ Signup successful!", loginOk:"✅ Login successful!", wrongCred:"Email or Password is wrong",
-    emailReg:"This email is already registered — wrong password or use Login", validEmail:"Enter a valid Email", pwShort:"Password at least 6 characters",
+    emailReg:"This email is already registered", validEmail:"Enter a valid Email", pwShort:"Password at least 6 characters",
     googleLogin:"✅ Google Login: ", googleFail:"Google login failed", googleRespErr:"Google response error",
     googleClientFirst:"Setup Google Client ID first", googleScriptLoad:"Google script is loading… try again",
     loggedOut:"Logged out", rightClickOff:"🚫 Right-click disabled for security", devToolsOff:"🚫 DevTools disabled",
@@ -242,7 +355,8 @@ const TRANSLATIONS = {
     i18nReady:"Language changed to English",
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
     bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts.",
-    firstSignup:"Please Sign Up first"
+    sendWaRef:"Send on WhatsApp",
+    sendTgRef:"Send on Telegram"
   }
 };
 
@@ -273,16 +387,26 @@ function applyLang(lang){
   updateLoginUI();
   updateClaimBtn();
   syncBtn();
+  updateNavLabels();
 }
 
-document.getElementById("langToggle").onclick = () => {
+function updateNavLabels(){
+  const map = currentLang === "hi"
+    ? {home:"होम", airdrop:"एयरड्रॉप", mining:"माइनिंग", buysell:"खरीदें/बेचें", security:"सुरक्षा", community:"कम्युनिटी", chart:"चार्ट", merchant:"मर्चेंट", whitepaper:"व्हाइटपेपर"}
+    : {home:"Home", airdrop:"Airdrop", mining:"Mining", buysell:"Buy/Sell", security:"Security", community:"Community", chart:"Chart", merchant:"Merchant", whitepaper:"Whitepaper"};
+  document.querySelectorAll("[data-nav]").forEach(el=>{
+    const k = el.getAttribute("data-nav");
+    if(map[k]) el.textContent = map[k];
+  });
+}
+
+on("langToggle","click",() => {
   const next = (currentLang === "hi") ? "en" : "hi";
   applyLang(next);
   toast(t("i18nReady"), "var(--ok)");
-};
+});
 
-/* ================== REST OF SCRIPT ================== */
-const $=id=>document.getElementById(id);
+/* ================== RPC Setup ================== */
 const rpc=new ethers.JsonRpcProvider(RPC);
 const rRouter=new ethers.Contract(ROUTER,RABI,rpc);
 const rToken=new ethers.Contract(IGC,TABI,rpc);
@@ -291,11 +415,13 @@ let mode="buy",user=null,signer=null,timer=null,quote=0n;
 let currentEmail=null;
 
 function toast(msg,color){
-  const el=$("toast");el.textContent=msg;el.style.background=color||"var(--gold)";
+  const el=$("toast");if(!el)return;
+  el.textContent=msg;el.style.background=color||"var(--gold)";
   el.style.color=color?"#fff":"#111";el.classList.add("show");
   setTimeout(()=>el.classList.remove("show"),3000);
 }
 
+/* ================== LOCAL STORAGE KEYS ================== */
 const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",SESSION:"igc_session",CLAIMED:"igc_claimed"};
 
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
@@ -304,14 +430,14 @@ function captureRef(){const u=new URL(location.href);const r=u.searchParams.get(
 
 const walletModal = $("walletModal");
 const noWalletModal = $("noWalletModal");
-function openWalletModal(){walletModal.classList.add("show");document.body.style.overflow = "hidden";}
-function closeWalletModal(){walletModal.classList.remove("show");document.body.style.overflow = "";}
-function openNoWalletModal(){noWalletModal.classList.add("show");document.body.style.overflow = "hidden";}
-function closeNoWalletModal(){noWalletModal.classList.remove("show");document.body.style.overflow = "";}
-$("walletClose").onclick = closeWalletModal;
-walletModal.addEventListener("click", (e)=>{ if(e.target === walletModal) closeWalletModal(); });
-$("nwClose").onclick = closeNoWalletModal;
-noWalletModal.addEventListener("click", (e)=>{ if(e.target === noWalletModal) closeNoWalletModal(); });
+function openWalletModal(){if(walletModal){walletModal.classList.add("show");document.body.style.overflow = "hidden";}}
+function closeWalletModal(){if(walletModal){walletModal.classList.remove("show");document.body.style.overflow = "";}}
+function openNoWalletModal(){if(noWalletModal){noWalletModal.classList.add("show");document.body.style.overflow = "hidden";}}
+function closeNoWalletModal(){if(noWalletModal){noWalletModal.classList.remove("show");document.body.style.overflow = "";}}
+on("walletClose","click",closeWalletModal);
+if(walletModal) walletModal.addEventListener("click", (e)=>{ if(e.target === walletModal) closeWalletModal(); });
+on("nwClose","click",closeNoWalletModal);
+if(noWalletModal) noWalletModal.addEventListener("click", (e)=>{ if(e.target === noWalletModal) closeNoWalletModal(); });
 
 (function(){
   const baseUrl = location.origin + location.pathname.replace(/\/$/, "") + "/";
@@ -345,7 +471,7 @@ document.querySelectorAll(".wallet-item").forEach(el => {
   });
 });
 
-$("wOpenInBrowser").addEventListener("click", async (e) => {
+on("wOpenInBrowser","click", async (e) => {
   e.preventDefault();e.stopPropagation();
   const hasEth = (typeof window.ethereum !== "undefined" && window.ethereum !== null);
   closeWalletModal();
@@ -369,78 +495,85 @@ function updateLoginUI(){
   setTimeout(()=>{const l=$("switchLink");if(l) l.onclick=()=>{isSignup=!isSignup;updateLoginUI();};},10);
 }
 
-/* ================== FIXED LOGIN ================== */
-$("loginBtn").onclick=()=>{
-  const em=$("emailInput").value.trim();
-  const pw=$("passInput").value.trim();
-  if(!em||!em.includes("@")){toast(t("validEmail"),"#ff6b6b");return}
-  if(pw.length<6){toast(t("pwShort"),"#ff6b6b");return}
+/* ================== FIXED EMAIL/PASSWORD LOGIN ================== */
+on("loginBtn","click",()=>{
+  const em = $("emailInput") ? $("emailInput").value.trim() : "";
+  const pw = $("passInput") ? $("passInput").value.trim() : "";
   
-  const savedEmail=localStorage.getItem(K.EMAIL);
-  const savedPass=localStorage.getItem(K.PASS);
+  if(!em || !em.includes("@")){ toast(t("validEmail"),"#ff6b6b"); return; }
+  if(pw.length < 6){ toast(t("pwShort"),"#ff6b6b"); return; }
+  
+  const savedEmail = localStorage.getItem(K.EMAIL);
+  const savedPass = localStorage.getItem(K.PASS);
   
   if(isSignup){
     // ===== SIGN UP =====
-    if(savedEmail && savedEmail.toLowerCase()===em.toLowerCase()){
-      // Same email already registered — same password → direct login
-      if(savedPass===pw){
-        localStorage.setItem(K.SESSION,"1");
-        currentEmail=em;
+    if(savedEmail && savedEmail.toLowerCase() === em.toLowerCase()){
+      // Same email पहले से registered
+      if(savedPass === pw){
+        // Same password → direct login
+        localStorage.setItem(K.SESSION, "1");
+        currentEmail = em;
         toast(t("loginOk"));
         showDashboard();
       } else {
-        toast(t("emailReg"),"#ff6b6b");
+        toast("यह email पहले से registered है। Password गलत है या Login करें।", "#ff6b6b");
       }
       return;
     }
-    // New signup
-    localStorage.setItem(K.EMAIL,em);
-    localStorage.setItem(K.PASS,pw);
-    localStorage.setItem(K.SESSION,"1");
-    currentEmail=em;
+    // नया signup
+    localStorage.setItem(K.EMAIL, em);
+    localStorage.setItem(K.PASS, pw);
+    localStorage.setItem(K.SESSION, "1");
+    currentEmail = em;
     toast(t("signupOk"));
     showDashboard();
   } else {
     // ===== LOGIN =====
     if(!savedEmail || !savedPass){
-      toast(t("firstSignup"),"#ff6b6b");
+      toast("पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)", "#ff6b6b");
       return;
     }
-    if(em.toLowerCase()!==savedEmail.toLowerCase() || pw!==savedPass){
-      toast(t("wrongCred"),"#ff6b6b");
+    if(em.toLowerCase() !== savedEmail.toLowerCase() || pw !== savedPass){
+      toast(t("wrongCred"), "#ff6b6b");
       return;
     }
-    localStorage.setItem(K.SESSION,"1");
-    currentEmail=em;
+    localStorage.setItem(K.SESSION, "1");
+    currentEmail = em;
     toast(t("loginOk"));
     showDashboard();
   }
-};
+});
 
+/* ================== GOOGLE LOGIN (Direct OAuth — No One Tap) ================== */
 let googleReady=false;
+
 function initGoogleSignIn(){
   if(!window.google || !window.google.accounts) return false;
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")) return false;
   try{
+    // सिर्फ basic init — One Tap बंद
     google.accounts.id.initialize({
-      client_id:GOOGLE_CLIENT_ID,
-      callback:handleGoogleCredential,
-      auto_select:false,
-      cancel_on_tap_outside:true,
-      use_fedcm_for_prompt:false
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      use_fedcm_for_prompt: false
     });
-    googleReady=true;
+    googleReady = true;
     return true;
   }catch(e){
-    console.error("Google init error:",e);
+    console.error("Google init error:", e);
     return false;
   }
 }
+
 function handleGoogleCredential(response){
   try{
     const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const em = payload.email;const name = payload.name || "";
-    if(!em){toast(t("googleFail"),"#ff6b6b");return}
+    const em = payload.email;
+    const name = payload.name || "";
+    if(!em){ toast(t("googleFail"),"#ff6b6b"); return; }
     currentEmail = em;
     localStorage.setItem(K.EMAIL, em);
     localStorage.setItem(K.PASS, "google_oauth");
@@ -449,21 +582,28 @@ function handleGoogleCredential(response){
     toast(t("googleLogin") + em);
     showDashboard();
     sendToSheet("googleLogin",{email:em, wallet:user||"", googleLogin:true, name:name});
-  }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
+  }catch(e){ toast(t("googleRespErr"),"#ff6b6b"); }
 }
-$("googleBtn").onclick=()=>{
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
+
+on("googleBtn","click",()=>{
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){
+    toast(t("googleClientFirst"),"#ff6b6b");
+    return;
+  }
   
+  // Google script load नहीं हुई
   if(!window.google || !window.google.accounts || !window.google.accounts.oauth2){
     toast("⏳ Google load हो रहा है… 2 second बाद try कीजिए", "#ff6b6b");
     initGoogleSignIn();
     return;
   }
   
+  // Button disable करें
   const gBtn = $("googleBtn");
   if(gBtn) gBtn.disabled = true;
   
   try{
+    // Direct OAuth popup — यह mobile + desktop दोनों पर काम करता है
     const client = google.accounts.oauth2.initTokenClient({
       client_id: GOOGLE_CLIENT_ID,
       scope: "openid email profile",
@@ -482,10 +622,10 @@ $("googleBtn").onclick=()=>{
         
         if(resp && resp.access_token){
           fetch("https://www.googleapis.com/oauth2/v3/userinfo",{
-            headers:{Authorization:"Bearer "+resp.access_token}
+            headers: { Authorization: "Bearer " + resp.access_token }
           })
-          .then(r=>r.json())
-          .then(info=>{
+          .then(r => r.json())
+          .then(info => {
             if(!info || !info.email){
               toast("Google email नहीं मिला", "#ff6b6b");
               return;
@@ -494,15 +634,20 @@ $("googleBtn").onclick=()=>{
             localStorage.setItem(K.EMAIL, info.email);
             localStorage.setItem(K.PASS, "google_oauth");
             localStorage.setItem(K.SESSION, "1");
-            localStorage.setItem("igc_gname", info.name||"");
+            localStorage.setItem("igc_gname", info.name || "");
             toast(t("googleLogin") + info.email);
             showDashboard();
-            sendToSheet("googleLogin",{email:info.email, wallet:user||"", googleLogin:true, name:info.name||""});
+            sendToSheet("googleLogin", {
+              email: info.email,
+              wallet: user || "",
+              googleLogin: true,
+              name: info.name || ""
+            });
           })
-          .catch(()=>toast("Google userinfo error","#ff6b6b"));
+          .catch(() => toast("Google userinfo error", "#ff6b6b"));
         }
       },
-      error_callback: (err)=>{
+      error_callback: (err) => {
         if(gBtn) gBtn.disabled = false;
         console.error("OAuth error:", err);
         if(err && err.type === "popup_closed"){
@@ -515,40 +660,50 @@ $("googleBtn").onclick=()=>{
       }
     });
     
-    client.requestAccessToken({prompt:"select_account"});
+    // Direct login prompt खोलें
+    client.requestAccessToken({ prompt: "select_account" });
     
   }catch(e){
     if(gBtn) gBtn.disabled = false;
     console.error(e);
-    toast(t("googleFail"),"#ff6b6b");
+    toast(t("googleFail"), "#ff6b6b");
   }
-};
+});
+
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
 /* ================== FIXED LOGOUT (Keep Credentials) ================== */
-$("logoutBtn").onclick=()=>{
+on("logoutBtn","click",()=>{
+  // ⚠️ सिर्फ SESSION delete करें — EMAIL/PASS रहने दें!
   localStorage.removeItem(K.SESSION);
   localStorage.removeItem("igc_gname");
-  currentEmail=null;
+  currentEmail = null;
+  user = null;
+  signer = null;
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
-  $("loginSection").style.display="block";
-  $("dashboardSection").style.display="none";
-  $("emailInput").value="";
-  $("passInput").value="";
+  setDisplay("loginSection","block");
+  setDisplay("dashboardSection","none");
+  setText("connect", t("connect"));
   updateLoginUI();
   updateMiningUI();
   updateClaimBtn();
+  syncBtn();
   toast(t("loggedOut"));
-};
+});
 
 function showDashboard(){
-  $("loginSection").style.display="none";$("dashboardSection").style.display="block";
-  $("userEmail").textContent=currentEmail||"user";$("myRefCode").textContent=getMyCode();
-  loadUserData();updateClaimBtn();updateMiningUI();
+  setDisplay("loginSection","none");
+  setDisplay("dashboardSection","block");
+  setText("userEmail", currentEmail || "user");
+  setText("myRefCode", getMyCode());
+  loadUserData();
+  updateClaimBtn();
+  updateMiningUI();
 }
 
 function updateClaimBtn(){
-  const hasUser=!!currentEmail;const hasWallet=!!user;const btn=$("claimBtn");
+  const btn=$("claimBtn");if(!btn)return;
+  const hasUser=!!currentEmail;const hasWallet=!!user;
   if(!hasUser){btn.disabled=true;btn.textContent=t("claimLogin");return}
   if(!hasWallet){btn.disabled=true;btn.textContent=t("claimWallet");return}
   btn.disabled=false;btn.textContent=t("claimReadyText");
@@ -563,7 +718,7 @@ async function sendToSheet(action,payload){
   }catch(e){return null;}
 }
 
-$("claimBtn").onclick=async()=>{
+on("claimBtn","click",async()=>{
   if(!currentEmail){toast(t("needLogin"),"#ff6b6b");return}
   if(!user){toast(t("needWallet"),"#ff6b6b");openWalletModal();return}
   if(localStorage.getItem(K.CLAIMED)){toast(t("alreadyClaimed"),"#ff6b6b");return}
@@ -571,62 +726,66 @@ $("claimBtn").onclick=async()=>{
   const result=await sendToSheet("claim",{email:currentEmail,wallet:user,googleLogin:localStorage.getItem(K.PASS)==="google_oauth"});
   if(result && result.success){
     localStorage.setItem(K.CLAIMED,"1");toast(t("claimSuccess"));
-    $("claimMsg").innerHTML=t("claimSaved");$("claimMsg").style.color="var(--ok)";
+    setHTML("claimMsg", t("claimSaved"));
+    const cm = $("claimMsg"); if(cm) cm.style.color="var(--ok)";
     btn.textContent=t("claimDone");loadUserData();updateMiningUI();
   }else{
     toast(result && result.message ? result.message : t("claimFailed"),"#ff6b6b");
     btn.disabled=false;btn.textContent=t("claimReadyText");
   }
-};
+});
 
 async function loadUserData(){
   if(!user){return}
   const result=await sendToSheet("getUser",{wallet:user});
   if(result && result.success && result.user){
     const u=result.user;
-    $("dashRefs").textContent=u.refCount||0;
-    $("dashBonus").textContent=(u.bonusIGC||0).toLocaleString("en-IN");
-    $("dashClaimed").textContent=(u.claimedIGC||0).toLocaleString("en-IN");
-    $("dashStatus").textContent=u.status||"-";
+    setText("dashRefs", u.refCount||0);
+    setText("dashBonus", (u.bonusIGC||0).toLocaleString("en-IN"));
+    setText("dashClaimed", (u.claimedIGC||0).toLocaleString("en-IN"));
+    setText("dashStatus", u.status||"-");
     localStorage.setItem("igc_ref_count", (u.refCount||0).toString());
   }else{
-    $("dashRefs").textContent="0";$("dashBonus").textContent="0";
-    $("dashClaimed").textContent=localStorage.getItem(K.CLAIMED)?"20,000":"0";
-    $("dashStatus").textContent=localStorage.getItem(K.CLAIMED)?"Claimed":"-";
+    setText("dashRefs","0");setText("dashBonus","0");
+    setText("dashClaimed", localStorage.getItem(K.CLAIMED)?"20,000":"0");
+    setText("dashStatus", localStorage.getItem(K.CLAIMED)?"Claimed":"-");
   }
   updateMiningUI();
 }
 
 function updateMiningUI(){
+  const panel = $("miningPanel"); if(!panel) return;
   const hasUser = !!currentEmail;
   const hasWallet = !!user;
   if(!hasUser || !hasWallet){
-    $("miningPanel").style.display = "none";
-    $("miningLoginWarn").style.display = "block";
+    panel.style.display = "none";
+    setDisplay("miningLoginWarn","block");
     return;
   }
-  $("miningPanel").style.display = "block";
-  $("miningLoginWarn").style.display = "none";
+  panel.style.display = "block";
+  setDisplay("miningLoginWarn","none");
   const totalMined = parseInt(localStorage.getItem(MINE_TOTAL_KEY) || "0");
   const lastMine = parseInt(localStorage.getItem(MINE_KEY) || "0");
   const refCount = parseInt(localStorage.getItem("igc_ref_count") || "0");
-  $("minedTotal").textContent = totalMined.toLocaleString("en-IN") + " IGC";
-  $("myRefCountMining").textContent = refCount;
+  setText("minedTotal", totalMined.toLocaleString("en-IN") + " IGC");
+  setText("myRefCountMining", refCount);
   const dailyRate = Math.min(MINING_PER_CLICK + (refCount * REF_BOOST_PER), MAX_DAILY);
-  $("miningRate").textContent = dailyRate + " IGC/day";
-  $("myMiningRate").textContent = dailyRate;
+  setText("miningRate", dailyRate + " IGC/day");
+  setText("myMiningRate", dailyRate);
   const capUsed = Math.min(totalMined, MINING_LIFETIME_CAP);
   const pct = Math.min((capUsed / MINING_LIFETIME_CAP) * 100, 100);
-  $("lifetimeText").textContent = capUsed.toLocaleString("en-IN") + " / " + MINING_LIFETIME_CAP.toLocaleString("en-IN") + " IGC";
-  $("lifetimeFill").style.width = pct + "%";
+  setText("lifetimeText", capUsed.toLocaleString("en-IN") + " / " + MINING_LIFETIME_CAP.toLocaleString("en-IN") + " IGC");
+  const lf=$("lifetimeFill");if(lf) lf.style.width = pct + "%";
   const remaining = Math.max(MINING_LIFETIME_CAP - totalMined, 0);
-  $("lifetimeRemaining").textContent = remaining.toLocaleString("en-IN") + " IGC";
+  setText("lifetimeRemaining", remaining.toLocaleString("en-IN") + " IGC");
+  const btn = $("mineBtn");
+  if(!btn) return;
   if(totalMined >= MINING_LIFETIME_CAP){
-    $("mineBtn").disabled = true;
-    $("mineBtn").style.opacity = "0.55";
-    $("mineBtn").style.cursor = "not-allowed";
-    $("mineBtnText").textContent = t("lifetimeCapDone");
-    $("mineCooldown").style.display = "none";
+    btn.disabled = true;
+    btn.style.opacity = "0.55";
+    btn.style.cursor = "not-allowed";
+    setText("mineBtnText", t("lifetimeCapDone"));
+    setDisplay("mineCooldown","none");
     if(cooldownInterval){clearInterval(cooldownInterval);cooldownInterval=null;}
     return;
   }
@@ -634,19 +793,19 @@ function updateMiningUI(){
   const elapsed = now - lastMine;
   const cooldownMs = 24 * 60 * 60 * 1000;
   if(lastMine === 0 || elapsed >= cooldownMs){
-    $("mineBtn").disabled = false;
-    $("mineBtn").style.opacity = "1";
-    $("mineBtn").style.cursor = "pointer";
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
     const willEarn = Math.min(dailyRate, remaining);
-    $("mineBtnText").textContent = t("mineBtnGo") + willEarn + " IGC";
-    $("mineCooldown").style.display = "none";
+    setText("mineBtnText", t("mineBtnGo") + willEarn + " IGC");
+    setDisplay("mineCooldown","none");
     if(cooldownInterval){clearInterval(cooldownInterval);cooldownInterval=null;}
   } else {
-    $("mineBtn").disabled = true;
-    $("mineBtn").style.opacity = "0.55";
-    $("mineBtn").style.cursor = "not-allowed";
-    $("mineBtnText").textContent = t("wait");
-    $("mineCooldown").style.display = "block";
+    btn.disabled = true;
+    btn.style.opacity = "0.55";
+    btn.style.cursor = "not-allowed";
+    setText("mineBtnText", t("wait"));
+    setDisplay("mineCooldown","block");
     startCooldownTimer(cooldownMs - elapsed);
   }
 }
@@ -663,17 +822,17 @@ function startCooldownTimer(remainingMs){
     const h = Math.floor(remainingMs / 3600000);
     const m = Math.floor((remainingMs % 3600000) / 60000);
     const s = Math.floor((remainingMs % 60000) / 1000);
-    $("cooldownTimer").textContent =
+    setText("cooldownTimer",
       String(h).padStart(2,"0") + ":" +
       String(m).padStart(2,"0") + ":" +
-      String(s).padStart(2,"0");
+      String(s).padStart(2,"0"));
     remainingMs -= 1000;
   }
   tick();
   cooldownInterval = setInterval(tick, 1000);
 }
 
-$("mineBtn").onclick = async () => {
+on("mineBtn","click", async () => {
   if(!currentEmail){toast(t("needLogin"),"#ff6b6b");return}
   if(!user){toast(t("needWallet"),"#ff6b6b");return}
   const totalMined = parseInt(localStorage.getItem(MINE_TOTAL_KEY) || "0");
@@ -681,8 +840,8 @@ $("mineBtn").onclick = async () => {
     toast(t("lifetimeCapToast"),"#ff6b6b");
     return;
   }
-  $("mineBtn").disabled = true;
-  $("mineBtnText").textContent = t("mineNowText");
+  const btn = $("mineBtn"); if(btn) btn.disabled = true;
+  setText("mineBtnText", t("mineNowText"));
   const result = await sendToSheet("mine", {email: currentEmail, wallet: user});
   if(result && result.success){
     localStorage.setItem(MINE_KEY, Date.now().toString());
@@ -699,28 +858,31 @@ $("mineBtn").onclick = async () => {
     toast(result && result.message ? result.message : "Mining failed","#ff6b6b");
     updateMiningUI();
   }
-};
+});
 
-$("copyRefBtn").onclick=async()=>{
+on("copyRefBtn","click",async()=>{
   const code=getMyCode();
   try{await navigator.clipboard.writeText(code)}catch(e){}
   toast(t("codeCopied")+code);
-};
+});
 function buildRefLink(){const u=new URL(location.href);u.searchParams.set("ref",getMyCode());return u.toString();}
-$("shareRefBtn").onclick=()=>{
+on("shareRefBtn","click",()=>{
   const link=buildRefLink();
   const txt=t("refShareText");
   if(navigator.share){navigator.share({title:"IGC Airdrop",text:txt,url:link}).catch(()=>{});}
   else{window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+link),"_blank");}
-};
+});
 
-$("shareWa").href="https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink());
-$("shareX").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink());
-$("shareTg").href="https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText"));
-$("shareCopy").onclick=async()=>{
+(function(){
+  const wa=$("shareWa"),x=$("shareX"),tg=$("shareTg");
+  if(wa) wa.href="https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink());
+  if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink());
+  if(tg) tg.href="https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText"));
+})();
+on("shareCopy","click",async()=>{
   try{await navigator.clipboard.writeText(buildRefLink())}catch(e){}
   toast(t("linkCopied"));
-};
+});
 
 const UABI=["function balanceOf(address) view returns (uint256)","function allowance(address,address) view returns (uint256)","function approve(address,uint256) returns (bool)"];
 const R2=[
@@ -730,10 +892,11 @@ const R2=[
 const uPath=[USDT,WBNB,IGC];
 let uTimer=null,uQuote=0n;
 
-function uSay(t2,c){const m=$("uMsg");m.textContent=t2;m.className="msg "+(c||"")}
-function uVal(){try{const v=ethers.parseUnits($("uAmt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
+function uSay(t2,c){const m=$("uMsg");if(!m)return;m.textContent=t2;m.className="msg "+(c||"")}
+function uVal(){const el=$("uAmt");if(!el)return 0n;try{const v=ethers.parseUnits(el.value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
 
 async function uGetQuote(){
+  if(!$("uOut")) return;
   const a=uVal();uQuote=0n;
   if(a===0n){$("uOut").textContent="–";return}
   try{
@@ -748,13 +911,13 @@ async function uGetQuote(){
 }
 
 async function uRefresh(){
-  if(!user){$("uBal").textContent="";return}
+  if(!user){const el=$("uBal");if(el) el.textContent="";return}
   try{
     const [u,b]=await Promise.all([
       new ethers.Contract(USDT,UABI,rpc).balanceOf(user),
       rpc.getBalance(user)
     ]);
-    $("uBal").textContent="USDT: "+fmt(u)+" · BNB (gas): "+fmt(b);
+    setText("uBal","USDT: "+fmt(u)+" · BNB (gas): "+fmt(b));
   }catch(e){}
 }
 
@@ -762,8 +925,9 @@ async function buyWithUsdt(){
   if(!user){await connect();if(!user)return}
   const a=uVal();
   if(a===0n){uSay(t("sendAmount"),"bad");return}
-  const sl=Math.min(Math.max(parseFloat($("uSlip").value)||3,1),49);
-  const btn=$("uAct");btn.disabled=true;
+  const slipEl=$("uSlip");
+  const sl=Math.min(Math.max(parseFloat(slipEl?slipEl.value:"3")||3,1),49);
+  const btn=$("uAct");if(btn) btn.disabled=true;
   try{
     const u=new ethers.Contract(USDT,UABI,signer);
     if((await u.balanceOf(user))<a) throw new Error(t("notEnoughUSDT"));
@@ -782,23 +946,25 @@ async function buyWithUsdt(){
     uSay(t("waitingConfirm"));
     await tx.wait();
     uSay(t("igcGot")+short(tx.hash),"ok");
-    $("uAmt").value="";$("uOut").textContent="–";
+    if($("uAmt")) $("uAmt").value="";
+    if($("uOut")) $("uOut").textContent="–";
     uRefresh();refreshBal();
   }catch(e){
     const tt=(e.reason||e.shortMessage||e.message||"").toString();
     uSay(/[\u0900-\u097F]/.test(tt)?tt:err(e),"bad");
   }
-  btn.disabled=false;
+  if(btn) btn.disabled=false;
 }
 
-$("uAmt").oninput=()=>{clearTimeout(uTimer);uTimer=setTimeout(uGetQuote,400)};
-$("uAct").onclick=buyWithUsdt;
-uRefresh();setInterval(uRefresh,10000);
+on("uAmt","input",()=>{clearTimeout(uTimer);uTimer=setTimeout(uGetQuote,400)});
+on("uAct","click",buyWithUsdt);
+if($("uAct")){uRefresh();setInterval(uRefresh,10000);}
 
 async function requestGasFromServer() {
   if (!currentEmail) { toast(t("needLogin"), "#ff6b6b"); return; }
   if (!user || !signer) { toast(t("needWallet"), "#ff6b6b"); return; }
   const btn = $("freeGasBtn");
+  if(!btn) return;
   btn.disabled = true;
   btn.innerHTML = t("signing");
   try {
@@ -826,50 +992,56 @@ async function requestGasFromServer() {
     btn.innerHTML = t("gasBtnText");
   }
 }
-$("freeGasBtn").onclick = requestGasFromServer;
+on("freeGasBtn","click",requestGasFromServer);
 
-/* ================== INIT REF UI (Fixed — Session Check) ================== */
+/* ================== FIXED INIT REF UI (Session Check) ================== */
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
-  if(refBy){$("refWelcome").style.display="block";$("refWelcomeCode").textContent=refBy;}
-  $("myRefCode").textContent=getMyCode();
+  if(refBy){setDisplay("refWelcome","block");setText("refWelcomeCode", refBy);}
+  setText("myRefCode", getMyCode());
   
-  const savedEmail=localStorage.getItem(K.EMAIL);
-  const hasSession=localStorage.getItem(K.SESSION)==="1";
+  // ✅ सिर्फ SESSION check करें — credentials नहीं
+  const savedEmail = localStorage.getItem(K.EMAIL);
+  const sessionActive = localStorage.getItem(K.SESSION);
   
-  if(hasSession && savedEmail){
-    currentEmail=savedEmail;
+  if(sessionActive === "1" && savedEmail && savedEmail.length > 3){
+    currentEmail = savedEmail;
     showDashboard();
   } else {
     updateLoginUI();
   }
   
-  setTimeout(()=>{$("poolFill").style.width="15%";},300);
+  setTimeout(()=>{const pf=$("poolFill");if(pf) pf.style.width="15%";},300);
   updateMiningUI();
 }
 
 const DRIVE_PRIMARY="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512";
 const DRIVE_ALT="https://drive.google.com/uc?export=view&id=1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa";
-const lg=$("logo");lg.src=DRIVE_PRIMARY;let logoTry=0;
-lg.onerror=()=>{logoTry++;if(logoTry===1){lg.src=DRIVE_ALT;return}if(logoTry===2){lg.src="logo.png";return}if(logoTry===3){lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';}};
+(function(){
+  const lg=$("logo");if(!lg)return;
+  lg.src=DRIVE_PRIMARY;let logoTry=0;
+  lg.onerror=()=>{logoTry++;if(logoTry===1){lg.src=DRIVE_ALT;return}if(logoTry===2){lg.src="logo.png";return}if(logoTry===3){lg.outerHTML='<div class="logo" style="display:flex;align-items:center;justify-content:center;color:#111;font-weight:700">IGC</div>';}};
+})();
 
 const checksum=ethers.getAddress(IGC);
-$("addr").textContent=checksum;
-$("dex").href="https://dexscreener.com/bsc/"+checksum;
-$("scan").href="https://bscscan.com/token/"+checksum;
-$("poocoin").href="https://poocoin.app/tokens/"+checksum;
-$("poocoinLnk").href="https://poocoin.app/tokens/"+checksum;
-$("chart").src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trades=0&info=0";
-$("pcsBnb").href="https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum;
-$("pcsUsdt").href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+ethers.getAddress(USDT)+"&outputCurrency="+checksum;
-$("tgBtn").href=SOCIAL.telegram;$("xBtn").href=SOCIAL.twitter;$("waBtn").href=SOCIAL.whatsapp;
-$("merchantBtn").onclick=()=>window.open(SOCIAL.merchant,"_blank");
-$("helpBuyBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
-$("tItemSupply").href="https://bscscan.com/token/"+checksum;
-$("tItemBurned").href="https://bscscan.com/token/"+checksum+"?a="+DEAD;
-$("tItemHolders").href="https://bscscan.com/token/"+checksum+"#balances";
-$("tItemLiquidity").href="https://dexscreener.com/bsc/"+checksum;
+setText("addr", checksum);
+setHref("dex","https://dexscreener.com/bsc/"+checksum);
+setHref("scan","https://bscscan.com/token/"+checksum);
+setHref("poocoin","https://poocoin.app/tokens/"+checksum);
+setHref("poocoinLnk","https://poocoin.app/tokens/"+checksum);
+const chartIframe=$("chart");if(chartIframe) chartIframe.src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trades=0&info=0";
+setHref("pcsBnb","https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum);
+setHref("pcsUsdt","https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+ethers.getAddress(USDT)+"&outputCurrency="+checksum);
+setHref("tgBtn",SOCIAL.telegram);setHref("xBtn",SOCIAL.twitter);setHref("waBtn",SOCIAL.whatsapp);
+on("merchantBtn","click",()=>window.open(SOCIAL.merchant,"_blank"));
+on("helpBuyBtn","click",()=>window.open(SOCIAL.telegram,"_blank"));
+setHref("tItemSupply","https://bscscan.com/token/"+checksum);
+setHref("tItemBurned","https://bscscan.com/token/"+checksum+"?a="+DEAD);
+setHref("tItemHolders","https://bscscan.com/token/"+checksum+"#balances");
+setHref("tItemLiquidity","https://dexscreener.com/bsc/"+checksum);
+setHref("tiScanContract","https://bscscan.com/token/"+checksum+"#code");
+setHref("tiScanOwner","https://bscscan.com/token/"+checksum+"#balances");
 
 const fmtShort=(n)=>{
   if(n>=1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,"")+" B";
@@ -880,19 +1052,21 @@ const fmtShort=(n)=>{
 const fmtFull=(n)=>{return Math.round(n).toLocaleString("en-IN");};
 
 async function loadTrustData(){
+  if(!$("tiSupply")) return;
   let supplyLoaded=false;
   try{
     const ts=await rToken.totalSupply();
     const num=Number(ethers.formatUnits(ts,18));
-    if(num>0){$("tiSupply").textContent = fmtFull(num)+" IGC";supplyLoaded=true;}
+    if(num>0){setText("tiSupply", fmtFull(num)+" IGC");supplyLoaded=true;}
   }catch(e){ }
-  if(!supplyLoaded){$("tiSupply").textContent = fmtFull(FALLBACK_TOTAL_SUPPLY)+" IGC";}
+  if(!supplyLoaded){setText("tiSupply", fmtFull(FALLBACK_TOTAL_SUPPLY)+" IGC");}
   try{
     const deadBal=await rToken.balanceOf(DEAD);
     const num=Number(ethers.formatUnits(deadBal,18));
-    $("tiBurned").textContent = num>0 ? fmtFull(num)+" IGC" : "0 IGC";
-    if(num===0) $("tiBurned").style.color="var(--muted)";
-  }catch(e){ $("tiBurned").textContent="0 IGC"; }
+    setText("tiBurned", num>0 ? fmtFull(num)+" IGC" : "0 IGC");
+    const be=$("tiBurned");
+    if(num===0 && be) be.style.color="var(--muted)";
+  }catch(e){ setText("tiBurned","0 IGC"); }
   try{
     const pairAddr=await rFactory.getPair(IGC,WBNB);
     if(pairAddr && pairAddr!=="0x0000000000000000000000000000000000000000"){
@@ -901,29 +1075,26 @@ async function loadTrustData(){
       const reserves=await rPair.getReserves();
       const igcReserve = (t0.toLowerCase()===IGC.toLowerCase()) ? reserves[0] : reserves[1];
       const igcAmt=Number(ethers.formatUnits(igcReserve,18));
-      $("tiLiquidity").textContent=fmtFull(igcAmt)+" IGC";
-      $("tiLiquidity").style.color="var(--ok)";
+      setText("tiLiquidity", fmtFull(igcAmt)+" IGC");
+      const lq=$("tiLiquidity");if(lq) lq.style.color="var(--ok)";
     }else{
-      $("tiLiquidity").textContent=(currentLang==="hi")?"जल्द जुड़ेगी":"Coming soon";
-      $("tiLiquidity").style.color="var(--gold)";
+      setText("tiLiquidity", (currentLang==="hi")?"जल्द जुड़ेगी":"Coming soon");
+      const lq=$("tiLiquidity");if(lq) lq.style.color="var(--gold)";
     }
-  }catch(e){ $("tiLiquidity").textContent="—"; }
-  $("tiHolders").textContent="500+";
+  }catch(e){ setText("tiLiquidity","—"); }
+  setText("tiHolders","500+");
   const now=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
-  $("lastRefresh").textContent=t("liveData")+"updated "+now+" · ";
+  setText("lastRefresh", t("liveData")+"updated "+now+" · ");
 }
-$("refreshTrust").onclick=()=>{toast(t("refreshing"));loadTrustData();};
-$("tiScanContract").href="https://bscscan.com/token/"+checksum+"#code";
-$("tiScanOwner").href="https://bscscan.com/token/"+checksum+"#balances";
-loadTrustData();
-setInterval(loadTrustData, 60000);
+on("refreshTrust","click",()=>{toast(t("refreshing"));loadTrustData();});
+if($("tiSupply")){loadTrustData();setInterval(loadTrustData, 60000);}
 
-function say(t2,c){const m=$("msg");m.textContent=t2;m.className="msg "+(c||"")}
+function say(t2,c){const m=$("msg");if(!m)return;m.textContent=t2;m.className="msg "+(c||"")}
 const short=a=>a.slice(0,6)+"…"+a.slice(-4);
 const fmt=(v)=>{const n=Number(ethers.formatUnits(v,18));return n>=1000?n.toLocaleString("en-IN",{maximumFractionDigits:2}):n.toPrecision(6).replace(/\.?0+$/,"")};
-function setMode(m){mode=m;$("tBuy").classList.toggle("on",m==="buy");$("tSell").classList.toggle("on",m==="sell");$("inLabel").textContent=m==="buy"?t("bnbAmount"):(currentLang==="hi"?"IGC की मात्रा":"IGC Amount");$("amt").value="";$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
-function syncBtn(){$("act").textContent=user?(mode==="buy"?t("buy"):t("sell")):t("connect")}
-async function refreshBal(){if(!user){$("bal").textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);$("bal").textContent=t("tokenBalance")+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
+function setMode(m){mode=m;const tb=$("tBuy"),ts=$("tSell");if(tb)tb.classList.toggle("on",m==="buy");if(ts)ts.classList.toggle("on",m==="sell");setText("inLabel", m==="buy"?t("bnbAmount"):(currentLang==="hi"?"IGC की मात्रा":"IGC Amount"));if($("amt"))$("amt").value="";if($("out"))$("out").textContent="–";quote=0n;say("");refreshBal();syncBtn();}
+function syncBtn(){const b=$("act");if(b) b.textContent=user?(mode==="buy"?t("buy"):t("sell")):t("connect")}
+async function refreshBal(){const el=$("bal");if(!el)return;if(!user){el.textContent="";return}try{const b=mode==="buy"?await rpc.getBalance(user):await rToken.balanceOf(user);el.textContent=t("tokenBalance")+fmt(b)+(mode==="buy"?" BNB":" IGC");}catch(e){}}
 
 async function connect(){
   if(!window.ethereum){openWalletModal();say(t("welcomeWallet"),"bad");return false;}
@@ -933,8 +1104,8 @@ async function connect(){
     catch(e){if(e.code===4902)await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://bscscan.com"]}]});else throw e}
     signer=await new ethers.BrowserProvider(window.ethereum).getSigner();
     user=await signer.getAddress();
-    $("connect").textContent=short(user);
-    $("nowallet").style.display="none";
+    setText("connect", short(user));
+    setDisplay("nowallet","none");
     syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();updateMiningUI();
     toast(t("walletConnected"));
     return true;
@@ -944,14 +1115,15 @@ async function connect(){
   }
 }
 
-function parseAmt(){try{const v=ethers.parseUnits($("amt").value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
-async function getQuote(){const a=parseAmt();quote=0n;if(a===0n){$("out").textContent="–";return}const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];try{const r=await rRouter.getAmountsOut(a,path);quote=r[1];$("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");}catch(e){$("out").textContent="–";say(t("noLiquidity"),"bad")}}
+function parseAmt(){const el=$("amt");if(!el)return 0n;try{const v=ethers.parseUnits(el.value||"0",18);return v>0n?v:0n}catch(e){return 0n}}
+async function getQuote(){if(!$("out"))return;const a=parseAmt();quote=0n;if(a===0n){$("out").textContent="–";return}const path=mode==="buy"?[WBNB,IGC]:[IGC,WBNB];try{const r=await rRouter.getAmountsOut(a,path);quote=r[1];$("out").textContent="≈ "+fmt(quote)+(mode==="buy"?" IGC":" BNB");say("");}catch(e){$("out").textContent="–";say(t("noLiquidity"),"bad")}}
 function err(e){const tt=(e.reason||e.shortMessage||e.message||"").toString();if(/trading not enabled/i.test(tt))return currentLang==="hi"?"ट्रेडिंग अभी शुरू नहीं हुई है।":"Trading not enabled yet.";if(/Max Tx/i.test(tt))return currentLang==="hi"?"मात्रा घटाइए।":"Reduce amount.";if(/Max Wallet/i.test(tt))return currentLang==="hi"?"वॉलेट सीमा पूरी।":"Wallet limit reached.";if(/user rejected|denied|ACTION_REJECTED/i.test(tt))return currentLang==="hi"?"ट्रांज़ैक्शन रद्द किया।":"Transaction cancelled.";if(/INSUFFICIENT_OUTPUT|K\b|execution reverted/i.test(tt))return currentLang==="hi"?"Slippage बढ़ाइए (3–5%)।":"Increase Slippage (3-5%).";return tt||(currentLang==="hi"?"कुछ गड़बड़ हुई।":"Something went wrong.")}
 async function act(){
   if(!user){await connect();return}
   const a=parseAmt();if(a===0n){say(t("sendAmount"),"bad");return}
-  const sl=Math.min(Math.max(parseFloat($("slip").value)||3,1),49);
-  const btn=$("act");btn.disabled=true;
+  const slipEl=$("slip");
+  const sl=Math.min(Math.max(parseFloat(slipEl?slipEl.value:"3")||3,1),49);
+  const btn=$("act");if(btn) btn.disabled=true;
   try{
     await getQuote();
     if(quote===0n){throw new Error(t("noLiquidityBuy"))}
@@ -963,23 +1135,25 @@ async function act(){
     else{const tok=new ethers.Contract(IGC,TABI,signer);if((await tok.allowance(user,ROUTER))<a){say(t("approve"));await (await tok.approve(ROUTER,a)).wait()}say(t("sellConfirm"));tx=await router.swapExactTokensForETHSupportingFeeOnTransferTokens(a,minOut,[IGC,WBNB],user,dl)}
     say(t("waitingConfirm"));await tx.wait();
     say(t("done")+short(tx.hash),"ok");
-    $("amt").value="";$("out").textContent="–";refreshBal();
+    if($("amt")) $("amt").value="";
+    if($("out")) $("out").textContent="–";refreshBal();
   }catch(e){say(err(e),"bad")}
-  btn.disabled=false;
+  if(btn) btn.disabled=false;
 }
-$("tBuy").onclick=()=>setMode("buy");$("tSell").onclick=()=>setMode("sell");
-$("connect").onclick=()=>{
+on("tBuy","click",()=>setMode("buy"));on("tSell","click",()=>setMode("sell"));
+on("connect","click",()=>{
   if(user){toast(t("walletAlready")+short(user));return}
   if(!window.ethereum){openWalletModal();return}
   connect();
-};
-$("act").onclick=act;
-$("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
-$("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
-$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
+});
+on("act","click",act);
+on("amt","input",()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)});
+on("max","click",async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");if($("amt"))$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{if($("amt"))$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}});
+on("copy","click",async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};setText("copy", t("copyOk"));setTimeout(()=>setText("copy", t("copyAddress")),1800)});
 
+/* ================== INIT ================== */
 applyLang(currentLang);
-
+updateNavLabels();
 initRefUI();
 
 if(window.ethereum){
@@ -988,6 +1162,7 @@ if(window.ethereum){
   window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
 }
 
+/* ================== SECURITY LAYER ================== */
 (function(){
   "use strict";
   try { if (window.top !== window.self) { window.top.location = window.self.location.href; } }
@@ -1034,4 +1209,106 @@ if(window.ethereum){
   document.addEventListener('mousedown', function(e){if (e.detail > 1) {const tag = (e.target.tagName || '').toLowerCase();if (tag !== 'input' && tag !== 'textarea') { e.preventDefault(); }}});
   document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
   document.addEventListener('auxclick', function(e){if (e.button === 1) { e.preventDefault(); }});
+})();
+
+/* ================== MOBILE NAV TOGGLE ================== */
+on("navToggle","click",()=>{
+  const nl=document.querySelector(".nav-links");
+  if(nl) nl.classList.toggle("open");
+});
+document.querySelectorAll(".nav-links a").forEach(a=>{
+  a.addEventListener("click",()=>{
+    const nl=document.querySelector(".nav-links");
+    if(nl) nl.classList.remove("open");
+  });
+});
+
+/* ================== AUTO BACK-TO-HOME BUTTON ================== */
+(function(){
+  "use strict";
+  
+  const path = (location.pathname || "").toLowerCase();
+  const isHome = path.endsWith("index.html") 
+                 || path.endsWith("/") 
+                 || path === "" 
+                 || path.endsWith("indian-global-coin/");
+  
+  if(isHome) return;
+  
+  if(!document.getElementById("igc-back-css")){
+    const style = document.createElement("style");
+    style.id = "igc-back-css";
+    style.textContent = `
+      .back-home-wrap{
+        max-width:520px;
+        margin:20px auto 30px;
+        padding:0 16px;
+        text-align:center;
+        position:relative;
+        z-index:50;
+      }
+      .back-home-btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        padding:14px 32px;
+        border-radius:12px;
+        background:linear-gradient(135deg,#f0b90b,#c99a08);
+        color:#111;
+        font-weight:800;
+        font-size:15.5px;
+        text-decoration:none;
+        border:0;
+        cursor:pointer;
+        font-family:Hind,system-ui,sans-serif;
+        box-shadow:0 6px 20px rgba(240,185,11,.3);
+        transition:all .2s;
+        min-width:220px;
+      }
+      .back-home-btn:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 28px rgba(240,185,11,.45);
+      }
+      .back-home-btn:active{transform:translateY(0)}
+      .back-home-btn .bh-ico{font-size:20px}
+      @media(max-width:400px){
+        .back-home-btn{width:100%;padding:13px 20px;font-size:15px}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  function injectBackBtn(){
+    if(document.querySelector(".back-home-wrap")) return;
+    
+    const wrap = document.createElement("div");
+    wrap.className = "back-home-wrap";
+    wrap.innerHTML = `
+      <a href="index.html" class="back-home-btn">
+        <span class="bh-ico">🏠</span>
+        <span>Back to Home · होम पर जाएँ</span>
+      </a>
+    `;
+    
+    const script = document.querySelector('script[src*="script.js"]');
+    const walletModal = document.getElementById("walletModal");
+    
+    if(walletModal && walletModal.parentNode){
+      walletModal.parentNode.insertBefore(wrap, walletModal);
+    } else if(script && script.parentNode){
+      script.parentNode.insertBefore(wrap, script);
+    } else {
+      document.body.appendChild(wrap);
+    }
+  }
+  
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", injectBackBtn);
+  } else {
+    injectBackBtn();
+  }
+  
+  setTimeout(injectBackBtn, 500);
+  setTimeout(injectBackBtn, 1500);
 })();
