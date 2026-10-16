@@ -199,7 +199,8 @@ const TRANSLATIONS = {
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
     bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।",
     sendWaRef:"WhatsApp पर भेजें",
-    sendTgRef:"Telegram पर भेजें"
+    sendTgRef:"Telegram पर भेजें",
+    loggedInAs:"Login: "
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
@@ -356,7 +357,8 @@ const TRANSLATIONS = {
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
     bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts.",
     sendWaRef:"Send on WhatsApp",
-    sendTgRef:"Send on Telegram"
+    sendTgRef:"Send on Telegram",
+    loggedInAs:"Logged in: "
   }
 };
 
@@ -388,6 +390,7 @@ function applyLang(lang){
   updateClaimBtn();
   syncBtn();
   updateNavLabels();
+  updateLoginBadge();
 }
 
 function updateNavLabels(){
@@ -494,6 +497,54 @@ function updateLoginUI(){
   setTimeout(()=>{const l=$("switchLink");if(l) l.onclick=()=>{isSignup=!isSignup;updateLoginUI();};},10);
 }
 
+/* ================== LOGIN BADGE (Top Nav) ================== */
+function injectLoginBadge(){
+  if(document.getElementById("igc-login-badge")) return;
+  const navActions = document.querySelector(".nav-actions");
+  if(!navActions) return;
+  
+  const badge = document.createElement("div");
+  badge.id = "igc-login-badge";
+  badge.style.cssText = `
+    display: none;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    background: linear-gradient(135deg, rgba(61,220,151,.18), rgba(61,220,151,.06));
+    border: 1px solid rgba(61,220,151,.55);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #3ddc97;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    cursor: pointer;
+  `;
+  badge.innerHTML = `<span style="font-size:13px">✅</span><span id="igc-badge-email" style="overflow:hidden;text-overflow:ellipsis;max-width:110px"></span>`;
+  badge.title = "Logged in";
+  navActions.insertBefore(badge, navActions.firstChild);
+}
+
+function updateLoginBadge(){
+  injectLoginBadge();
+  const badge = document.getElementById("igc-login-badge");
+  const emailEl = document.getElementById("igc-badge-email");
+  if(!badge || !emailEl) return;
+  
+  const savedEmail = localStorage.getItem(K.EMAIL);
+  if(savedEmail && savedEmail.length > 3){
+    const shortEmail = savedEmail.length > 14 
+      ? savedEmail.substring(0, 12) + "…" 
+      : savedEmail;
+    emailEl.textContent = shortEmail;
+    badge.style.display = "inline-flex";
+    badge.title = t("loggedInAs") + savedEmail;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
 on("loginBtn","click",()=>{
   const em=$("emailInput") ? $("emailInput").value.trim() : "";
   const pw=$("passInput") ? $("passInput").value.trim() : "";
@@ -504,10 +555,10 @@ on("loginBtn","click",()=>{
   if(isSignup){
     if(savedEmail){toast(t("emailReg"),"#ff6b6b");return}
     localStorage.setItem(K.EMAIL,em);localStorage.setItem(K.PASS,pw);
-    currentEmail=em;toast(t("signupOk"));showDashboard();
+    currentEmail=em;toast(t("signupOk"));showDashboard();updateLoginBadge();
   }else{
     if(em!==savedEmail||pw!==savedPass){toast(t("wrongCred"),"#ff6b6b");return}
-    currentEmail=em;toast(t("loginOk"));showDashboard();
+    currentEmail=em;toast(t("loginOk"));showDashboard();updateLoginBadge();
   }
 });
 
@@ -527,7 +578,7 @@ function handleGoogleCredential(response){
     if(!em){toast(t("googleFail"),"#ff6b6b");return}
     currentEmail = em;
     localStorage.setItem(K.EMAIL, em);localStorage.setItem(K.PASS, "google_oauth");localStorage.setItem("igc_gname", name);
-    toast(t("googleLogin") + em);showDashboard();
+    toast(t("googleLogin") + em);showDashboard();updateLoginBadge();
     sendToSheet("googleLogin",{email:em, wallet:user||"", googleLogin:true, name:name});
   }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
 }
@@ -546,7 +597,7 @@ on("googleBtn","click",()=>{
                 .then(r=>r.json()).then(info=>{
                   currentEmail = info.email;
                   localStorage.setItem(K.EMAIL, info.email);localStorage.setItem(K.PASS, "google_oauth");localStorage.setItem("igc_gname", info.name||"");
-                  toast(t("googleLogin") + info.email);showDashboard();
+                  toast(t("googleLogin") + info.email);showDashboard();updateLoginBadge();
                   sendToSheet("googleLogin",{email:info.email, wallet:user||"", googleLogin:true, name:info.name||""});
                 }).catch(()=>toast("Google userinfo error","#ff6b6b"));
               }
@@ -561,18 +612,33 @@ on("googleBtn","click",()=>{
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
 on("logoutBtn","click",()=>{
-  localStorage.removeItem(K.EMAIL);localStorage.removeItem(K.PASS);localStorage.removeItem("igc_gname");
-  currentEmail=null;
+  localStorage.removeItem(K.EMAIL);
+  localStorage.removeItem(K.PASS);
+  localStorage.removeItem("igc_gname");
+  currentEmail = null;
+  user = null;
+  signer = null;
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
-  setDisplay("loginSection","block");setDisplay("dashboardSection","none");
-  updateLoginUI();toast(t("loggedOut"));
+  setDisplay("loginSection","block");
+  setDisplay("dashboardSection","none");
+  setText("connect", t("connect"));
+  updateLoginUI();
+  updateMiningUI();
+  updateClaimBtn();
+  syncBtn();
+  updateLoginBadge();
+  toast(t("loggedOut"));
 });
 
 function showDashboard(){
-  setDisplay("loginSection","none");setDisplay("dashboardSection","block");
+  setDisplay("loginSection","none");
+  setDisplay("dashboardSection","block");
   setText("userEmail", currentEmail || "user");
   setText("myRefCode", getMyCode());
-  loadUserData();updateClaimBtn();updateMiningUI();
+  loadUserData();
+  updateClaimBtn();
+  updateMiningUI();
+  updateLoginBadge();
   setTimeout(updateMiningUI, 300);
   setTimeout(updateMiningUI, 1000);
   setTimeout(updateClaimBtn, 300);
@@ -894,12 +960,20 @@ function initRefUI(){
   const refBy=localStorage.getItem(K.REF_BY);
   if(refBy){setDisplay("refWelcome","block");setText("refWelcomeCode", refBy);}
   setText("myRefCode", getMyCode());
+  
+  // ============ AUTO RESTORE LOGIN ============
   const savedEmail=localStorage.getItem(K.EMAIL);
-  if(savedEmail){currentEmail=savedEmail;showDashboard();}
-  else updateLoginUI();
+  if(savedEmail && savedEmail.length > 3){
+    currentEmail = savedEmail;
+    showDashboard();
+  } else {
+    updateLoginUI();
+  }
+  
   setTimeout(()=>{const pf=$("poolFill");if(pf) pf.style.width="15%";},300);
   updateMiningUI();
   updateClaimBtn();
+  updateLoginBadge();
   setTimeout(updateMiningUI, 1000);
   setTimeout(updateMiningUI, 2500);
   setTimeout(updateClaimBtn, 1000);
@@ -996,9 +1070,9 @@ async function connect(){
     setText("connect", short(user));
     setDisplay("nowallet","none");
     syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();updateMiningUI();
-    setTimeout(updateMiningUI, 800);
-    setTimeout(updateMiningUI, 2000);
-    setTimeout(updateClaimBtn, 800);
+    setTimeout(updateMiningUI, 500);
+    setTimeout(updateMiningUI, 1500);
+    setTimeout(updateClaimBtn, 500);
     toast(t("walletConnected"));
     return true;
   }catch(e){
@@ -1047,6 +1121,7 @@ on("copy","click",async()=>{try{await navigator.clipboard.writeText(checksum)}ca
 applyLang(currentLang);
 updateNavLabels();
 initRefUI();
+updateLoginBadge();
 
 if(window.ethereum){
   window.ethereum.request({method:"eth_accounts"}).then(a=>{if(a&&a.length)connect()}).catch(()=>{});
@@ -1209,31 +1284,31 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
 (function(){
   "use strict";
   
-  // हर 2 second बाद UI को current state के हिसाब से update करो
   setInterval(function(){
     try {
       if(typeof updateMiningUI === "function") updateMiningUI();
       if(typeof updateClaimBtn === "function") updateClaimBtn();
       if(typeof syncBtn === "function") syncBtn();
+      if(typeof updateLoginBadge === "function") updateLoginBadge();
     } catch(e) { /* ignore */ }
   }, 2000);
   
-  // जब page दोबारा visible हो तो तुरंत update करो
   document.addEventListener("visibilitychange", function(){
     if(!document.hidden){
       try {
         if(typeof updateMiningUI === "function") updateMiningUI();
         if(typeof updateClaimBtn === "function") updateClaimBtn();
+        if(typeof updateLoginBadge === "function") updateLoginBadge();
       } catch(e) {}
     }
   });
   
-  // 1s, 3s, 5s बाद extra checks (page load पर)
-  [1000, 3000, 5000].forEach(function(delay){
+  [500, 1000, 3000, 5000].forEach(function(delay){
     setTimeout(function(){
       try {
         if(typeof updateMiningUI === "function") updateMiningUI();
         if(typeof updateClaimBtn === "function") updateClaimBtn();
+        if(typeof updateLoginBadge === "function") updateLoginBadge();
       } catch(e) {}
     }, delay);
   });
