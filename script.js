@@ -197,7 +197,9 @@ const TRANSLATIONS = {
     claimWallet:"🔗 पहले वॉलेट जोड़ें", welcomeRef:"🎉 आपको", welcomeRefMid:"ने refer किया है!",
     i18nReady:"भाषा बदल गई: हिंदी",
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
-    bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।"
+    bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।",
+    sendWaRef:"WhatsApp पर भेजें",
+    sendTgRef:"Telegram पर भेजें"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
@@ -352,7 +354,9 @@ const TRANSLATIONS = {
     claimWallet:"🔗 Connect Wallet first", welcomeRef:"🎉 You were referred by", welcomeRefMid:"!",
     i18nReady:"Language changed to English",
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
-    bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts."
+    bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts.",
+    sendWaRef:"Send on WhatsApp",
+    sendTgRef:"Send on Telegram"
   }
 };
 
@@ -569,6 +573,9 @@ function showDashboard(){
   setText("userEmail", currentEmail || "user");
   setText("myRefCode", getMyCode());
   loadUserData();updateClaimBtn();updateMiningUI();
+  setTimeout(updateMiningUI, 300);
+  setTimeout(updateMiningUI, 1000);
+  setTimeout(updateClaimBtn, 300);
 }
 
 function updateClaimBtn(){
@@ -743,6 +750,24 @@ on("shareRefBtn","click",()=>{
   else{window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+link),"_blank");}
 });
 
+/* ================== WHATSAPP / TELEGRAM REFERRAL SEND ================== */
+(function(){
+  function setRefLinks(){
+    try{
+      const refLink = buildRefLink();
+      const refMsg = t("refShareText") + "\n\n" + refLink;
+      const refMsgEnc = encodeURIComponent(refMsg);
+      const refLinkEnc = encodeURIComponent(refLink);
+      const wa = $("waShareRef");
+      if(wa) wa.href = "https://wa.me/?text=" + refMsgEnc;
+      const tg = $("tgShareRef");
+      if(tg) tg.href = "https://t.me/share/url?url=" + refLinkEnc + "&text=" + encodeURIComponent(t("refShareText"));
+    }catch(e){}
+  }
+  setRefLinks();
+  setInterval(setRefLinks, 2000);
+})();
+
 (function(){
   const wa=$("shareWa"),x=$("shareX"),tg=$("shareTg");
   if(wa) wa.href="https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink());
@@ -874,6 +899,10 @@ function initRefUI(){
   else updateLoginUI();
   setTimeout(()=>{const pf=$("poolFill");if(pf) pf.style.width="15%";},300);
   updateMiningUI();
+  updateClaimBtn();
+  setTimeout(updateMiningUI, 1000);
+  setTimeout(updateMiningUI, 2500);
+  setTimeout(updateClaimBtn, 1000);
 }
 
 const DRIVE_PRIMARY="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512";
@@ -967,6 +996,9 @@ async function connect(){
     setText("connect", short(user));
     setDisplay("nowallet","none");
     syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();updateMiningUI();
+    setTimeout(updateMiningUI, 800);
+    setTimeout(updateMiningUI, 2000);
+    setTimeout(updateClaimBtn, 800);
     toast(t("walletConnected"));
     return true;
   }catch(e){
@@ -1087,17 +1119,14 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
 (function(){
   "use strict";
   
-  // Home page पहचानें — इन pages पर button नहीं दिखेगा
   const path = (location.pathname || "").toLowerCase();
   const isHome = path.endsWith("index.html") 
                  || path.endsWith("/") 
                  || path === "" 
                  || path.endsWith("indian-global-coin/");
   
-  // अगर home page है तो button न लगाएँ
   if(isHome) return;
   
-  // ===== CSS inject करें (एक बार) =====
   if(!document.getElementById("igc-back-css")){
     const style = document.createElement("style");
     style.id = "igc-back-css";
@@ -1142,9 +1171,7 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
     document.head.appendChild(style);
   }
   
-  // ===== Button inject करें =====
   function injectBackBtn(){
-    // अगर पहले से लगा है तो दोबारा न लगाएँ
     if(document.querySelector(".back-home-wrap")) return;
     
     const wrap = document.createElement("div");
@@ -1156,12 +1183,9 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
       </a>
     `;
     
-    // जहाँ रखना है उसकी तलाश करें
     const script = document.querySelector('script[src*="script.js"]');
     const walletModal = document.getElementById("walletModal");
-    const wrapDiv = document.querySelector(".wrap");
     
-    // Priority: walletModal से पहले > script से पहले > body के अंत में
     if(walletModal && walletModal.parentNode){
       walletModal.parentNode.insertBefore(wrap, walletModal);
     } else if(script && script.parentNode){
@@ -1171,14 +1195,47 @@ document.querySelectorAll(".nav-links a").forEach(a=>{
     }
   }
   
-  // DOM ready होने पर लगाएँ
   if(document.readyState === "loading"){
     document.addEventListener("DOMContentLoaded", injectBackBtn);
   } else {
     injectBackBtn();
   }
   
-  // Safeguard: 500ms बाद भी check करें (अगर DOM बदला हो)
   setTimeout(injectBackBtn, 500);
   setTimeout(injectBackBtn, 1500);
+})();
+
+/* ================== AUTO UI SYNC (Mining + Airdrop Fix) ================== */
+(function(){
+  "use strict";
+  
+  // हर 2 second बाद UI को current state के हिसाब से update करो
+  setInterval(function(){
+    try {
+      if(typeof updateMiningUI === "function") updateMiningUI();
+      if(typeof updateClaimBtn === "function") updateClaimBtn();
+      if(typeof syncBtn === "function") syncBtn();
+    } catch(e) { /* ignore */ }
+  }, 2000);
+  
+  // जब page दोबारा visible हो तो तुरंत update करो
+  document.addEventListener("visibilitychange", function(){
+    if(!document.hidden){
+      try {
+        if(typeof updateMiningUI === "function") updateMiningUI();
+        if(typeof updateClaimBtn === "function") updateClaimBtn();
+      } catch(e) {}
+    }
+  });
+  
+  // 1s, 3s, 5s बाद extra checks (page load पर)
+  [1000, 3000, 5000].forEach(function(delay){
+    setTimeout(function(){
+      try {
+        if(typeof updateMiningUI === "function") updateMiningUI();
+        if(typeof updateClaimBtn === "function") updateClaimBtn();
+      } catch(e) {}
+    }, delay);
+  });
+  
 })();
