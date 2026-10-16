@@ -44,7 +44,7 @@ const TRANSLATIONS = {
     switchLogin:"अकाउंट है? Login कीजिए", switchSignup:"नया user? Sign Up", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
     stepsTitle:"IGC Airdrop में हिस्सा लेने के 3 आसान steps:",
-    step1:"Login कीजिए (ऊपर Email/Google से)", step2a:"वॉलेट जोड़िए (ऊपर", step2b:"बटन)",
+    step1:"Login कीजिए (Home page पर)", step2a:"वॉलेट जोड़िए (ऊपर", step2b:"बटन)",
     step3a:"अपना Referral Code दोस्तों को भेजिए — हर join पर", step3b:"5,000 IGC बोनस",
     totalPool:"Total Airdrop Pool", seats:"सीटें:", perPerson:"प्रति व्यक्ति:", yourRefCode:"🎟️ आपका Referral Code",
     refDesc:"इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।", loginToSee:"Login करके देखें",
@@ -147,7 +147,7 @@ const TRANSLATIONS = {
     switchLogin:"Have an account? Login", switchSignup:"New user? Sign Up", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
     stepsTitle:"3 easy steps to join IGC Airdrop:",
-    step1:"Login (with Email/Google above)", step2a:"Add Wallet (click", step2b:"button above)",
+    step1:"Login (on Home page)", step2a:"Add Wallet (click", step2b:"button above)",
     step3a:"Share your Referral Code — for every join", step3b:"5,000 IGC bonus",
     totalPool:"Total Airdrop Pool", seats:"Seats:", perPerson:"Per user:", yourRefCode:"🎟️ Your Referral Code",
     refDesc:"Share with friends — get 5,000 IGC bonus per join.", loginToSee:"Login to see",
@@ -777,6 +777,8 @@ $("pcsUsdt").href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+et
 $("tgBtn").href=SOCIAL.telegram;$("xBtn").href=SOCIAL.twitter;$("waBtn").href=SOCIAL.whatsapp;
 $("merchantBtn").onclick=()=>window.open(SOCIAL.merchant,"_blank");
 $("helpBuyBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
+$("helpHomeBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
+$("helpCommunityBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
 $("tItemSupply").href="https://bscscan.com/token/"+checksum;
 $("tItemBurned").href="https://bscscan.com/token/"+checksum+"?a="+DEAD;
 $("tItemHolders").href="https://bscscan.com/token/"+checksum+"#balances";
