@@ -84,7 +84,6 @@ section.card ul li{margin:6px 0}
 .trade-card .tc-desc{font-size:13px;color:#cfd5dc;margin:0;line-height:1.6}
 .trade-card a{font-size:13px;font-weight:700;display:inline-block;margin-top:6px}
 
-/* Mining section styles */
 .mine-grid{display:grid;gap:12px;margin-top:14px}
 @media(min-width:560px){.mine-grid.two{grid-template-columns:1fr 1fr}}
 .mine-card{background:var(--ink);border:1px solid rgba(240,185,11,.4);border-radius:12px;padding:16px;position:relative;overflow:hidden}
@@ -114,6 +113,13 @@ section.card ul li{margin:6px 0}
 .trustpanel ul{color:#d6fce9;font-size:13.5px;margin:8px 0;padding-left:22px}
 .trustpanel ul li{margin:5px 0}
 
+.warnpanel{background:linear-gradient(135deg,rgba(240,185,11,.10),rgba(240,185,11,.02));border:1px solid rgba(240,185,11,.4);border-radius:14px;padding:18px 20px;margin-top:14px}
+.warnpanel h3{color:var(--gold);margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:8px}
+.warnpanel p{color:#fdf3d0;font-size:13.5px;margin:6px 0}
+.warnpanel ul{color:#fdf3d0;font-size:13.5px;margin:8px 0;padding-left:22px}
+.warnpanel ul li{margin:5px 0}
+.warnpanel code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;color:var(--gold);font-size:12.5px}
+
 footer{text-align:center;color:var(--muted);font-size:12.5px;padding:22px 0 0;border-top:1px solid var(--line);margin-top:26px}
 footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
 
@@ -125,9 +131,10 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
   .btn{display:none !important}
   .cover{background:#fafafa;border:1px solid #ddd}
   .chip{background:#fff}
-  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel,.trade-card,.mine-card{background:#fff}
+  section.card,.toc,.kpi,.disclaimer,.note,.trustpanel,.trade-card,.mine-card,.warnpanel{background:#fff}
   .disclaimer{background:#fff7f7}
   .trustpanel{background:#f0fff8}
+  .warnpanel{background:#fffbf0}
   a{color:#111;text-decoration:none}
   .wrap{max-width:100%;padding:0}
   section.card{page-break-inside:avoid}
@@ -158,11 +165,11 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     <img class="biglogo" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w512" alt="IGC logo" onerror="this.src='logo.png'">
     <div class="tag">Whitepaper · Version 1.0</div>
     <h1>Indian Global Coin (IGC)</h1>
-    <p class="sub">A borderless, fast & low-cost digital payment ecosystem built on BNB Smart Chain (BEP-20) — with Daily Mining, Airdrop &amp; Referral rewards.</p>
+    <p class="sub">A borderless, fast &amp; low-cost digital payment ecosystem built on BNB Smart Chain (BEP-20) — with Daily Mining, Airdrop &amp; Referral rewards.</p>
     <div class="chips">
       <span class="chip">Network: <b>BSC (BEP-20)</b></span>
       <span class="chip">Supply: <b>1,000,000,000 IGC</b></span>
-      <span class="chip">Fee: <b>1% Buy / 1% Sell</b></span>
+      <span class="chip">Fee: <b>2% Buy / 2% Sell</b></span>
       <span class="chip">Ticker: <b>IGC</b></span>
       <span class="chip">Status: <b>Live on DEX</b></span>
     </div>
@@ -246,8 +253,8 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       <div class="kpi"><div class="k">Symbol</div><div class="v gold">IGC</div></div>
       <div class="kpi"><div class="k">Total Supply</div><div class="v">1,000,000,000 (1 Billion)</div></div>
       <div class="kpi"><div class="k">Network</div><div class="v">BNB Smart Chain</div></div>
-      <div class="kpi"><div class="k">Buy Fee</div><div class="v">1%</div></div>
-      <div class="kpi"><div class="k">Sell Fee</div><div class="v">1%</div></div>
+      <div class="kpi"><div class="k">Buy Fee</div><div class="v">2%</div></div>
+      <div class="kpi"><div class="k">Sell Fee</div><div class="v">2%</div></div>
     </div>
 
     <p style="margin-top:18px"><b>Allocation</b></p>
@@ -275,6 +282,18 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
 
       <p style="margin:10px 0 0"><b>ℹ️ Transparency Note:</b> Both allocations are fully verifiable on BscScan. The owner wallet address and its holdings can be checked by anyone at any time. IGC has no hidden mint function — the total supply of 1,000,000,000 IGC is fixed and can never be increased.</p>
     </div>
+
+    <div class="warnpanel">
+      <h3>⚠️ Important — Slippage &amp; Price Impact</h3>
+      <p>Because IGC includes a 2% transaction fee, and because the liquidity pool is still growing, the following rules apply when buying or selling on PancakeSwap:</p>
+      <ul>
+        <li><b>Always set Slippage to 5% – 10%</b> (minimum 3%, but 5–10% recommended for smooth transactions).</li>
+        <li><b>Large buys or sells may cause high Price Impact</b> — this is normal for any new token with growing liquidity.</li>
+        <li>If a transaction fails, simply increase the Slippage and try again, or reduce the amount.</li>
+        <li>For very large trades, we recommend splitting them into smaller transactions to get the best price.</li>
+      </ul>
+      <p style="margin-top:8px"><b>Example:</b> Buying with <code>1 USDT</code> while the pool is small may result in a higher price impact. Start with smaller amounts and increase gradually as liquidity grows.</p>
+    </div>
   </section>
 
   <section class="card" id="s7">
@@ -290,7 +309,6 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </ul>
   </section>
 
-  <!-- ============ UPDATED: Airdrop, Referral & Mining ============ -->
   <section class="card" id="s8">
     <h2><span class="num">8</span>Airdrop, Referral &amp; Daily Mining</h2>
     <p>IGC rewards its community through three transparent earning programs. All rewards are recorded on the official IGC platform and delivered to the user's wallet after verification.</p>
@@ -375,7 +393,6 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </div>
   </section>
 
-  <!-- ============ Trading & Availability ============ -->
   <section class="card" id="s9">
     <h2><span class="num">9</span>Trading &amp; Availability</h2>
     <p>IGC is <b>live and publicly tradeable</b> on decentralized exchanges. Anyone can buy or sell IGC right now, 24/7, without any central authority.</p>
@@ -418,6 +435,9 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
       </div>
     </div>
 
+    <p style="margin-top:16px"><b>⛽ Free Gas Faucet — For New USDT Holders</b></p>
+    <p>To make onboarding easier, IGC runs a small <b>Free Gas Faucet</b> on the official website. Users who hold at least <b>5 USDT</b> in their BSC wallet and have no BNB for gas can request a tiny gas top-up (<b>0.001 BNB</b>) — enough to complete their first IGC purchase. Each wallet can claim this once per day, subject to a daily cap.</p>
+
     <p style="margin-top:16px"><b>🚀 What's Next — Centralized Exchanges (CEX)</b></p>
     <p>After establishing strong on-chain volume, holder base and community, IGC will pursue listings on leading centralized exchanges. This will bring:</p>
     <ul>
@@ -447,7 +467,8 @@ footer .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin
     </div>
 
     <div class="note" style="margin-top:16px">
-      <p style="margin:0"><b>ℹ️ How to Buy IGC Right Now:</b> Connect your Trust Wallet or MetaMask to PancakeSwap, paste the official contract address, and swap BNB or USDT for IGC. Full instructions are available on the official IGC website.</p>
+      <p style="margin:0"><b>ℹ️ How to Trade IGC Right Now:</b> Connect your Trust Wallet or MetaMask to PancakeSwap, paste the official contract address, and swap BNB or USDT for IGC. Full instructions are available on the official IGC website under the "Trade" section.</p>
+      <p style="margin:8px 0 0"><b>💡 Tip:</b> Always set Slippage between <b>5% – 10%</b> when trading on PancakeSwap. This ensures smooth transactions even during high market activity.</p>
       <p style="margin:8px 0 0"><b>Official Contract Address:</b> <span style="font-family:ui-monospace,Consolas,monospace;color:var(--gold)">0xD20068fa2D06406F20752Ec8A401bF0CC3a37e15</span></p>
     </div>
   </section>
