@@ -45,7 +45,42 @@ function setHref(id,url){const el=$(id);if(el)el.href=url;}
 /* ================== TRANSLATIONS ================== */
 const TRANSLATIONS = {
   hi: {
+    // ===== Core / Nav =====
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"वॉलेट जोड़ें",
+    // ===== Hero =====
+    heroSub:"🚀 BNB Smart Chain पर भरोसेमंद BEP-20 टोकन — भारत से दुनिया तक",
+    heroBadge1:"🎁 20,000 IGC FREE",
+    heroBadge2:"⛏️ डेली माइनिंग",
+    heroBadge3:"🛡️ Contract Verified",
+    heroBadge4:"🔒 No Mint Function",
+    claimAirdropBtn:"🎁 Claim 20,000 IGC",
+    buyNowBtn:"💰 अभी खरीदें",
+    goToAirdropPage:"🎁 Claim 20,000 IGC पेज पर जाएँ →",
+    // ===== Quick Cards =====
+    quickTitle:"⚡ क्विक एक्शन — अपना काम चुनें",
+    qcAirdrop:"एयरड्रॉप", qcAirdropSub:"20,000 IGC FREE पाएँ",
+    qcMining:"डेली माइनिंग", qcMiningSub:"रोज़ 100 IGC कमाएँ",
+    qcBuySell:"खरीदें / बेचें", qcBuySellSub:"BNB या USDT से",
+    qcChart:"लाइव चार्ट", qcChartSub:"DexScreener पर देखें",
+    qcSecurity:"सुरक्षा", qcSecuritySub:"On-chain verification",
+    qcCommunity:"कम्युनिटी", qcCommunitySub:"Telegram · X · WhatsApp",
+    qcMerchant:"मर्चेंट", qcMerchantSub:"दुकानदारों के लिए",
+    qcWhitepaper:"व्हाइटपेपर", qcWhitepaperSub:"पूरी जानकारी पढ़ें",
+    // ===== Page Headers =====
+    airdropPageTitle:"🎁 IGC Airdrop — 20,000 IGC FREE",
+    airdropPageSub:"सिर्फ पहले 5,000 लोगों के लिए · हर सफल referral पर +5,000 IGC बोनस",
+    miningPageTitle:"⛏️ Daily Mining — रोज़ 100 IGC",
+    miningPageSub:"सिर्फ 1 click · हर 24 घंटे में · हर referral पर +50 IGC/day",
+    buySellPageTitle:"💱 IGC खरीदें / बेचें",
+    buySellPageSub:"BNB या USDT से सीधे PancakeSwap के ज़रिए — 30 seconds में",
+    communityPageSub:"Telegram · X · WhatsApp — सब एक जगह",
+    chartPageSub:"DexScreener · PooCoin · BscScan — सब एक जगह",
+    merchantPageSub:"IGC payments accept कीजिए · 0% setup fee · Instant settlement",
+    whitepaperPageSub:"Indian Global Coin — पूरी तकनीकी जानकारी, vision और roadmap",
+    claimSection:"🎯 अभी Claim कीजिए",
+    shareWhitepaper:"📢 Share Whitepaper",
+    printPdf:"⬇ PDF के रूप में प्रिंट करें",
+    // ===== Airdrop Section =====
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
@@ -58,6 +93,7 @@ const TRANSLATIONS = {
     refDesc:"इसे दोस्तों को भेजिए — हर join पर 5,000 IGC बोनस मिलेगा।", loginToSee:"Login करके देखें",
     copyCode:"📋 Copy Code", shareLink:"📤 Share Link", claimLocked:"🔒 पहले Login + Wallet जोड़ें",
     airdropNote:"⚠️ Note: Airdrop tokens PancakeSwap listing के 7 दिन के अंदर भेजे जाएँगे।",
+    // ===== Mining Section =====
     badgeMining:"⛏️ DAILY MINING LIVE", mineDaily:"रोज़", earn:"कमाइए!", mineSub:"सिर्फ 1 click — हर 24 घंटे में",
     miningWarn:"🔒 पहले Login + Wallet जोड़ें — फिर mining शुरू कर सकते हैं", totalMined:"Total Mined",
     dailyRate:"Daily Rate", mineNow100:"अभी Mine कीजिए — 100 IGC", nextMining:"⏳ अगली mining के लिए",
@@ -66,7 +102,9 @@ const TRANSLATIONS = {
     mine3:"• Max limit: 1,000 IGC/day", mine4:"• Lifetime Cap: 30,000 IGC per user",
     mine5:"• Mined IGC आपके wallet में 30 दिन के अंदर भेजे जाएँगे", refBoost:"🚀 Referral से mining rate बढ़ाइए!",
     now:"अभी:", refs:"Referrals:", miningNote:"⚠️ Note: Mining से कमाए IGC wallet में 30 दिन के अंदर भेजे जाएँगे।",
+    // ===== Security Section =====
     securityTitle:"🛡️ Security & Transparency", securitySub:"IGC के बारे में live blockchain data — BscScan से सीधे। कोई भी verify कर सकता है।",
+    liveOnChainData:"📊 Live On-Chain Data", securityBadges:"✅ Security Badges",
     totalSupply:"Total Supply", fixedNoMint:"Fixed · No Mint Function", burned:"Burned", permanentlyRemoved:"Permanently Removed",
     holders:"Holders", onBSC:"On BNB Smart Chain", liquidityPool:"Liquidity Pool", pancakeV2:"PancakeSwap V2",
     verified:"✅ Contract Verified", noMint:"✅ No Mint Function", bep20:"✅ BEP-20 Standard", liqLocked:"🔒 Liquidity Locked",
@@ -74,9 +112,20 @@ const TRANSLATIONS = {
     c1:"✅ हम कभी आपका seed phrase या private key नहीं माँगते", c2:"✅ सारे tokens public blockchain पर हैं — कोई छुपा नहीं",
     c3:"✅ Owner wallet और liquidity pool — दोनों on-chain verified", c4:"✅ Contract BscScan पर verified है — कोई hidden function नहीं",
     viewContract:"📜 BscScan पर Contract देखें", viewOwner:"👤 Owner Wallet देखें", liveData:"Live data · ", refresh:"🔄 Refresh",
+    // ===== Community =====
     communityTitle:"💬 हमारी Community से जुड़िए", telegramGroup:"Telegram Group", whatsappChannel:"WhatsApp Channel", whitepaper:"Whitepaper",
+    officialChannels:"📱 Official Channels",
+    communityGuideTitle:"🎯 Community Guidelines",
+    guide1:"✅ कोई भी scam / fake link शेयर न करें",
+    guide2:"✅ किसी से भी seed phrase या private key न माँगें",
+    guide3:"✅ सभी को respect करें — कोई spam नहीं",
+    guide4:"✅ सिर्फ official channels पर भरोसा करें",
+    guide5:"✅ किसी भी समस्या के लिए admin से contact करें",
+    // ===== Share =====
     shareTitle:"📢 दोस्तों के साथ शेयर कीजिए", whatsapp:"💬 WhatsApp", twitter:"𝕏 Twitter", telegram:"✈️ Telegram", copyLink:"🔗 Link कॉपी",
+    // ===== Wallet / No Wallet =====
     openInWallet:"वॉलेट ऐप में खोलें", noWalletMsg:"इस ब्राउज़र में वॉलेट नहीं मिला। खरीद-बिक्री के लिए यह पेज अपने वॉलेट के ब्राउज़र में खोलें।",
+    // ===== Buy / Sell =====
     buySellTitle:"IGC खरीदें / बेचें", buy:"खरीदें", sell:"बेचें", bnbAmount:"BNB की मात्रा", willGet:"लगभग मिलेगा",
     slippage:"Slippage (%) — कम से कम 3 रखें", usdtTitle:"💵 USDT से IGC खरीदें",
     usdtDesc:"USDT से सीधे IGC खरीदिए। एक बार Approve कीजिए, फिर हर बार सीधे खरीद सकते हैं।", usdtAmount:"USDT की मात्रा",
@@ -100,11 +149,30 @@ const TRANSLATIONS = {
     buyBNBMetamask:"MetaMask के अंदर से BNB खरीदें", metamaskDesc:"Card से · MetaMask app में built-in",
     fastestWay:"💡 सबसे तेज़ तरीका:", fastestWayText:"अगर आपके पास Binance app है — उसमें P2P से BNB खरीदिए (UPI से), फिर MetaMask में withdraw कर दीजिए। पूरा process 5 मिनट में हो जाता है।",
     needHelp:"❓ Help चाहिए?", needHelpText:"हमारे Telegram group में message कीजिए — हम step-by-step guide कर देंगे।",
-    helpTelegram:"Telegram पर Help लें", merchantTitle:"🏪 दुकानदारों के लिए — Merchant Program",
+    helpTelegram:"Telegram पर Help लें",
+    // ===== Merchant =====
+    merchantTitle:"🏪 दुकानदारों के लिए — Merchant Program",
     merchant1:"0% setup fee", merchant2:"QR Code", merchant2b:"IGC QR पाएँ", merchant3:"Instant payment",
     merchant4:"Early merchant bonus", merchant4b:"पहले 100 को 50,000 IGC", merchantContact:"Merchant बनने के लिए संपर्क करें",
-    whitepaperTitle:"व्हाइटपेपर", read:"📖 पढ़ें", pdf:"⬇ PDF", liveChartTitle:"लाइव प्राइस चार्ट",
+    merchantBenefits:"🎁 Merchant Benefits",
+    merchantSteps:"📋 Merchant कैसे बनें — 3 Step",
+    merchantStep1:"नीचे \"Merchant बनने के लिए संपर्क करें\" बटन दबाइए",
+    merchantStep2:"Telegram पर हमें अपनी दुकान की जानकारी भेजिए",
+    merchantStep3:"24 घंटे में आपका QR Code + Merchant ID तैयार हो जाएगा",
+    contactTitle:"📞 Contact",
+    merchant1b:"0% setup fee — कोई भी upfront charge नहीं",
+    merchant2c:"QR Code — IGC QR तुरंत पाएँ",
+    merchant3b:"Instant payment — customer से payment सीधे आपके wallet में",
+    merchant4c:"Early merchant bonus — पहले 100 merchants को 50,000 IGC",
+    // ===== Whitepaper =====
+    whitepaperTitle:"व्हाइटपेपर", read:"📖 पढ़ें", pdf:"⬇ PDF",
+    // ===== Chart =====
+    liveChartTitle:"लाइव प्राइस चार्ट",
+    dexScreenerChart:"📊 DexScreener Live Chart",
+    quickLinks:"🔍 Quick Links",
+    // ===== Contract =====
     contractTitle:"कॉन्ट्रैक्ट एड्रेस", copyAddress:"एड्रेस कॉपी करें", verifiedNote:"✅ Contract verified on BscScan · ✅ No mint function",
+    // ===== Wallet Modal =====
     chooseWallet:"🔐 अपना Wallet चुनिए", walletSub:"IGC खरीदने, बेचने और airdrop claim करने के लिए वॉलेट चुनिए। सबसे नीचे दिए विकल्प भी काम करते हैं।",
     mmTag:"सबसे popular · Browser extension + Mobile", twTag:"Binance का official · Mobile पर best",
     wcTag:"300+ wallets को support करता है", cbTag:"Global · नए users के लिए आसान", bwTag:"Binance app में built-in",
@@ -112,11 +180,13 @@ const TRANSLATIONS = {
     otherWalletTag:"Browser में wallet extension होने पर connect होगा", impNote:"💡 ज़रूरी बात:",
     impNoteText:"Wallet popup तभी खुलेगा जब आपने MetaMask / Trust Wallet install किया हो। अगर आप मोबाइल ब्राउज़र में हैं तो ऊपर से किसी भी wallet का option दबाइए — वह ऐप में खुलेगा।",
     securityLabel:"🔒 सुरक्षा:", securityNote:"हम कभी आपका seed phrase या private key नहीं माँगते।",
+    // ===== No Wallet Modal =====
     noWalletTitle:"🌐 Wallet नहीं मिला", noWalletLead:"इस browser में कोई Web3 wallet नहीं मिला। IGC खरीदने-बेचने के लिए",
     noWalletLeadB:"नीचे से कोई wallet install कीजिए", noWalletLeadC:"— सिर्फ 1 minute में हो जाएगा।",
     installMM:"MetaMask install करें", installMMSub:"Chrome/Edge extension या Mobile app",
     installTW:"Trust Wallet install करें", installTWSub:"Android / iOS — सबसे आसान", installCBSub:"Global · Simple setup",
     tipLabel:"💡 Tip:", tipText:"अगर आप mobile में हैं तो MetaMask या Trust Wallet install करके, उस app के अंदर browser खोलिए और rambhai91221.github.io/Indian-Global-Coin वहाँ खोलिए — तब सब कुछ automatic connect हो जाएगा।",
+    // ===== Messages =====
     gasError:"Gas (BNB) कम है। पहले थोड़ा BNB खरीद लीजिए या ऊपर 'Free Gas' बटन दबाइए।",
     gasSuccess:"✅ गैस मिल गई! अब IGC खरीदें।", gasServerFail:"सर्वर से कनेक्ट नहीं हो पा रहा या आपने रद्द कर दिया",
     signing:"⏳ सिग्नेचर का इंतज़ार...", sendingGas:"⏳ गैस फीस भेजी जा रही है...", gasBtnText:"⛽ Free Gas माँगें (0.001 BNB) — USDT होल्डर्स के लिए",
@@ -148,7 +218,42 @@ const TRANSLATIONS = {
     bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।"
   },
   en: {
+    // ===== Core / Nav =====
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
+    // ===== Hero =====
+    heroSub:"🚀 Trusted BEP-20 Token on BNB Smart Chain — From India to the World",
+    heroBadge1:"🎁 20,000 IGC FREE",
+    heroBadge2:"⛏️ Daily Mining",
+    heroBadge3:"🛡️ Contract Verified",
+    heroBadge4:"🔒 No Mint Function",
+    claimAirdropBtn:"🎁 Claim 20,000 IGC",
+    buyNowBtn:"💰 Buy Now",
+    goToAirdropPage:"🎁 Go to Claim 20,000 IGC Page →",
+    // ===== Quick Cards =====
+    quickTitle:"⚡ Quick Actions — Choose Your Task",
+    qcAirdrop:"Airdrop", qcAirdropSub:"Get 20,000 IGC FREE",
+    qcMining:"Daily Mining", qcMiningSub:"Earn 100 IGC daily",
+    qcBuySell:"Buy / Sell", qcBuySellSub:"With BNB or USDT",
+    qcChart:"Live Chart", qcChartSub:"View on DexScreener",
+    qcSecurity:"Security", qcSecuritySub:"On-chain verification",
+    qcCommunity:"Community", qcCommunitySub:"Telegram · X · WhatsApp",
+    qcMerchant:"Merchant", qcMerchantSub:"For Shopkeepers",
+    qcWhitepaper:"Whitepaper", qcWhitepaperSub:"Read full details",
+    // ===== Page Headers =====
+    airdropPageTitle:"🎁 IGC Airdrop — 20,000 IGC FREE",
+    airdropPageSub:"Only for first 5,000 users · +5,000 IGC bonus per successful referral",
+    miningPageTitle:"⛏️ Daily Mining — 100 IGC Daily",
+    miningPageSub:"Just 1 click · Every 24 hours · +50 IGC/day per referral",
+    buySellPageTitle:"💱 Buy / Sell IGC",
+    buySellPageSub:"Directly via PancakeSwap with BNB or USDT — in 30 seconds",
+    communityPageSub:"Telegram · X · WhatsApp — All in one place",
+    chartPageSub:"DexScreener · PooCoin · BscScan — all in one place",
+    merchantPageSub:"Accept IGC payments · 0% setup fee · Instant settlement",
+    whitepaperPageSub:"Indian Global Coin — Full technical details, vision and roadmap",
+    claimSection:"🎯 Claim Now",
+    shareWhitepaper:"📢 Share Whitepaper",
+    printPdf:"⬇ Print as PDF",
+    // ===== Airdrop Section =====
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
@@ -161,6 +266,7 @@ const TRANSLATIONS = {
     refDesc:"Share with friends — get 5,000 IGC bonus per join.", loginToSee:"Login to see",
     copyCode:"📋 Copy Code", shareLink:"📤 Share Link", claimLocked:"🔒 Login + Wallet first",
     airdropNote:"⚠️ Note: Airdrop tokens will be sent within 7 days of PancakeSwap listing.",
+    // ===== Mining Section =====
     badgeMining:"⛏️ DAILY MINING LIVE", mineDaily:"Mine", earn:"daily!", mineSub:"Just 1 click — every 24 hours",
     miningWarn:"🔒 Login + Add Wallet first — then you can start mining", totalMined:"Total Mined",
     dailyRate:"Daily Rate", mineNow100:"Mine Now — 100 IGC", nextMining:"⏳ Next mining in",
@@ -169,7 +275,9 @@ const TRANSLATIONS = {
     mine3:"• Max limit: 1,000 IGC/day", mine4:"• Lifetime Cap: 30,000 IGC per user",
     mine5:"• Mined IGC will be sent to your wallet within 30 days", refBoost:"🚀 Increase mining rate with Referrals!",
     now:"Now:", refs:"Referrals:", miningNote:"⚠️ Note: Mined IGC will be sent to your wallet within 30 days.",
+    // ===== Security Section =====
     securityTitle:"🛡️ Security & Transparency", securitySub:"Live blockchain data for IGC — directly from BscScan. Anyone can verify.",
+    liveOnChainData:"📊 Live On-Chain Data", securityBadges:"✅ Security Badges",
     totalSupply:"Total Supply", fixedNoMint:"Fixed · No Mint Function", burned:"Burned", permanentlyRemoved:"Permanently Removed",
     holders:"Holders", onBSC:"On BNB Smart Chain", liquidityPool:"Liquidity Pool", pancakeV2:"PancakeSwap V2",
     verified:"✅ Contract Verified", noMint:"✅ No Mint Function", bep20:"✅ BEP-20 Standard", liqLocked:"🔒 Liquidity Locked",
@@ -177,9 +285,20 @@ const TRANSLATIONS = {
     c1:"✅ We never ask for your seed phrase or private key", c2:"✅ All tokens are on public blockchain — nothing hidden",
     c3:"✅ Owner wallet and liquidity pool — both on-chain verified", c4:"✅ Contract is verified on BscScan — no hidden functions",
     viewContract:"📜 View Contract on BscScan", viewOwner:"👤 View Owner Wallet", liveData:"Live data · ", refresh:"🔄 Refresh",
+    // ===== Community =====
     communityTitle:"💬 Join Our Community", telegramGroup:"Telegram Group", whatsappChannel:"WhatsApp Channel", whitepaper:"Whitepaper",
+    officialChannels:"📱 Official Channels",
+    communityGuideTitle:"🎯 Community Guidelines",
+    guide1:"✅ Don't share any scam / fake links",
+    guide2:"✅ Never ask anyone for seed phrase or private key",
+    guide3:"✅ Respect everyone — no spam",
+    guide4:"✅ Only trust official channels",
+    guide5:"✅ Contact admin for any problem",
+    // ===== Share =====
     shareTitle:"📢 Share with Friends", whatsapp:"💬 WhatsApp", twitter:"𝕏 Twitter", telegram:"✈️ Telegram", copyLink:"🔗 Copy Link",
+    // ===== Wallet / No Wallet =====
     openInWallet:"Open in Wallet App", noWalletMsg:"No wallet found in this browser. Open this page in your wallet's browser to trade.",
+    // ===== Buy / Sell =====
     buySellTitle:"Buy / Sell IGC", buy:"Buy", sell:"Sell", bnbAmount:"BNB Amount", willGet:"You'll approximately get",
     slippage:"Slippage (%) — keep at least 3", usdtTitle:"💵 Buy IGC with USDT",
     usdtDesc:"Buy IGC directly with USDT. Approve once, then buy directly every time.", usdtAmount:"USDT Amount",
@@ -203,11 +322,30 @@ const TRANSLATIONS = {
     buyBNBMetamask:"Buy BNB inside MetaMask", metamaskDesc:"Via Card · Built-in in MetaMask app",
     fastestWay:"💡 Fastest way:", fastestWayText:"If you have Binance app — buy BNB via P2P (using UPI), then withdraw to MetaMask. Whole process takes 5 minutes.",
     needHelp:"❓ Need Help?", needHelpText:"Message us on Telegram group — we'll guide you step-by-step.",
-    helpTelegram:"Get Help on Telegram", merchantTitle:"🏪 For Shopkeepers — Merchant Program",
+    helpTelegram:"Get Help on Telegram",
+    // ===== Merchant =====
+    merchantTitle:"🏪 For Shopkeepers — Merchant Program",
     merchant1:"0% setup fee", merchant2:"QR Code", merchant2b:"Get IGC QR", merchant3:"Instant payment",
     merchant4:"Early merchant bonus", merchant4b:"50,000 IGC for first 100", merchantContact:"Contact to become a Merchant",
-    whitepaperTitle:"Whitepaper", read:"📖 Read", pdf:"⬇ PDF", liveChartTitle:"Live Price Chart",
+    merchantBenefits:"🎁 Merchant Benefits",
+    merchantSteps:"📋 How to Become Merchant — 3 Steps",
+    merchantStep1:"Tap \"Contact to become a Merchant\" button below",
+    merchantStep2:"Send us your shop details on Telegram",
+    merchantStep3:"Your QR Code + Merchant ID ready within 24 hours",
+    contactTitle:"📞 Contact",
+    merchant1b:"0% setup fee — no upfront charge",
+    merchant2c:"QR Code — Get IGC QR instantly",
+    merchant3b:"Instant payment — payment goes directly to your wallet",
+    merchant4c:"Early merchant bonus — 50,000 IGC for first 100 merchants",
+    // ===== Whitepaper =====
+    whitepaperTitle:"Whitepaper", read:"📖 Read", pdf:"⬇ PDF",
+    // ===== Chart =====
+    liveChartTitle:"Live Price Chart",
+    dexScreenerChart:"📊 DexScreener Live Chart",
+    quickLinks:"🔍 Quick Links",
+    // ===== Contract =====
     contractTitle:"Contract Address", copyAddress:"Copy Address", verifiedNote:"✅ Contract verified on BscScan · ✅ No mint function",
+    // ===== Wallet Modal =====
     chooseWallet:"🔐 Choose Your Wallet", walletSub:"Choose a wallet to buy, sell and claim airdrop of IGC. Options at the bottom also work.",
     mmTag:"Most popular · Browser extension + Mobile", twTag:"Binance official · Best on Mobile",
     wcTag:"Supports 300+ wallets", cbTag:"Global · Easy for new users", bwTag:"Built-in in Binance app",
@@ -215,11 +353,13 @@ const TRANSLATIONS = {
     otherWalletTag:"Will connect if browser has wallet extension", impNote:"💡 Important:",
     impNoteText:"Wallet popup will only open if you have installed MetaMask / Trust Wallet. If you're on mobile browser, tap any wallet option above — it will open in the app.",
     securityLabel:"🔒 Security:", securityNote:"We never ask for your seed phrase or private key.",
+    // ===== No Wallet Modal =====
     noWalletTitle:"🌐 No Wallet Found", noWalletLead:"No Web3 wallet found in this browser. To buy-sell IGC,",
     noWalletLeadB:"install a wallet from below", noWalletLeadC:"— takes just 1 minute.",
     installMM:"Install MetaMask", installMMSub:"Chrome/Edge extension or Mobile app",
     installTW:"Install Trust Wallet", installTWSub:"Android / iOS — easiest", installCBSub:"Global · Simple setup",
     tipLabel:"💡 Tip:", tipText:"If you're on mobile, install MetaMask or Trust Wallet, open browser inside the app, and open rambhai91221.github.io/Indian-Global-Coin there — everything will connect automatically.",
+    // ===== Messages =====
     gasError:"Gas (BNB) is low. Buy some BNB first or tap 'Free Gas' button above.",
     gasSuccess:"✅ Gas received! Now buy IGC.", gasServerFail:"Cannot connect to server or you cancelled",
     signing:"⏳ Waiting for signature...", sendingGas:"⏳ Sending gas fee...", gasBtnText:"⛽ Get Free Gas (0.001 BNB) — For USDT Holders",
