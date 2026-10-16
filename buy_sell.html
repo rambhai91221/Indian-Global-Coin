@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IGC खरीदें / बेचें — BNB और USDT से | Indian Global Coin</title>
+
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self'">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="robots" content="nosnippet, noarchive">
+
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<nav class="topnav">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <img id="logo" alt="IGC" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w256">
+      <span>
+        <span data-i18n="brand">Indian Global Coin</span>
+        <small data-i18n="tagline">IGC · BNB Smart Chain (BEP-20)</small>
+      </span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" data-nav="home">होम</a>
+      <a href="airdrop.html" data-nav="airdrop">एयरड्रॉप</a>
+      <a href="mining.html" data-nav="mining">माइनिंग</a>
+      <a href="buy-sell.html" class="active" data-nav="buysell">खरीदें/बेचें</a>
+      <a href="security.html" data-nav="security">सुरक्षा</a>
+      <a href="community.html" data-nav="community">कम्युनिटी</a>
+      <a href="chart.html" data-nav="chart">चार्ट</a>
+      <a href="merchant.html" data-nav="merchant">मर्चेंट</a>
+      <a href="whitepaper.html" data-nav="whitepaper">व्हाइटपेपर</a>
+    </div>
+    <div class="nav-actions">
+      <button id="langToggle" title="Change Language">🌐 <span id="langLabel">EN</span></button>
+      <button class="gold" id="connect" data-i18n="connect">वॉलेट जोड़ें</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:16px">
+
+  <div class="page-header">
+    <h1>💱 IGC खरीदें / बेचें</h1>
+    <p>BNB या USDT से सीधे PancakeSwap के ज़रिए — 30 seconds में</p>
+  </div>
+
+  <!-- Login Section (for balance) -->
+  <section>
+    <div id="loginSection" class="login-box">
+      <h3 id="loginTitle">🔐 Login / Signup</h3>
+      <input id="emailInput" type="email" data-i18n-ph="emailPh" placeholder="अपना Email डालिए">
+      <input id="passInput" type="password" data-i18n-ph="passPh" placeholder="Password (कम से कम 6 अक्षर)">
+      <button class="btn-full" id="loginBtn">Sign Up / Login</button>
+      <div style="text-align:center;color:var(--muted);font-size:12px;margin:8px 0" data-i18n="or">— या —</div>
+      <button class="btn-google" id="googleBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> <span data-i18n="continueGoogle">Continue with Google</span>
+      </button>
+      <div class="switch">
+        <span id="switchText">अकाउंट है? Login कीजिए</span>
+      </div>
+    </div>
+    <div id="dashboardSection" style="display:none">
+      <div class="user-badge">
+        <div>👤 <span class="em" id="userEmail">user@email.com</span></div>
+        <div class="logout" id="logoutBtn" data-i18n="logout">Logout</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BNB Buy/Sell -->
+  <section>
+    <h2 data-i18n="buySellTitle">IGC खरीदें / बेचें</h2>
+    <div class="tabs"><button id="tBuy" class="on" data-i18n="buy">खरीदें</button><button id="tSell" data-i18n="sell">बेचें</button></div>
+    <label id="inLabel" for="amt" data-i18n="bnbAmount">BNB की मात्रा</label>
+    <div class="row"><input id="amt" type="number" inputmode="decimal" min="0" placeholder="0.0"><button class="ghost" id="max">Max</button></div>
+    <p class="muted" id="bal" style="margin:6px 0 0"></p>
+    <label data-i18n="willGet">लगभग मिलेगा</label>
+    <div class="out" id="out">–</div>
+    <label for="slip" data-i18n="slippage">Slippage (%) — कम से कम 3 रखें</label>
+    <input id="slip" type="number" inputmode="decimal" value="3" min="1" max="49">
+    <button class="gold" id="act" data-i18n="connect">वॉलेट जोड़ें</button>
+    <p class="msg" id="msg"></p>
+
+    <div class="trust-note" style="margin-top:12px; border-color:var(--gold);">
+      <b data-i18n="bnbSlippageNoteTitle">⚠️ नोट:</b> 
+      <span data-i18n="bnbSlippageNoteText">अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।</span>
+    </div>
+  </section>
+
+  <!-- USDT Buy -->
+  <section>
+    <h2 data-i18n="usdtTitle">💵 USDT से IGC खरीदें</h2>
+    <p class="muted" style="margin:0" data-i18n="usdtDesc">USDT से सीधे IGC खरीदिए। एक बार Approve कीजिए, फिर हर बार सीधे खरीद सकते हैं।</p>
+    <label for="uAmt" data-i18n="usdtAmount">USDT की मात्रा</label>
+    <input id="uAmt" type="number" inputmode="decimal" min="0" placeholder="0.0">
+    <p class="muted" id="uBal" style="margin:6px 0 0"></p>
+    <label data-i18n="willGet">लगभग मिलेगा</label>
+    <div class="out" id="uOut">–</div>
+    <label for="uSlip" data-i18n="slippage">Slippage (%) — कम से कम 3 रखें</label>
+    <input id="uSlip" type="number" inputmode="decimal" value="3" min="1" max="49">
+    <button class="gold" id="uAct" style="width:100%;margin-top:14px;padding:14px;font-size:17px" data-i18n="buyWithUsdt">USDT से IGC खरीदें</button>
+    <p class="msg" id="uMsg"></p>
+
+    <div class="trust-note" style="margin-top:12px; border-color:var(--gold);">
+      <b data-i18n="usdtSlippageNoteTitle">⚠️ नोट:</b> 
+      <span data-i18n="usdtSlippageNoteText">USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।</span>
+    </div>
+
+    <div class="trust-note" style="margin-top:12px">
+      <b data-i18n="gasNote">⛽ Gas (BNB) के बारे में:</b> <span data-i18n="gasNoteText">BSC network पर हर transaction के लिए थोड़ी BNB चाहिए (₹2-5)। अगर wallet में BNB नहीं है तो नीचे "Gas के लिए BNB खरीदें" section से ₹50 का BNB खरीद लीजिए — यह 10-15 transactions के लिए काफी है।</span>
+    </div>
+
+    <button class="gold" id="freeGasBtn" style="width:100%;margin-top:10px;background:var(--ok);color:#111;font-weight:800;padding:14px;border-radius:10px;cursor:pointer;border:0;font-family:inherit;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;" data-i18n="freeGas">
+      ⛽ Free Gas माँगें (0.001 BNB) — USDT होल्डर्स के लिए
+    </button>
+    <p class="muted" style="font-size:11.5px;text-align:center;margin-top:4px;" data-i18n="freeGasNote">(कम से कम 5 USDT होना जरूरी है)</p>
+
+    <div class="dex-grid" style="margin-top:12px">
+      <a class="dex-btn" href="https://www.binance.com/en/buy-BNB" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#F0B90B;color:#111">🟡</div><div><div class="t" data-i18n="buyGasBNB">Gas के लिए BNB खरीदें</div><div class="s" data-i18n="binanceUPI">Binance · UPI / P2P / Card</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- DEX Options -->
+  <section>
+    <h2 data-i18n="dexTitle">अन्य जगह से खरीदें (DEX)</h2>
+    <div class="dex-grid">
+      <a class="dex-btn" id="pcsBnb" target="_blank" rel="noopener"><div class="l"><div class="ico">🥞</div><div><div class="t" data-i18n="pancakeTradeBNB">PancakeSwap — BNB से ट्रेडिंग करें</div><div class="s" data-i18n="pancakeTradeBNBSub">BNB/IGC खरीदें या बेचें</div></div></div><div class="arrow">→</div></a>
+      <a class="dex-btn" id="pcsUsdt" target="_blank" rel="noopener"><div class="l"><div class="ico">💵</div><div><div class="t" data-i18n="pancakeTradeUSDT">PancakeSwap — USDT से ट्रेडिंग करें</div><div class="s" data-i18n="pancakeTradeUSDTSub">USDT (BEP-20) / IGC खरीदें या बेचें</div></div></div><div class="arrow">→</div></a>
+      <a class="dex-btn" id="poocoin" target="_blank" rel="noopener"><div class="l"><div class="ico">🐷</div><div><div class="t" data-i18n="poocoinChart">PooCoin पर चार्ट देखें</div><div class="s" data-i18n="liveChart">लाइव चार्ट</div></div></div><div class="arrow">→</div></a>
+    </div>
+  </section>
+
+  <!-- Other Exchanges -->
+  <section>
+    <h2 data-i18n="otherExTitle">🔄 अन्य Exchange / Card से खरीदें</h2>
+    <p class="muted" style="margin:0 0 12px;font-size:13px" data-i18n="otherExSub">क्या आपके पास पहले से Bitcoin, USDT, ETH या INR किसी exchange पर है? नीचे से अपना तरीका चुनिए और IGC खरीदिए।</p>
+
+    <div style="background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:8px" data-i18n="threeStepsTitle">📖 किसी भी Exchange से IGC तक कैसे पहुँचें — 3 आसान Step:</div>
+      <div class="steps" style="margin:0">
+        <li style="font-size:13.5px" data-i18n="t3step1">पहले BNB खरीदिए (Binance/CoinDCX/WazirX/card से) — ₹500 से शुरू</li>
+        <li style="font-size:13.5px" data-i18n="t3step2">BNB को अपने Trust Wallet / MetaMask में भेजिए (withdraw करके)</li>
+        <li style="font-size:13.5px"><span data-i18n="t3step3a">वापस इस website पर आकर</span> <b data-i18n="t3step3b">"ट्रेडिंग करें"</b> <span data-i18n="t3step3c">दबाइए — 30 seconds में IGC खरीदें या बेचें ✅</span></li>
+      </div>
+    </div>
+
+    <div class="dex-grid">
+      <a class="dex-btn" href="https://www.binance.com/en/buy-BNB" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#F0B90B;color:#111">🟡</div><div><div class="t" data-i18n="buyBNBBinance">Binance से BNB खरीदें</div><div class="s" data-i18n="binanceDesc">Card / UPI / P2P · Global सबसे बड़ा exchange</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="dex-btn" href="https://coindcx.com/trade/BNBINR" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#1E5AFA;color:#fff">🇮🇳</div><div><div class="t" data-i18n="buyBNBCoinDCX">CoinDCX से BNB खरीदें</div><div class="s" data-i18n="coindcxDesc">भारत का #1 exchange · UPI से सीधे</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="dex-btn" href="https://wazirx.com/exchange/BNB-INR" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#00A9E0;color:#fff">🟦</div><div><div class="t" data-i18n="buyBNBWazirX">WazirX से BNB खरीदें</div><div class="s" data-i18n="wazirxDesc">Indian exchange · INR से सीधे</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="dex-btn" href="https://www.coinbase.com/price/binancecoin" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#0052FF;color:#fff">🔵</div><div><div class="t" data-i18n="buyBNBCoinbase">Coinbase से BNB खरीदें</div><div class="s" data-i18n="coinbaseDesc">Global · Card/Apple Pay से</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="dex-btn" href="https://global.transak.com/?fiatCurrency=INR&cryptoCurrencyCode=BNB&network=bsc" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#16A34A;color:#fff">💳</div><div><div class="t" data-i18n="buyBNBTransak">Card / UPI से सीधे BNB खरीदें (Transak)</div><div class="s" data-i18n="transakDesc">बिना exchange · सीधे आपके wallet में</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="dex-btn" href="https://metamask.io/buy-crypto/" target="_blank" rel="noopener">
+        <div class="l"><div class="ico" style="background:#F6851B;color:#fff">🦊</div><div><div class="t" data-i18n="buyBNBMetamask">MetaMask के अंदर से BNB खरीदें</div><div class="s" data-i18n="metamaskDesc">Card से · MetaMask app में built-in</div></div></div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+
+    <div class="trust-note" style="margin-top:12px">
+      <b data-i18n="fastestWay">💡 सबसे तेज़ तरीका:</b> <span data-i18n="fastestWayText">अगर आपके पास Binance app है — उसमें P2P से BNB खरीदिए (UPI से), फिर MetaMask में withdraw कर दीजिए। पूरा process 5 मिनट में हो जाता है।</span><br><br>
+      <b data-i18n="needHelp">❓ Help चाहिए?</b> <span data-i18n="needHelpText">हमारे Telegram group में message कीजिए — हम step-by-step guide कर देंगे।</span>
+    </div>
+
+    <button class="social-btn tg" id="helpBuyBtn" style="margin-top:12px;width:100%">
+      <div class="sico">💬</div>
+      <div data-i18n="helpTelegram">Telegram पर Help लें</div>
+    </button>
+  </section>
+
+</div>
+
+<!-- WALLET MODAL -->
+<div id="walletModal" class="wallet-modal" role="dialog" aria-modal="true">
+  <div class="wallet-sheet">
+    <div class="wm-head">
+      <div><h3 class="wm-title" data-i18n="chooseWallet">🔐 अपना Wallet चुनिए</h3></div>
+      <button class="wm-close" id="walletClose" aria-label="Close">✕</button>
+    </div>
+    <p class="wm-sub" data-i18n="walletSub">IGC खरीदने, बेचने और airdrop claim करने के लिए वॉलेट चुनिए।</p>
+    <div class="wallet-list">
+      <a class="wallet-item recommended" href="#" id="wmMetaMask" target="_blank" rel="noopener" data-wname="MetaMask">
+        <div class="wico" style="background:#F6851B;color:#fff">🦊</div>
+        <div class="wmeta"><div class="wname">MetaMask</div><div class="wtag" data-i18n="mmTag">सबसे popular · Browser extension + Mobile</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <a class="wallet-item" href="#" id="wmTrust" target="_blank" rel="noopener" data-wname="Trust Wallet">
+        <div class="wico" style="background:#3375BB;color:#fff">🛡️</div>
+        <div class="wmeta"><div class="wname">Trust Wallet</div><div class="wtag" data-i18n="twTag">Binance का official · Mobile पर best</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <button class="wallet-item" data-wallet="walletconnect" data-wname="WalletConnect">
+        <div class="wico" style="background:#3B99FC;color:#fff">🔗</div>
+        <div class="wmeta"><div class="wname">WalletConnect</div><div class="wtag" data-i18n="wcTag">300+ wallets को support करता है</div></div>
+        <div class="wchev">›</div>
+      </button>
+      <a class="wallet-item" href="#" id="wmCoinbase" target="_blank" rel="noopener" data-wname="Coinbase Wallet">
+        <div class="wico" style="background:#0052FF;color:#fff">🔵</div>
+        <div class="wmeta"><div class="wname">Coinbase Wallet</div><div class="wtag" data-i18n="cbTag">Global · नए users के लिए आसान</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <a class="wallet-item" href="https://www.binance.com/en/web3wallet" target="_blank" rel="noopener" data-wname="Binance Web3 Wallet">
+        <div class="wico" style="background:#F0B90B;color:#111">🟡</div>
+        <div class="wmeta"><div class="wname">Binance Web3 Wallet</div><div class="wtag" data-i18n="bwTag">Binance app में built-in</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <a class="wallet-item" href="https://www.safepal.com/download" target="_blank" rel="noopener" data-wname="SafePal">
+        <div class="wico" style="background:#4A90E2;color:#fff">🔒</div>
+        <div class="wmeta"><div class="wname">SafePal</div><div class="wtag" data-i18n="spTag">Hardware + Mobile wallet</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <a class="wallet-item" href="https://www.tokenpocket.pro/en/download/app" target="_blank" rel="noopener" data-wname="TokenPocket">
+        <div class="wico" style="background:#2980FE;color:#fff">💎</div>
+        <div class="wmeta"><div class="wname">TokenPocket</div><div class="wtag" data-i18n="tpTag">BSC पर multi-chain support</div></div>
+        <div class="wchev">›</div>
+      </a>
+    </div>
+    <div class="wm-divider" data-i18n="or">या</div>
+    <div class="wallet-list">
+      <button class="wallet-item" id="wOpenInBrowser" data-wname="Browser">
+        <div class="wico" style="background:var(--panel);border:1px solid var(--line);color:var(--gold)">🌐</div>
+        <div class="wmeta"><div class="wname" data-i18n="otherWallet">कोई और wallet? सीधे इसी पेज पर खोलिए</div><div class="wtag" data-i18n="otherWalletTag">Browser में wallet extension होने पर connect होगा</div></div>
+        <div class="wchev">↻</div>
+      </button>
+    </div>
+    <div class="wm-note">
+      <b data-i18n="impNote">💡 ज़रूरी बात:</b> <span data-i18n="impNoteText">Wallet popup तभी खुलेगा जब आपने MetaMask / Trust Wallet install किया हो।</span>
+      <br><br>
+      <b data-i18n="securityLabel">🔒 सुरक्षा:</b> <span data-i18n="securityNote">हम कभी आपका seed phrase या private key नहीं माँगते।</span>
+    </div>
+  </div>
+</div>
+
+<!-- NO WALLET MODAL -->
+<div id="noWalletModal" class="nwmodal" role="dialog" aria-modal="true">
+  <div class="nwbox">
+    <div class="nwbox-inner">
+      <button class="nw-close" id="nwClose" aria-label="Close">✕</button>
+      <h3 data-i18n="noWalletTitle">🌐 Wallet नहीं मिला</h3>
+      <p class="nwlead"><span data-i18n="noWalletLead">इस browser में कोई Web3 wallet नहीं मिला। IGC खरीदने-बेचने के लिए</span> <b data-i18n="noWalletLeadB">नीचे से कोई wallet install कीजिए</b> <span data-i18n="noWalletLeadC">— सिर्फ 1 minute में हो जाएगा।</span></p>
+      <div class="nwlinks">
+        <a href="https://metamask.io/download/" target="_blank" rel="noopener">
+          <div class="nl-ico" style="background:#F6851B;color:#fff">🦊</div>
+          <div class="nl-txt"><div class="nl-name" data-i18n="installMM">MetaMask install करें</div><div class="nl-sub" data-i18n="installMMSub">Chrome/Edge extension या Mobile app</div></div>
+          <div class="nl-arrow">→</div>
+        </a>
+        <a href="https://trustwallet.com/download" target="_blank" rel="noopener">
+          <div class="nl-ico" style="background:#3375BB;color:#fff">🛡️</div>
+          <div class="nl-txt"><div class="nl-name" data-i18n="installTW">Trust Wallet install करें</div><div class="nl-sub" data-i18n="installTWSub">Android / iOS — सबसे आसान</div></div>
+          <div class="nl-arrow">→</div>
+        </a>
+        <a href="https://www.coinbase.com/wallet/downloads" target="_blank" rel="noopener">
+          <div class="nl-ico" style="background:#0052FF;color:#fff">🔵</div>
+          <div class="nl-txt"><div class="nl-name">Coinbase Wallet</div><div class="nl-sub" data-i18n="installCBSub">Global · Simple setup</div></div>
+          <div class="nl-arrow">→</div>
+        </a>
+      </div>
+      <div class="nwtip">
+        <b data-i18n="tipLabel">💡 Tip:</b> <span data-i18n="tipText">अगर आप mobile में हैं तो MetaMask या Trust Wallet install करके, उस app के अंदर browser खोलिए और rambhai91221.github.io/Indian-Global-Coin वहाँ खोलिए।</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+      </html>
