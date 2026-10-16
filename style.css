@@ -41,7 +41,7 @@ button{font:inherit;cursor:pointer;border:0;border-radius:10px}
 .banner-text p{margin:4px 0 0;font-size:14px;color:#ddd}
 
 /* Quick Nav Buttons */
-.quick-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.quick-nav{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
 .q-btn{padding:15px 10px;border-radius:12px;font-weight:800;font-size:15px;color:#fff;border:0;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
 .q-btn:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,0.3)}
 .q-blue{background:linear-gradient(135deg,#1e3c72,#2a5298)}
