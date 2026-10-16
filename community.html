@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Community | Indian Global Coin (IGC)</title>
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
 
+<div id="toast" class="toast"></div>
+
+<nav class="topnav">
+  <div class="nav-container">
+    <a href="index.html" class="nav-brand">
+      <img id="logo" alt="IGC" src="https://lh3.googleusercontent.com/d/1By5SVpoeohHkWdTfcYF4JdaeBjoW3SBa=w256">
+      <span><span data-i18n="brand">Indian Global Coin</span><small data-i18n="tagline">IGC · BNB Smart Chain (BEP-20)</small></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" data-nav="home">होम</a>
+      <a href="airdrop.html" data-nav="airdrop">एयरड्रॉप</a>
+      <a href="mining.html" data-nav="mining">माइनिंग</a>
+      <a href="buy-sell.html" data-nav="buysell">खरीदें/बेचें</a>
+      <a href="security.html" data-nav="security">सुरक्षा</a>
+      <a href="community.html" class="active" data-nav="community">कम्युनिटी</a>
+      <a href="chart.html" data-nav="chart">चार्ट</a>
+      <a href="merchant.html" data-nav="merchant">मर्चेंट</a>
+      <a href="whitepaper.html" data-nav="whitepaper">व्हाइटपेपर</a>
+    </div>
+    <div class="nav-actions">
+      <button id="langToggle" title="Change Language">🌐 <span id="langLabel">EN</span></button>
+      <button class="gold" id="connect" data-i18n="connect">वॉलेट जोड़ें</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" style="padding-top:16px">
+
+  <div class="page-header">
+    <h1 data-i18n="communityTitle">💬 हमारी Community से जुड़िए</h1>
+    <p>Telegram · X · WhatsApp · Whitepaper — सब एक जगह</p>
+  </div>
+
+  <section>
+    <h2>📱 Official Channels</h2>
+    <div class="social-grid">
+      <a class="social-btn tg" id="tgBtn" href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener">
+        <div class="sico">✈️</div><div data-i18n="telegramGroup">Telegram Group</div>
+      </a>
+      <a class="social-btn x" id="xBtn" href="https://x.com/Rambhai91221" target="_blank" rel="noopener">
+        <div class="sico">𝕏</div><div>X (Twitter)</div>
+      </a>
+      <a class="social-btn wa" id="waBtn" href="https://whatsapp.com/channel/" target="_blank" rel="noopener">
+        <div class="sico">💬</div><div data-i18n="whatsappChannel">WhatsApp Channel</div>
+      </a>
+      <a class="social-btn doc" href="whitepaper.html" target="_blank" rel="noopener">
+        <div class="sico">📄</div><div data-i18n="whitepaper">Whitepaper</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="shareTitle">📢 दोस्तों के साथ शेयर कीजिए</h2>
+    <div class="share-row">
+      <a class="s-wa" id="shareWa" target="_blank" rel="noopener" data-i18n="whatsapp">💬 WhatsApp</a>
+      <a class="s-x" id="shareX" target="_blank" rel="noopener" data-i18n="twitter">𝕏 Twitter</a>
+      <a class="s-tg" id="shareTg" target="_blank" rel="noopener" data-i18n="telegram">✈️ Telegram</a>
+      <button class="s-copy" id="shareCopy" data-i18n="copyLink">🔗 Link कॉपी</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>🎯 Community Guidelines</h2>
+    <div class="trust-note">
+      ✅ कोई भी scam / fake link शेयर न करें<br>
+      ✅ किसी से भी seed phrase या private key न माँगें<br>
+      ✅ सभी को respect करें — कोई spam नहीं<br>
+      ✅ सिर्फ official channels पर भरोसा करें<br>
+      ✅ किसी भी समस्या के लिए admin से contact करें
+    </div>
+  </section>
+
+</div>
+
+<div id="walletModal" class="wallet-modal" role="dialog" aria-modal="true">
+  <div class="wallet-sheet">
+    <div class="wm-head">
+      <div><h3 class="wm-title" data-i18n="chooseWallet">🔐 अपना Wallet चुनिए</h3></div>
+      <button class="wm-close" id="walletClose" aria-label="Close">✕</button>
+    </div>
+    <p class="wm-sub" data-i18n="walletSub">IGC खरीदने, बेचने और airdrop claim करने के लिए वॉलेट चुनिए।</p>
+    <div class="wallet-list">
+      <a class="wallet-item recommended" href="#" id="wmMetaMask" target="_blank" rel="noopener" data-wname="MetaMask">
+        <div class="wico" style="background:#F6851B;color:#fff">🦊</div>
+        <div class="wmeta"><div class="wname">MetaMask</div><div class="wtag" data-i18n="mmTag">सबसे popular</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <a class="wallet-item" href="#" id="wmTrust" target="_blank" rel="noopener" data-wname="Trust Wallet">
+        <div class="wico" style="background:#3375BB;color:#fff">🛡️</div>
+        <div class="wmeta"><div class="wname">Trust Wallet</div><div class="wtag" data-i18n="twTag">Binance का official</div></div>
+        <div class="wchev">›</div>
+      </a>
+      <button class="wallet-item" data-wallet="walletconnect" data-wname="WalletConnect">
+        <div class="wico" style="background:#3B99FC;color:#fff">🔗</div>
+        <div class="wmeta"><div class="wname">WalletConnect</div><div class="wtag" data-i18n="wcTag">300+ wallets</div></div>
+        <div class="wchev">›</div>
+      </button>
+      <a class="wallet-item" href="#" id="wmCoinbase" target="_blank" rel="noopener" data-wname="Coinbase Wallet">
+        <div class="wico" style="background:#0052FF;color:#fff">🔵</div>
+        <div class="wmeta"><div class="wname">Coinbase Wallet</div><div class="wtag" data-i18n="cbTag">Global · आसान</div></div>
+        <div class="wchev">›</div>
+      </a>
+    </div>
+    <div class="wm-divider" data-i18n="or">या</div>
+    <div class="wallet-list">
+      <button class="wallet-item" id="wOpenInBrowser" data-wname="Browser">
+        <div class="wico" style="background:var(--panel);border:1px solid var(--line);color:var(--gold)">🌐</div>
+        <div class="wmeta"><div class="wname" data-i18n="otherWallet">कोई और wallet? इसी पेज पर खोलिए</div><div class="wtag" data-i18n="otherWalletTag">Extension होने पर connect होगा</div></div>
+        <div class="wchev">↻</div>
+      </button>
+    </div>
+    <div class="wm-note">
+      <b data-i18n="impNote">💡 ज़रूरी बात:</b> <span data-i18n="impNoteText">Wallet popup तभी खुलेगा जब आपने wallet install किया हो।</span>
+      <br><br>
+      <b data-i18n="securityLabel">🔒 सुरक्षा:</b> <span data-i18n="securityNote">हम कभी आपका seed phrase या private key नहीं माँगते।</span>
+    </div>
+  </div>
+</div>
+
+<div id="noWalletModal" class="nwmodal" role="dialog" aria-modal="true">
+  <div class="nwbox">
+    <div class="nwbox-inner">
+      <button class="nw-close" id="nwClose" aria-label="Close">✕</button>
+      <h3 data-i18n="noWalletTitle">🌐 Wallet नहीं मिला</h3>
+      <p class="nwlead"><span data-i18n="noWalletLead">इस browser में कोई Web3 wallet नहीं मिला।</span> <b data-i18n="noWalletLeadB">नीचे से कोई wallet install कीजिए</b> <span data-i18n="noWalletLeadC">।</span></p>
+      <div class="nwlinks">
+        <a href="https://metamask.io/download/" target="_blank" rel="noopener">
+          <div class="nl-ico" style="background:#F6851B;color:#fff">🦊</div>
+          <div class="nl-txt"><div class="nl-name" data-i18n="installMM">MetaMask install करें</div><div class="nl-sub" data-i18n="installMMSub">Chrome/Edge या Mobile</div></div>
+          <div class="nl-arrow">→</div>
+        </a>
+        <a href="https://trustwallet.com/download" target="_blank" rel="noopener">
+          <div class="nl-ico" style="background:#3375BB;color:#fff">🛡️</div>
+          <div class="nl-txt"><div class="nl-name" data-i18n="installTW">Trust Wallet install करें</div><div class="nl-sub" data-i18n="installTWSub">Android / iOS</div></div>
+          <div class="nl-arrow">→</div>
+        </a>
+      </div>
+      <div class="nwtip">
+        <b data-i18n="tipLabel">💡 Tip:</b> <span data-i18n="tipText">Mobile में wallet app के अंदर browser खोलिए।</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+  </html>
