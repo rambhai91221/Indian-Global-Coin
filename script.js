@@ -1056,7 +1056,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', function(e) {
       e.preventDefault();
-      navLinks.classList.toggle('active'); // 'active' क्लास जोड़ेगा/हटाएगा
+      navLinks.classList.toggle('open'); // 'active' क्लास जोड़ेगा/हटाएगा
     });
   }
   // ================== MOBILE MENU TOGGLE END ==================
