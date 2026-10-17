@@ -1049,6 +1049,17 @@ $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}ca
 /* ================== INITIALIZATION (Fixed) ================== */
 // ✅ DOMContentLoaded से सुनिश्चित होगा कि पेज पूरी तरह लोड होने के बाद ही कोड चले
 document.addEventListener("DOMContentLoaded", () => {
+  // ================== MOBILE MENU TOGGLE (नया जोड़ा गया) ==================
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      navLinks.classList.toggle('active'); // 'active' क्लास जोड़ेगा/हटाएगा
+    });
+  }
+  // ================== MOBILE MENU TOGGLE END ==================
   applyLang(currentLang);
   initRefUI();
 
