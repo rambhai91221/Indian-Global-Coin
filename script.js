@@ -534,7 +534,9 @@ window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 100
 $("logoutBtn").onclick=()=>{
   localStorage.removeItem(K.SESSION);
   localStorage.removeItem("igc_gname");
+  localStorage.removeItem(K.REF_BY); // 👈 यह नई लाइन जोड़ें (पुराना रेफरल साफ करने के लिए)
   currentEmail=null;
+  // ... बाकी कोड (जैसा था वैसा ही रहने दें)
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
   $("loginSection").style.display="block";
   $("dashboardSection").style.display="none";
@@ -545,29 +547,39 @@ $("logoutBtn").onclick=()=>{
   updateClaimBtn();
   toast(t("loggedOut"));
 };
-
 function showDashboard(){
-  $("loginSection").style.display="none";$("dashboardSection").style.display="block";
-  $("userEmail").textContent=currentEmail||"user";$("myRefCode").textContent=getMyCode();
-  loadUserData();updateClaimBtn();updateMiningUI();
-  if(!user)connect(true);
+  $("loginSection").style.display="none";
+  $("dashboardSection").style.display="block";
+  $("userEmail").textContent=currentEmail||"user";
+  
+  // पीले बॉक्स में अपना कोड दिखाएँ
+  const myCode = getMyCode();
+  $("myRefCode").textContent = myCode;
+  
+  // हरे बॉक्स (Referral Confirmed) को अपडेट करें
+  const myRefCodeDisplay = document.getElementById("myRefCodeDisplay");
+  if(myRefCodeDisplay) myRefCodeDisplay.textContent = myCode;
+
+  // चेक करें कि किसी ने रेफर किया है या नहीं
+  const refBy = localStorage.getItem(K.REF_BY);
+  const refWelcomeBox = document.getElementById("refWelcome");
+  
+  if(refBy){
+    // अगर रेफरल है, तो हरा बॉक्स दिखाओ और दोस्त का कोड डालो
+    if(refWelcomeBox) refWelcomeBox.style.display = "block";
+    const refWelcomeCode = document.getElementById("refWelcomeCode");
+    if(refWelcomeCode) refWelcomeCode.textContent = refBy;
+  } else {
+    // अगर कोई रेफरल नहीं है (नई ईमेल है), तो हरा बॉक्स छिपा दो
+    if(refWelcomeBox) refWelcomeBox.style.display = "none";
+  }
+
+  loadUserData();
+  updateClaimBtn();
+  updateMiningUI();
+  if(!user) connect(true);
 }
 
-function updateClaimBtn(){
-  const hasUser=!!currentEmail;const hasWallet=!!user;const btn=$("claimBtn");
-  if(!hasUser){btn.disabled=true;btn.textContent=t("claimLogin");return}
-  if(!hasWallet){btn.disabled=true;btn.textContent=t("claimWallet");return}
-  btn.disabled=false;btn.textContent=t("claimReadyText");
-}
-
-async function sendToSheet(action,payload){
-  if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL.includes("YOUR_ID")){return null;}
-  try{
-    const body=JSON.stringify({action,...payload,myRefCode:getMyCode(),referredBy:localStorage.getItem(K.REF_BY)||"direct",timestamp:new Date().toISOString()});
-    const res=await fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body,redirect:"follow"});
-    return await res.json();
-  }catch(e){return null;}
-}
 
 $("claimBtn").onclick=async()=>{
   if(!currentEmail){toast(t("needLogin"),"#ff6b6b");return}
