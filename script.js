@@ -584,25 +584,58 @@ function startSession(em){
   else{if(!u[k]){u[k]=await hashPw(k,p);saveUsers(u)}localStorage.removeItem(K.PASS)}
 })();
 
-$("loginBtn").onclick=async()=>{
-  const em=$("emailInput").value.trim().toLowerCase();
-  const pw=$("passInput").value.trim();
-  if(!em||!em.includes("@")){toast(t("validEmail"),"#ff6b6b");return}
-  if(pw.length<6){toast(t("pwShort"),"#ff6b6b");return}
-  const users=getUsers(),h=await hashPw(em,pw),saved=users[em];
-  if(isSignup){
-    if(saved&&saved!=="google"&&saved!==h){toast(t("emailReg"),"#ff6b6b");return}
-    users[em]=h;saveUsers(users);
-    startSession(em);toast(saved===h?t("loginOk"):t("signupOk"));
-  }else{
-    if(!saved){toast(t("firstSignup"),"#ff6b6b");return}
-    if(saved==="google"){
-      toast(currentLang==="hi"?"इस email से Google login हुआ था — Google से login कीजिए, या 'Sign Up' दबाकर password सेट कीजिए":"This email was used with Google — use Google login, or tap 'Sign Up' to set a password","#ff6b6b");
-      return;
-    }
-    if(saved!==h){toast(t("wrongCred"),"#ff6b6b");return}
-    startSession(em);toast(t("loginOk"));
+$("googleBtn").onclick=()=>{
+  
+  // 👇 अगर यूज़र ऐप (APK) के अंदर है, तो सीधे Chrome में खोलो 👇
+  if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
+      // यहाँ अपनी वेबसाइट का असली लिंक डालें
+      window.open("https://rambhai91221.github.io/Indian-Global-Coin/", "_system");
+      return; 
   }
+  // 👆 ऐप वाला चेक यहाँ खत्म होता है 👆
+
+  // नीचे आपका वेबसाइट वाला पुराना कोड वैसा ही रहेगा...
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
+  if(inAppBrowser()){
+    toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
+    return;
+  }
+  if(!window.google||!window.google.accounts||!window.google.accounts.oauth2){
+    toast("⏳ Google load हो रहा है… 2 second बाद try कीजिए","#ff6b6b");
+    initGoogleSignIn();
+    return;
+  }
+  const gBtn=$("googleBtn");gBtn.disabled=true;
+  try{
+    const client=google.accounts.oauth2.initTokenClient({
+      client_id:GOOGLE_CLIENT_ID,
+      scope:"openid email profile",
+      ux_mode:"popup",
+      callback:(resp)=>{
+        gBtn.disabled=false;
+        if(resp&&resp.error){
+          toast(resp.error==="access_denied"?"Google login cancel किया":"Google error: "+resp.error,"#ff6b6b");
+          return;
+        }
+        if(resp&&resp.access_token){
+          fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+resp.access_token}})
+          .then(r=>r.json())
+          .then(info=>{
+            if(!info||!info.email){toast("Google email नहीं मिला","#ff6b6b");return}
+            googleLoginOK(info.email,info.name||"");
+          })
+          .catch(()=>toast("Google userinfo error — कृपया दोबारा प्रयास करें","#ff6b6b"));
+        }
+      },
+      error_callback:(err)=>{
+        gBtn.disabled=false;
+        if(err&&err.type==="popup_closed")toast("Google popup बंद कर दिया","#ff6b6b");
+        else if(err&&err.type==="popup_failed_to_open")toast("Popup block हुआ — browser settings check कीजिए","#ff6b6b");
+        else toast("Google login fail — फिर try कीजिए","#ff6b6b");
+      }
+    });
+    client.requestAccessToken({prompt:"select_account"});
+  }catch(e){gBtn.disabled=false;console.error(e);toast(t("googleFail"),"#ff6b6b")}
 };
 
 let googleReady=false;
@@ -1453,5 +1486,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 submitBtn.textContent = t("submitForm") || "Submit Form";
             }
         });
+    }
+});
+/* ================== CAPACITOR CHROME OPEN LOGIC ================== */
+// यह कोड ऐप के अंदर से लिंक को Chrome में खोलने का काम करता है
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.Capacitor) {
+        // Capacitor के Browser प्लगइन को लोड करें
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/@capacitor/browser@6/dist/plugin.js';
+        document.head.appendChild(script);
     }
 });
