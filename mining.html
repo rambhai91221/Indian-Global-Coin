@@ -52,14 +52,21 @@
 <div class="wrap" style="padding-top:16px">
 
   <div class="page-header">
-    <h1>⛏️ Daily Mining — रोज़ 100 IGC</h1>
-    <p>सिर्फ 1 click · हर 24 घंटे में · हर referral पर +50 IGC/day</p>
+  <h1 data-i18n="miningPageTitle">⛏️ Daily Mining — रोज़ 100 IGC</h1>
+  <p data-i18n="miningPageSub">सिर्फ 1 click · हर 24 घंटे में · हर referral पर +50 IGC/day</p>
   </div>
 
   <!-- Login / Dashboard -->
   <section>
-    <div id="refWelcome" style="display:none" class="welcome-ref">
-      🎉 <span data-i18n="refWelcome1">आपको</span> <b id="refWelcomeCode">friend</b> <span data-i18n="refWelcome2">ने refer किया है! नीचे claim कीजिए और</span> <b>20,000 IGC</b> <span data-i18n="refWelcome3">पाइए।</span>
+    <div id="refWelcome" style="display:none; background: linear-gradient(135deg, rgba(61,220,151,.15), rgba(61,220,151,.05)); border: 2px dashed var(--ok); border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+  <div style="font-weight: 800; color: var(--ok); font-size: 16px; margin-bottom: 5px;" data-i18n="refConfirmedText">✅ Referral Confirmed!</div>
+  <div style="font-size: 14px; margin-bottom: 8px;">
+    <span data-i18n="refReferText1">आपको</span> <b id="refWelcomeCode" style="color:var(--ok); font-size: 18px; letter-spacing: 1px;">friend</b> <span data-i18n="refReferText2">ने refer किया है।</span>
+  </div>
+  <div style="font-size: 13px; color: #d6dbe1; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 8px; margin-top: 5px;">
+    <span data-i18n="refYourCodeText">👉 आपका अपना कोड:</span> <b id="myRefCodeDisplay" style="color:var(--gold); font-size: 16px;">Loading...</b>
+  </div>
+  <div style="font-size: 11px; color: var(--muted); margin-top: 5px;" data-i18n="refDiffText">(यह पक्का करने के लिए कि आपका और आपके दोस्त का कोड अलग है)</div>
     </div>
 
     <div id="loginSection" class="login-box">
