@@ -980,6 +980,92 @@ if(window.ethereum){
   window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
 }
 
+/* ================== AUTO BACK-TO-HOME BUTTON ================== */
+(function(){
+  "use strict";
+  const path = (location.pathname || "").toLowerCase();
+  const isHome = path.endsWith("index.html") 
+                 || path.endsWith("/") 
+                 || path === "" 
+                 || path.endsWith("indian-global-coin/");
+  if(isHome) return;
+  
+  if(!document.getElementById("igc-back-css")){
+    const style = document.createElement("style");
+    style.id = "igc-back-css";
+    style.textContent = `
+      .back-home-wrap{
+        max-width:520px;
+        margin:20px auto 30px;
+        padding:0 16px;
+        text-align:center;
+        position:relative;
+        z-index:50;
+      }
+      .back-home-btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        padding:14px 32px;
+        border-radius:12px;
+        background:linear-gradient(135deg,#f0b90b,#c99a08);
+        color:#111;
+        font-weight:800;
+        font-size:15.5px;
+        text-decoration:none;
+        border:0;
+        cursor:pointer;
+        font-family:Hind,system-ui,sans-serif;
+        box-shadow:0 6px 20px rgba(240,185,11,.3);
+        transition:all .2s;
+        min-width:220px;
+      }
+      .back-home-btn:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 28px rgba(240,185,11,.45);
+      }
+      .back-home-btn:active{transform:translateY(0)}
+      .back-home-btn .bh-ico{font-size:20px}
+      @media(max-width:400px){
+        .back-home-btn{width:100%;padding:13px 20px;font-size:15px}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  function injectBackBtn(){
+    if(document.querySelector(".back-home-wrap")) return;
+    const wrap = document.createElement("div");
+    wrap.className = "back-home-wrap";
+    wrap.innerHTML = `
+      <a href="index.html" class="back-home-btn">
+        <span class="bh-ico">🏠</span>
+        <span>Back to Home · होम पर जाएँ</span>
+      </a>
+    `;
+    const script = document.querySelector('script[src*="script.js"]');
+    const walletModal = document.getElementById("walletModal");
+    if(walletModal && walletModal.parentNode){
+      walletModal.parentNode.insertBefore(wrap, walletModal);
+    } else if(script && script.parentNode){
+      script.parentNode.insertBefore(wrap, script);
+    } else {
+      document.body.appendChild(wrap);
+    }
+  }
+  
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", injectBackBtn);
+  } else {
+    injectBackBtn();
+  }
+  
+  setTimeout(injectBackBtn, 500);
+  setTimeout(injectBackBtn, 1500);
+})();
+
+/* ================== SECURITY LAYER ================== */
 (function(){
   "use strict";
   try { if (window.top !== window.self) { window.top.location = window.self.location.href; } }
