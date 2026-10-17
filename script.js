@@ -708,22 +708,24 @@ $("mineBtn").onclick = async () => {
 };
 
 $("copyRefBtn").onclick=async()=>{
+  if(!currentEmail){ toast("🔒 पहले Login कीजिए, तभी आपका पक्का कोड बनेगा!", "#ff6b6b"); return; }
   const code=getMyCode();
   try{await navigator.clipboard.writeText(code)}catch(e){}
   toast(t("codeCopied")+code);
 };
 function buildRefLink(){const u=new URL(location.href);u.searchParams.set("ref",getMyCode());return u.toString();}
 $("shareRefBtn").onclick=()=>{
+  if(!currentEmail){ toast("🔒 पहले Login कीजिए, तभी लिंक शेयर होगा!", "#ff6b6b"); return; }
   const link=buildRefLink();
   const txt=t("refShareText");
   if(navigator.share){navigator.share({title:"IGC Airdrop",text:txt,url:link}).catch(()=>{});}
   else{window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+link),"_blank");}
 };
-
-$("shareWa").href="https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink());
-$("shareX").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink());
-$("shareTg").href="https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText"));
+$("shareWa").onclick=(e)=>{ if(!currentEmail){e.preventDefault(); toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return;} window.open("https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink()),"_blank"); };
+$("shareX").onclick=(e)=>{ if(!currentEmail){e.preventDefault(); toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return;} window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink()),"_blank"); };
+$("shareTg").onclick=(e)=>{ if(!currentEmail){e.preventDefault(); toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return;} window.open("https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText")),"_blank"); };
 $("shareCopy").onclick=async()=>{
+  if(!currentEmail){ toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return; }
   try{await navigator.clipboard.writeText(buildRefLink())}catch(e){}
   toast(t("linkCopied"));
 };
