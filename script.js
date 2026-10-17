@@ -303,6 +303,7 @@ const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_p
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
 
 function getMyCode(){
+  // अगर यूज़र लॉगिन है, तो Email से एक पक्का कोड बनाओ
   if(currentEmail && currentEmail.includes("@")){
     let hash = 0;
     const str = currentEmail.toLowerCase();
@@ -318,6 +319,8 @@ function getMyCode(){
     }
     return "IGC-" + code;
   }
+  
+  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code)
   let c = localStorage.getItem(K.MY_CODE);
   if(!c){ c = genCode(); localStorage.setItem(K.MY_CODE, c); }
   return c;
@@ -869,25 +872,36 @@ function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
   
-  if(refBy){
-    $("refWelcome").style.display="block";
-    $("refWelcomeCode").textContent=refBy;
-  }
-  
   const savedEmail = localStorage.getItem(K.EMAIL);
   const hasSession = localStorage.getItem(K.SESSION) === "1";
   
-  // अगर सेशन है, तो सीधे डैशबोर्ड दिखाओ (लॉगिन बॉक्स छिपाओ)
+  // ✅ सबसे पहले currentEmail सेट करें ताकि रेफरल कोड सही बने
   if(hasSession && savedEmail){
     currentEmail = savedEmail;
+  }
+
+  const myCode = getMyCode();
+  
+  if(refBy){
+    $("refWelcome").style.display="block";
+    $("refWelcomeCode").textContent=refBy;
+    const myRefCodeDisplay = document.getElementById("myRefCodeDisplay");
+    if(myRefCodeDisplay) myRefCodeDisplay.textContent = myCode;
+  } else {
+    const rw = document.getElementById("refWelcome");
+    if(rw) rw.style.display="none";
+  }
+  
+  $("myRefCode").textContent = myCode;
+  
+  // ✅ अब डैशबोर्ड दिखाएँ
+  if(hasSession && savedEmail){
     showDashboard();
   } else {
-    // अगर सेशन नहीं है, तो लॉगिन बॉक्स दिखाओ
     $("loginSection").style.display = "block";
     $("dashboardSection").style.display = "none";
     updateLoginUI();
     $("myRefCode").textContent = "Login करके देखें";
-    if(document.getElementById("refWelcome")) document.getElementById("refWelcome").style.display="none";
   }
   
   setTimeout(()=>{$("poolFill").style.width="15%";},300);
@@ -1032,8 +1046,8 @@ $("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
 $("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
 
-/* ================== INITIALIZATION (Most Important Fix) ================== */
-// यह सुनिश्चित करता है कि पेज पूरी तरह लोड होने के बाद ही कोड चले, ताकि रिफ्रेश पर लॉगआउट न हो
+/* ================== INITIALIZATION (Fixed) ================== */
+// ✅ DOMContentLoaded से सुनिश्चित होगा कि पेज पूरी तरह लोड होने के बाद ही कोड चले
 document.addEventListener("DOMContentLoaded", () => {
   applyLang(currentLang);
   initRefUI();
