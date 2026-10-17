@@ -65,6 +65,11 @@ refDiffText:"(यह पक्का करने के लिए कि आप
     abhiClaim:"🎯 अभी Claim कीजिए",
     miningPageTitle:"⛏️ Daily Mining — रोज़ 100 IGC",
 miningPageSub:"सिर्फ 1 click · हर 24 घंटे में · हर referral पर +50 IGC/day",
+    buySellPageTitle:"💱 IGC खरीदें / बेचें",
+buySellPageSub:"BNB या USDT से सीधे PancakeSwap के ज़रिए — 30 seconds में",
+// नेविगेशन मेन्यू के लिए
+navHome:"होम", navAirdrop:"एयरड्रॉप", navMining:"माइनिंग", navBuySell:"खरीदें/बेचें",
+navSecurity:"सुरक्षा", navCommunity:"कम्युनिटी", navChart:"चार्ट", navMerchant:"मर्चेंट", navWhitepaper:"व्हाइटपेपर",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
@@ -193,6 +198,11 @@ airdropPageSub:"Only for first 5,000 users · +5,000 IGC bonus on every successf
 abhiClaim:"🎯 Claim Now",
     miningPageTitle:"⛏️ Daily Mining — Earn 100 IGC",
 miningPageSub:"Just 1 click · every 24 hours · +50 IGC/day per referral",
+    buySellPageTitle:"💱 Buy / Sell IGC",
+buySellPageSub:"Directly via PancakeSwap with BNB or USDT — in 30 seconds",
+// नेविगेशन मेन्यू के लिए
+navHome:"Home", navAirdrop:"Airdrop", navMining:"Mining", navBuySell:"Buy/Sell",
+navSecurity:"Security", navCommunity:"Community", navChart:"Chart", navMerchant:"Merchant", navWhitepaper:"Whitepaper",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
