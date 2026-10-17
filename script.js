@@ -585,12 +585,8 @@ function startSession(em){
 })();
 
 $("googleBtn").onclick=()=>{
-  // 👇 APK (Capacitor) के अंदर से Chrome ब्राउज़र में खोलने का सही तरीका 👇
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.AppLauncher) {
-      window.Capacitor.Plugins.AppLauncher.openUrl({ url: "https://rambhai91221.github.io/Indian-Global-Coin/" });
-      return;
-  }
-  // 👆 ------------------------------------------------------------- 👆
+  
+  
 
   // वेबसाइट (Chrome/Safari) के लिए पुराना कोड नीचे वैसा ही रहेगा...
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
@@ -657,13 +653,14 @@ function initGoogleSignIn(){
   }
 }
 
-/* ================== GOOGLE LOGIN ================== */
+/* ================== GOOGLE LOGIN ================== 
 function inAppBrowser(){
-  // अगर ऐप के अंदर (APK) चल रहा है, तो सीधे Chrome ब्राउज़र में खोल दें
-  if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
-      window.open(window.location.href, '_system');
-      return false; 
-  }
+  const ua=navigator.userAgent||"";
+  const e=window.ethereum||{};
+  const walletApp=!!(e.isMetaMask||e.isTrust||e.isTrustWallet||e.isCoinbaseWallet||e.isTokenPocket||e.isSafePal)||/MetaMask|Trust|TokenPocket|SafePal|CoinbaseWallet|imToken/i.test(ua);
+  return isMobile()&&(walletApp||/; wv\)|WebView/i.test(ua));
+}
+  
   
   const ua=navigator.userAgent||"";
   const e=window.ethereum||{};
@@ -691,11 +688,7 @@ function handleGoogleCredential(response){
 }
 $("googleBtn").onclick=()=>{
 
-  // अगर ऐप के अंदर हैं, तो बाहर Chrome में खोलें
-  if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
-      window.open(window.location.href, '_system');
-      return;
-  }
+  
   
   // बाकी पुराना कोड वैसा ही रहने दें...
   
@@ -1487,30 +1480,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-/* ================== CAPACITOR CHROME OPEN LOGIC ================== */
-// यह कोड ऐप के अंदर से लिंक को Chrome में खोलने का काम करता है
-document.addEventListener("DOMContentLoaded", () => {
-    if (window.Capacitor) {
-        // Capacitor के Browser प्लगइन को लोड करें
-        const script = document.createElement('script');
-        script.src = 'https://unpkg.com/@capacitor/browser@6/dist/plugin.js';
-        document.head.appendChild(script);
-    }
-});
-// ================== APK में GOOGLE LOGIN बटन छिपाना ==================
+
+// ================== APK में GOOGLE LOGIN बटन छिपाना (सुरक्षित तरीका) ==================
 document.addEventListener("DOMContentLoaded", () => {
     // चेक करें कि यूज़र ऐप (APK) के अंदर है या नहीं
     if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
         
-        // थोड़ा इंतज़ार करें ताकि पेज पूरी तरह लोड हो जाए
+        // 500ms का इंतज़ार करें ताकि पेज पूरी तरह लोड हो जाए
         setTimeout(() => {
             const googleBtn = document.getElementById("googleBtn");
-            const orText = document.querySelector(".login-box div[style*='text-align:center']"); // "या" वाला टेक्स्ट
+            const orText = document.querySelector(".login-box div[style*='text-align:center']"); 
 
-            // अगर ऐप के अंदर हैं, तो Google बटन और "या" छिपा दें
+            // Google बटन को छिपाएं
             if(googleBtn) {
                 googleBtn.style.display = "none";
             }
+            // "या" (OR) वाले टेक्स्ट को छिपाएं
             if(orText && orText.innerText.includes("या")) {
                 orText.style.display = "none";
             }
