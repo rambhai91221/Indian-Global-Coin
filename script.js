@@ -1075,7 +1075,7 @@ $("chart").src="https://dexscreener.com/bsc/"+checksum+"?embed=1&theme=dark&trad
 $("pcsBnb").href="https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+checksum;
 $("pcsUsdt").href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency="+ethers.getAddress(USDT)+"&outputCurrency="+checksum;
 $("tgBtn").href=SOCIAL.telegram;$("xBtn").href=SOCIAL.twitter;$("waBtn").href=SOCIAL.whatsapp;
-$("merchantBtn").onclick=()=>window.open(SOCIAL.merchant,"_blank");
+// $("merchantBtn").onclick=()=>window.open(SOCIAL.merchant,"_blank");
 $("helpBuyBtn").onclick=()=>window.open(SOCIAL.telegram,"_blank");
 $("tItemSupply").href="https://bscscan.com/token/"+checksum;
 $("tItemBurned").href="https://bscscan.com/token/"+checksum+"?a="+DEAD;
@@ -1356,7 +1356,8 @@ if (navToggle && navLinks) {
   document.addEventListener('auxclick', function(e){if (e.button === 1) { e.preventDefault(); }});
 })();
 /* ================== MERCHANT FORM LOGIC ================== */
-const GOOGLE_SHEET_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_URL"; // यहाँ अपना Apps Script URL डालें
+// ⚠️ यहाँ अपना असली गूगल स्क्रिप्ट URL डालें
+const GOOGLE_SHEET_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_URL"; 
 
 document.addEventListener("DOMContentLoaded", () => {
     const merchantBtn = document.getElementById("merchantBtn");
@@ -1367,15 +1368,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.getElementById("mSubmitBtn");
     const closeBtn = document.getElementById("closeMerchantFormBtn");
 
+    // 1. बटन दबाने पर फॉर्म खोलें
     if(merchantBtn) {
         merchantBtn.addEventListener("click", (e) => {
-            e.preventDefault();
+            e.preventDefault(); // टेलीग्राम या लिंक खुलने से रोकें
             if(contactSection) contactSection.style.display = "none";
             if(formSection) formSection.style.display = "block";
             window.scrollTo({ top: formSection.offsetTop - 50, behavior: 'smooth' });
         });
     }
 
+    // 2. Cancel बटन दबाने पर फॉर्म बंद करें
     if(closeBtn) {
         closeBtn.addEventListener("click", (e) => {
             e.preventDefault();
@@ -1384,6 +1387,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // 3. फॉर्म सबमिट होने पर डेटा भेजें
     if(form) {
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -1410,7 +1414,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (result.status === "success") {
                     msg.style.color = "var(--ok)";
-                    msg.textContent = "✅ Form submitted successfully!";
+                    msg.textContent = t("formSuccessMsg") || "✅ Form submitted successfully!";
                     form.reset();
                     setTimeout(() => {
                         formSection.style.display = "none";
@@ -1422,10 +1426,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (error) {
                 msg.style.color = "var(--bad)";
-                msg.textContent = "❌ Something went wrong. Please try again.";
+                msg.textContent = t("formErrorMsg") || "❌ Something went wrong. Please try again.";
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = t("submitForm");
+                submitBtn.textContent = t("submitForm") || "Submit Form";
             }
         });
     }
