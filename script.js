@@ -653,7 +653,7 @@ function initGoogleSignIn(){
   }
 }
 
-/* ================== GOOGLE LOGIN ================== 
+/* ================== GOOGLE LOGIN ================== */
 function inAppBrowser(){
   const ua=navigator.userAgent||"";
   const e=window.ethereum||{};
@@ -680,56 +680,9 @@ function handleGoogleCredential(response){
     const payload=JSON.parse(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
     if(!payload.email){toast(t("googleFail"),"#ff6b6b");return}
     googleLoginOK(payload.email,payload.name||"");
-  }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
+  }catch(e){toast(t("googleRespErr"),"#ff6b6b");}:
 }
-$("googleBtn").onclick=()=>{
-
   
-  
-  // बाकी पुराना कोड वैसा ही रहने दें...
-  
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
-  if(inAppBrowser()){
-    toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
-    return;
-  }
-  if(!window.google||!window.google.accounts||!window.google.accounts.oauth2){
-    toast("⏳ Google load हो रहा है… 2 second बाद try कीजिए","#ff6b6b");
-    initGoogleSignIn();
-    return;
-  }
-  const gBtn=$("googleBtn");gBtn.disabled=true;
-  try{
-    const client=google.accounts.oauth2.initTokenClient({
-      client_id:GOOGLE_CLIENT_ID,
-      scope:"openid email profile",
-      ux_mode:"popup",
-      callback:(resp)=>{
-        gBtn.disabled=false;
-        if(resp&&resp.error){
-          toast(resp.error==="access_denied"?"Google login cancel किया":"Google error: "+resp.error,"#ff6b6b");
-          return;
-        }
-        if(resp&&resp.access_token){
-          fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+resp.access_token}})
-          .then(r=>r.json())
-          .then(info=>{
-            if(!info||!info.email){toast("Google email नहीं मिला","#ff6b6b");return}
-            googleLoginOK(info.email,info.name||"");
-          })
-          .catch(()=>toast("Google userinfo error — कृपया दोबारा प्रयास करें","#ff6b6b"));
-        }
-      },
-      error_callback:(err)=>{
-        gBtn.disabled=false;
-        if(err&&err.type==="popup_closed")toast("Google popup बंद कर दिया","#ff6b6b");
-        else if(err&&err.type==="popup_failed_to_open")toast("Popup block हुआ — browser settings check कीजिए","#ff6b6b");
-        else toast("Google login fail — फिर try कीजिए","#ff6b6b");
-      }
-    });
-    client.requestAccessToken({prompt:"select_account"});
-  }catch(e){gBtn.disabled=false;console.error(e);toast(t("googleFail"),"#ff6b6b")}
-};
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
 /* ================== LOGOUT ================== */
