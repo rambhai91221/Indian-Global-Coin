@@ -141,18 +141,7 @@ const TRANSLATIONS = {
     i18nReady:"भाषा बदल गई: हिंदी",
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
     bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।",
-    firstSignup:"पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)",
-    
-    // === नए जोड़े गए शब्द (बिना कुछ हटाए) ===
-    quickTitle:"⚡ क्विक एक्शन — अपना काम चुनें", qcAirdrop:"एयरड्रॉप", qcAirdropSub:"20,000 IGC FREE पाएँ",
-    qcMining:"डेली माइनिंग", qcMiningSub:"रोज़ 100 IGC कमाएँ", qcBuySell:"खरीदें / बेचें", qcBuySellSub:"BNB या USDT से",
-    qcChart:"लाइव चार्ट", qcChartSub:"DexScreener पर देखें", qcSecurity:"सुरक्षा", qcSecuritySub:"On-chain verification",
-    qcCommunity:"कम्युनिटी", qcCommunitySub:"Telegram · X · WhatsApp", qcMerchant:"मर्चेंट", qcMerchantSub:"दुकानदारों के लिए",
-    qcWhitepaper:"व्हाइटपेपर", qcWhitepaperSub:"पूरी जानकारी पढ़ें", buyNowBtn:"💰 अभी खरीदें", claimAirdropBtn:"🎁 Claim 20,000 IGC",
-    commGuidelines:"Community Guidelines", rule1:"कोई भी scam / fake link शेयर न करें", rule2:"किसी से भी seed phrase या private key न मांगें",
-    rule3:"सभी को respect करें — कोई spam नहीं", rule4:"सिर्फ official channels पर भरोसा करें", rule5:"किसी भी समस्या के लिए admin से contact करें",
-    backHome:"🏠 Back to Home · होम पर जाएँ", refConfirmedText:"✅ Referral Confirmed!", refYourCodeText:"👉 आपका अपना कोड:",
-    refDiffText:"(यह पक्का करने के लिए कि आपका और आपके दोस्त का कोड अलग है)", refReferText1:"आपको", refReferText2:"ने refer किया है।"
+    firstSignup:"पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
@@ -256,18 +245,7 @@ const TRANSLATIONS = {
     i18nReady:"Language changed to English",
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
     bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts.",
-    firstSignup:"Please Sign Up first",
-
-    // === नए जोड़े गए शब्द (बिना कुछ हटाए) ===
-    quickTitle:"⚡ Quick Action — Choose Your Task", qcAirdrop:"Airdrop", qcAirdropSub:"Get 20,000 IGC FREE",
-    qcMining:"Daily Mining", qcMiningSub:"Earn 100 IGC daily", qcBuySell:"Buy / Sell", qcBuySellSub:"With BNB or USDT",
-    qcChart:"Live Chart", qcChartSub:"View on DexScreener", qcSecurity:"Security", qcSecuritySub:"On-chain verification",
-    qcCommunity:"Community", qcCommunitySub:"Telegram · X · WhatsApp", qcMerchant:"Merchant", qcMerchantSub:"For shopkeepers",
-    qcWhitepaper:"Whitepaper", qcWhitepaperSub:"Read full details", buyNowBtn:"💰 Buy Now", claimAirdropBtn:"🎁 Claim 20,000 IGC",
-    commGuidelines:"Community Guidelines", rule1:"Don't share any scam / fake link", rule2:"Never ask anyone for seed phrase or private key",
-    rule3:"Respect everyone — no spam", rule4:"Trust only official channels", rule5:"Contact admin for any issues",
-    backHome:"🏠 Back to Home", refConfirmedText:"✅ Referral Confirmed!", refYourCodeText:"👉 Your own code:",
-    refDiffText:"(To ensure your code and your friend's code are different)", refReferText1:"You were referred by", refReferText2:"."
+    firstSignup:"Please Sign Up first"
   }
 };
 
@@ -281,52 +259,20 @@ function applyLang(lang){
   currentLang = lang;
   localStorage.setItem("igc_lang", lang);
   document.documentElement.lang = lang;
-  
   document.querySelectorAll("[data-i18n]").forEach(el=>{
     const key = el.getAttribute("data-i18n");
     if(TRANSLATIONS[lang] && TRANSLATIONS[lang][key] !== undefined){
       el.textContent = TRANSLATIONS[lang][key];
     }
   });
-  
   document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
     const key = el.getAttribute("data-i18n-ph");
     if(TRANSLATIONS[lang] && TRANSLATIONS[lang][key] !== undefined){
       el.placeholder = TRANSLATIONS[lang][key];
     }
   });
-
-  // === रेफरल बॉक्स और नियमों को डायनामिकली अपडेट करने का कोड ===
-  const refWelcomeBox = document.getElementById("refWelcome");
-  if(refWelcomeBox && refWelcomeBox.style.display !== "none"){
-      const divs = refWelcomeBox.querySelectorAll("div");
-      if(divs.length >= 4){
-          divs[0].textContent = t("refConfirmedText");
-          const refCode = localStorage.getItem(K.REF_BY) || '';
-          const myCode = getMyCode();
-          divs[1].innerHTML = `${t("refReferText1")} <b id="refWelcomeCode" style="color:var(--ok); font-size: 18px; letter-spacing: 1px;">${refCode}</b> ${t("refReferText2")}`;
-          divs[2].innerHTML = `${t("refYourCodeText")} <b id="myRefCodeDisplay" style="color:var(--gold); font-size: 16px;">${myCode}</b>`;
-          divs[3].textContent = t("refDiffText");
-      }
-  }
-
-  const cgHeader = document.querySelector(".community-header, h2");
-  if(cgHeader && (cgHeader.textContent.includes("Community Guidelines") || cgHeader.textContent.includes("कम्युनिटी"))) {
-      cgHeader.textContent = t("commGuidelines");
-  }
-  
-  const ruleElements = document.querySelectorAll(".guidelines-list li, .rules-list li");
-  if(ruleElements.length >= 5) {
-      ruleElements[0].textContent = "✅ " + t("rule1");
-      ruleElements[1].textContent = "✅ " + t("rule2");
-      ruleElements[2].textContent = "✅ " + t("rule3");
-      ruleElements[3].textContent = "✅ " + t("rule4");
-      ruleElements[4].textContent = "✅ " + t("rule5");
-  }
-
   const label = document.getElementById("langLabel");
   if(label) label.textContent = (lang === "hi") ? "EN" : "हिं";
-  
   updateLoginUI();
   updateClaimBtn();
   syncBtn();
@@ -374,7 +320,7 @@ function getMyCode(){
     return "IGC-" + code;
   }
   
-  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code) - यह ऑफलाइन रेफरल कोड है जो आपने कहा था
+  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code)
   let c = localStorage.getItem(K.MY_CODE);
   if(!c){ c = genCode(); localStorage.setItem(K.MY_CODE, c); }
   return c;
@@ -449,7 +395,6 @@ function updateLoginUI(){
   if(btnEl) btnEl.textContent = isSignup ? "Sign Up" : "Login";
   const sw = $("switchText");
   if(sw){
-    // यहाँ मैंने आपका पुराना switchLink वाला कोड वापस लगा दिया है ताकि लॉगिन/साइनअप का टॉगल बटन काम करे
     sw.innerHTML = isSignup
       ? (currentLang==="hi"?'अकाउंट है? <a id="switchLink">Login</a>':'Have an account? <a id="switchLink">Login</a>')
       : (currentLang==="hi"?'नया user? <a id="switchLink">Sign Up</a>':'New user? <a id="switchLink">Sign Up</a>');
@@ -1102,19 +1047,19 @@ $("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
 
 /* ================== INITIALIZATION (Fixed) ================== */
+// ✅ DOMContentLoaded से सुनिश्चित होगा कि पेज पूरी तरह लोड होने के बाद ही कोड चले
 document.addEventListener("DOMContentLoaded", () => {
-  // ================== MOBILE MENU TOGGLE (यहाँ जोड़ा गया है) ==================
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
+  // ================== MOBILE MENU TOGGLE (नया जोड़ा गया) ==================
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
 
-  if (navToggle && navLinks) {
-    navToggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      navLinks.classList.toggle('open');
-    });
-  }
-  // ================== MOBILE MENU TOGGLE END ==================
-  
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', function(e) {
+    e.preventDefault();
+    navLinks.classList.toggle('open'); // 'active' क्लास जोड़ेगा/हटाएगा
+  });
+}
+// ================== MOBILE MENU TOGGLE END ==================
   applyLang(currentLang);
   initRefUI();
 
@@ -1186,7 +1131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     wrap.innerHTML = `
       <a href="index.html" class="back-home-btn">
         <span class="bh-ico">🏠</span>
-        <span data-i18n="backHome">🏠 Back to Home · होम पर जाएँ</span>
+        <span>Back to Home · होम पर जाएँ</span>
       </a>
     `;
     const script = document.querySelector('script[src*="script.js"]');
@@ -1198,12 +1143,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       document.body.appendChild(wrap);
     }
-    
-    // Back to home बटन को भी ट्रांसलेट करने के लिए
-    setTimeout(()=>{
-       const btnSpan = wrap.querySelector("[data-i18n='backHome']");
-       if(btnSpan) btnSpan.textContent = t("backHome");
-    }, 100);
   }
   
   if(document.readyState === "loading"){
