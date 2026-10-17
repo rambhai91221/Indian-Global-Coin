@@ -1497,3 +1497,23 @@ document.addEventListener("DOMContentLoaded", () => {
         document.head.appendChild(script);
     }
 });
+// ================== APK में GOOGLE LOGIN बटन छिपाना ==================
+document.addEventListener("DOMContentLoaded", () => {
+    // चेक करें कि यूज़र ऐप (APK) के अंदर है या नहीं
+    if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
+        
+        // थोड़ा इंतज़ार करें ताकि पेज पूरी तरह लोड हो जाए
+        setTimeout(() => {
+            const googleBtn = document.getElementById("googleBtn");
+            const orText = document.querySelector(".login-box div[style*='text-align:center']"); // "या" वाला टेक्स्ट
+
+            // अगर ऐप के अंदर हैं, तो Google बटन और "या" छिपा दें
+            if(googleBtn) {
+                googleBtn.style.display = "none";
+            }
+            if(orText && orText.innerText.includes("या")) {
+                orText.style.display = "none";
+            }
+        }, 500);
+    }
+});
