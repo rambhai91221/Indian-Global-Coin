@@ -627,6 +627,12 @@ function initGoogleSignIn(){
 
 /* ================== GOOGLE LOGIN ================== */
 function inAppBrowser(){
+  // अगर ऐप के अंदर (APK) चल रहा है, तो सीधे Chrome ब्राउज़र में खोल दें
+  if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
+      window.open(window.location.href, '_system');
+      return false; 
+  }
+  
   const ua=navigator.userAgent||"";
   const e=window.ethereum||{};
   const walletApp=!!(e.isMetaMask||e.isTrust||e.isTrustWallet||e.isCoinbaseWallet||e.isTokenPocket||e.isSafePal)||/MetaMask|Trust|TokenPocket|SafePal|CoinbaseWallet|imToken/i.test(ua);
@@ -652,6 +658,15 @@ function handleGoogleCredential(response){
   }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
 }
 $("googleBtn").onclick=()=>{
+
+  // अगर ऐप के अंदर हैं, तो बाहर Chrome में खोलें
+  if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
+      window.open(window.location.href, '_system');
+      return;
+  }
+  
+  // बाकी पुराना कोड वैसा ही रहने दें...
+  
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
   if(inAppBrowser()){
     toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
