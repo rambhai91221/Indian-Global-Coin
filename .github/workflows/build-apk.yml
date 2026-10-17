@@ -8,6 +8,9 @@ on:
       - "index.html"
       - "whitepaper.html"
       - "logo.png"
+      - "style.css"
+      - "script.js"
+      - "banner.jpg"
       - ".github/workflows/build-apk.yml"
 
 permissions:
@@ -32,8 +35,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: ImageMagick install करें
-        run: sudo apt-get install -y imagemagick
+      - name: ImageMagick install और Fix करें
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          # ImageMagick security policy bypass करें ताकि PNG प्रोसेस हो सके
+          sudo sed -i '/<policy domain="path" rights="none" pattern="@\*"/d' /etc/ImageMagick-6/policy.xml || true
 
       - name: साइट का पता निकालें
         id: url
@@ -56,8 +63,11 @@ jobs:
           npm init -y
           npm i @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
           mkdir www
-          cp ../index.html ../whitepaper.html www/
-          if [ -f ../logo.png ]; then cp ../logo.png www/; fi
+          
+          # सभी ज़रूरी फाइलें कॉपी करें (HTML, CSS, JS, Images)
+          cp ../*.html ../*.css ../*.js www/ || true
+          cp ../logo.png ../banner.jpg www/ || true
+          
           cat > capacitor.config.json <<EOF
           {
             "appId": "com.indianglobalcoin.app",
@@ -66,38 +76,30 @@ jobs:
             "server": { "url": "$SITE" }
           }
           EOF
+          
           npx cap add android
 
       - name: आपके Logo से ऐप का Icon बनाएँ
         working-directory: cap
         run: |
-          # Check करें कि logo.png repo में है या नहीं
           if [ ! -f ../logo.png ]; then
             echo "❌ ERROR: logo.png नहीं मिला repo में।"
-            echo "कृपया logo.png file repo के root में upload कीजिए।"
             exit 1
           fi
-          echo "✅ logo.png मिल गया — size:"
-          ls -lh ../logo.png
-          file ../logo.png
 
           mkdir -p assets
-          cp ../logo.png assets/icon-only-src.png
-
-          # 1024x1024 icon बनाएँ (padding के साथ)
+          
+          # 1024x1024 icon बनाएँ
           convert ../logo.png -resize 900x900 -background none -gravity center -extent 1024x1024 assets/icon-only.png
-
+          
           # Foreground (adaptive icon के लिए)
           convert ../logo.png -resize 660x660 -background none -gravity center -extent 1024x1024 assets/icon-foreground.png
-
+          
           # Background (dark color)
           convert -size 1024x1024 xc:'#0d1014' assets/icon-background.png
-
-          # Splash screen (optional)
+          
+          # Splash screen
           convert ../logo.png -resize 512x512 -background '#0d1014' -gravity center -extent 2732x2732 assets/splash.png
-
-          echo "✅ Icon assets तैयार:"
-          ls -lh assets/
 
           npm i -D @capacitor/assets@3
           npx capacitor-assets generate --android
@@ -105,6 +107,11 @@ jobs:
       - name: फ़ाइलें sync करें
         working-directory: cap
         run: npx cap sync android
+
+      - name: Local properties सेट करें (Gradle fix)
+        working-directory: cap/android
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
 
       - name: APK बनाएँ
         working-directory: cap/android
