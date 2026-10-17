@@ -584,11 +584,112 @@ function startSession(em){
   else{if(!u[k]){u[k]=await hashPw(k,p);saveUsers(u)}localStorage.removeItem(K.PASS)}
 })();
 
-$("googleBtn").onclick=()=>{
-  
+$("loginBtn").onclick=async()=>{
+  const em=$("emailInput").value.trim().toLowerCase();
+  const pw=$("passInput").value.trim();
+  if(!em||!em.includes("@")){toast(t("validEmail"),"#ff6b6b");return}
+  if(pw.length<6){toast(t("pwShort"),"#ff6b6b");return}
+  const users=getUsers(),h=await hashPw(em,pw),saved=users[em];
+  if(isSignup){
+    if(saved&&saved!=="google"&&saved!==h){toast(t("emailReg"),"#ff6b6b");return}
+    users[em]=h;saveUsers(users);
+    startSession(em);toast(saved===h?t("loginOk"):t("signupOk"));
+  }else{
+    if(!saved){toast(t("firstSignup"),"#ff6b6b");return}
+    if(saved==="google"){
+      toast(currentLang==="hi"?"इस email से Google login हुआ था — Google से login कीजिए, या 'Sign Up' दबाकर password सेट कीजिए":"This email was used with Google — use Google login, or tap 'Sign Up' to set a password","#ff6b6b");
+      return;
+    }
+    if(saved!==h){toast(t("wrongCred"),"#ff6b6b");return}
+    startSession(em);toast(t("loginOk"));
+  }
+};
+
+let googleReady=false;
+function initGoogleSignIn(){
+  if(!window.google || !window.google.accounts) return false;
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")) return false;
+  try{
+    google.accounts.id.initialize({
+      client_id:GOOGLE_CLIENT_ID,
+      callback:handleGoogleCredential,
+      auto_select:false,
+      cancel_on_tap_outside:true,
+      use_fedcm_for_prompt:false
+    });
+    googleReady=true;
+    return true;
+  }catch(e){
+    console.error("Google init error:",e);
+    return false;
+  }
+     }
   
 
   // वेबसाइट (Chrome/Safari) के लिए पुराना कोड नीचे वैसा ही रहेगा...
+  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
+  if(inAppBrowser()){
+    toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
+    return;
+  }
+  if(!window.google||!window.google.accounts||!window.google.accounts.oauth2){
+    toast("⏳ Google load हो रहा है… 2 second बाद try कीजिए","#ff6b6b");
+    initGoogleSignIn();
+    return;
+  }
+  const gBtn=$("googleBtn");gBtn.disabled=true;
+  try{
+    const client=google.accounts.oauth2.initTokenClient({
+      client_id:GOOGLE_CLIENT_ID,
+      scope:"openid email profile",
+      ux_mode:"popup",
+      callback:(resp)=>{
+        gBtn.disabled=false;
+        if(resp&&resp.error){
+          toast(resp.error==="access_denied"?"Google login cancel किया":"Google error: "+resp.error,"#ff6b6b");
+          return;
+        }
+        if(resp&&resp.access_token){
+          fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+resp.access_token}})
+          .then(r=>r.json())
+          .then(info=>{
+            if(!info||!info.email){toast("Google email नहीं मिला","#ff6b6b");return}
+            googleLoginOK(info.email,info.name||"");
+          })
+          .catch(()=>toast("Google userinfo error — कृपया दोबारा प्रयास करें","#ff6b6b"));
+        }
+      },
+      error_callback:(err)=>{
+        gBtn.disabled=false;
+
+
+/* ================== GOOGLE LOGIN ================== */
+function inAppBrowser(){
+  const ua=navigator.userAgent||"";
+  const e=window.ethereum||{};
+  const walletApp=!!(e.isMetaMask||e.isTrust||e.isTrustWallet||e.isCoinbaseWallet||e.isTokenPocket||e.isSafePal)||/MetaMask|Trust|TokenPocket|SafePal|CoinbaseWallet|imToken/i.test(ua);
+  return isMobile()&&(walletApp||/; wv\)|WebView/i.test(ua));
+}
+function googleLoginOK(em,name){
+  const k=em.toLowerCase(),users=getUsers();
+  if(!users[k]){users[k]="google";saveUsers(users)}
+  localStorage.setItem(K.PASS,"google_oauth");
+  localStorage.setItem(K.EMAIL,em);
+  localStorage.setItem(K.SESSION,"1");
+  localStorage.setItem("igc_gname",name||"");
+  currentEmail=em;
+  toast(t("googleLogin")+em);
+  showDashboard();
+  sendToSheet("googleLogin",{email:em,wallet:user||"",googleLogin:true,name:name||""});
+}
+function handleGoogleCredential(response){
+  try{
+    const payload=JSON.parse(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+    if(!payload.email){toast(t("googleFail"),"#ff6b6b");return}
+    googleLoginOK(payload.email,payload.name||"");
+  }catch(e){toast(t("googleRespErr"),"#ff6b6b");}
+}
+$("googleBtn").onclick=()=>{
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
   if(inAppBrowser()){
     toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
@@ -631,58 +732,6 @@ $("googleBtn").onclick=()=>{
     client.requestAccessToken({prompt:"select_account"});
   }catch(e){gBtn.disabled=false;console.error(e);toast(t("googleFail"),"#ff6b6b")}
 };
-
-
-let googleReady=false;
-function initGoogleSignIn(){
-  if(!window.google || !window.google.accounts) return false;
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")) return false;
-  try{
-    google.accounts.id.initialize({
-      client_id:GOOGLE_CLIENT_ID,
-      callback:handleGoogleCredential,
-      auto_select:false,
-      cancel_on_tap_outside:true,
-      use_fedcm_for_prompt:false
-    });
-    googleReady=true;
-    return true;
-  }catch(e){
-    console.error("Google init error:",e);
-    return false;
-  }
-}
-
-/* ================== GOOGLE LOGIN ================== */
-function inAppBrowser(){
-  const ua=navigator.userAgent||"";
-  const e=window.ethereum||{};
-  const walletApp=!!(e.isMetaMask||e.isTrust||e.isTrustWallet||e.isCoinbaseWallet||e.isTokenPocket||e.isSafePal)||/MetaMask|Trust|TokenPocket|SafePal|CoinbaseWallet|imToken/i.test(ua);
-  return isMobile()&&(walletApp||/; wv\)|WebView/i.test(ua));
-}
-  
-  
-  
-function googleLoginOK(em,name){
-  const k=em.toLowerCase(),users=getUsers();
-  if(!users[k]){users[k]="google";saveUsers(users)}
-  localStorage.setItem(K.PASS,"google_oauth");
-  localStorage.setItem(K.EMAIL,em);
-  localStorage.setItem(K.SESSION,"1");
-  localStorage.setItem("igc_gname",name||"");
-  currentEmail=em;
-  toast(t("googleLogin")+em);
-  showDashboard();
-  sendToSheet("googleLogin",{email:em,wallet:user||"",googleLogin:true,name:name||""});
-}
-function handleGoogleCredential(response){
-  try{
-    const payload=JSON.parse(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
-    if(!payload.email){toast(t("googleFail"),"#ff6b6b");return}
-    googleLoginOK(payload.email,payload.name||"");
-  }catch(e){toast(t("googleRespErr"),"#ff6b6b");}:
-}
-  
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
 /* ================== LOGOUT ================== */
