@@ -301,7 +301,29 @@ function toast(msg,color){
 const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",SESSION:"igc_session",CLAIMED:"igc_claimed"};
 
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
-function getMyCode(){let c=localStorage.getItem(K.MY_CODE);if(!c){c=genCode();localStorage.setItem(K.MY_CODE,c);}return c;}
+function getMyCode(){
+  // अगर यूज़र लॉगिन है, तो Email से एक पक्का कोड बनाओ
+  if(currentEmail && currentEmail.includes("@")){
+    let hash = 0;
+    const str = currentEmail.toLowerCase();
+    for (let i = 0; i < str.length; i++) {
+      hash = Math.imul(31, hash) + str.charCodeAt(i) | 0;
+    }
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    let h = Math.abs(hash);
+    for(let i=0; i<6; i++){
+       code += chars[h % chars.length];
+       h = Math.floor(h / chars.length);
+    }
+    return "IGC-" + code;
+  }
+  
+  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code)
+  let c = localStorage.getItem(K.MY_CODE);
+  if(!c){ c = genCode(); localStorage.setItem(K.MY_CODE, c); }
+  return c;
+}
 function captureRef(){const u=new URL(location.href);const r=u.searchParams.get("ref");if(!r)return null;if(r===getMyCode())return null;if(localStorage.getItem(K.REF_BY))return localStorage.getItem(K.REF_BY);localStorage.setItem(K.REF_BY,r);return r;}
 
 const walletModal = $("walletModal");
@@ -815,8 +837,22 @@ $("freeGasBtn").onclick = requestGasFromServer;
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
-  if(refBy){$("refWelcome").style.display="block";$("refWelcomeCode").textContent=refBy;}
-  $("myRefCode").textContent=getMyCode();
+  const myCode = getMyCode();
+  
+  if(refBy){
+    $("refWelcome").style.display="block";
+    $("refWelcomeCode").textContent=refBy;
+    
+    // अपना कोड भी उसी बॉक्स में दिखाओ
+    const myRefCodeDisplay = document.getElementById("myRefCodeDisplay");
+    if(myRefCodeDisplay) myRefCodeDisplay.textContent = myCode;
+  } else {
+    const rw = document.getElementById("refWelcome");
+    if(rw) rw.style.display="none";
+  }
+  
+  $("myRefCode").textContent = myCode;
+  // ... बाकी कोड (जैसे था वैसा ही रहने दें)
   
   const savedEmail=localStorage.getItem(K.EMAIL);
   const hasSession=localStorage.getItem(K.SESSION)==="1";
