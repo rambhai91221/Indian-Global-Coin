@@ -99,6 +99,8 @@ merchantStep1:"नीचे \"Merchant बनने के लिए संप�
 merchantStep2:"Telegram पर हमें अपनी दुकान की जानकारी भेजिए",
 merchantStep3:"24 घंटे में आपका QR Code + Merchant ID तैयार हो जाएगा",
 contactTitle:"📞 Contact",
+    backHome:"🏠 Back to Home · होम पर जाएँ",
+loginToSee:"Login करके देखें",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
@@ -261,7 +263,8 @@ merchantStep1:"Click the \"Contact to become a Merchant\" button below",
 merchantStep2:"Send us your shop details on Telegram",
 merchantStep3:"Your QR Code + Merchant ID will be ready in 24 hours",
 contactTitle:"📞 Contact",
-    
+    backHome:"🏠 Back to Home",
+loginToSee:"Login to see",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
@@ -1032,7 +1035,7 @@ function initRefUI(){
     $("loginSection").style.display = "block";
     $("dashboardSection").style.display = "none";
     updateLoginUI();
-    $("myRefCode").textContent = "Login करके देखें";
+    $("myRefCode").textContent = t("loginToSee");
   }
   
   setTimeout(()=>{$("poolFill").style.width="15%";},300);
@@ -1260,11 +1263,11 @@ if (navToggle && navLinks) {
     const wrap = document.createElement("div");
     wrap.className = "back-home-wrap";
     wrap.innerHTML = `
-      <a href="index.html" class="back-home-btn">
-        <span class="bh-ico">🏠</span>
-        <span>Back to Home · होम पर जाएँ</span>
-      </a>
-    `;
+  <a href="index.html" class="back-home-btn">
+    <span class="bh-ico">🏠</span>
+    <span data-i18n="backHome">${t("backHome")}</span>
+  </a>
+`;
     const script = document.querySelector('script[src*="script.js"]');
     const walletModal = document.getElementById("walletModal");
     if(walletModal && walletModal.parentNode){
