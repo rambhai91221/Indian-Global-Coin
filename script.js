@@ -101,6 +101,15 @@ merchantStep3:"24 घंटे में आपका QR Code + Merchant ID त�
 contactTitle:"📞 Contact",
     backHome:"🏠 Back to Home · होम पर जाएँ",
 loginToSee:"Login करके देखें",
+    merchantFormTitle:"📝 मर्चेंट रजिस्ट्रेशन फॉर्म",
+merchantFormSub:"कृपया अपनी सही जानकारी भरें। हम 24 घंटे में संपर्क करेंगे।",
+mShopNamePh:"दुकान का नाम (Shop Name)",
+mOwnerNamePh:"मालिक का नाम (Owner Name)",
+mPhonePh:"मोबाइल नंबर (Phone)",
+mWalletPh:"BSC Wallet Address (0x...)",
+mCityPh:"शहर (City)",
+submitForm:"फॉर्म सबमिट करें",
+cancelBtn:"रद्द करें / वापस जाएँ",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
@@ -265,6 +274,15 @@ merchantStep3:"Your QR Code + Merchant ID will be ready in 24 hours",
 contactTitle:"📞 Contact",
     backHome:"🏠 Back to Home",
 loginToSee:"Login to see",
+    merchantFormTitle:"📝 Merchant Registration Form",
+merchantFormSub:"Please fill your correct details. We will contact you within 24 hours.",
+mShopNamePh:"Shop Name",
+mOwnerNamePh:"Owner Name",
+mPhonePh:"Phone Number",
+mWalletPh:"BSC Wallet Address (0x...)",
+mCityPh:"City",
+submitForm:"Submit Form",
+cancelBtn:"Cancel / Go Back",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
@@ -1337,3 +1355,78 @@ if (navToggle && navLinks) {
   document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
   document.addEventListener('auxclick', function(e){if (e.button === 1) { e.preventDefault(); }});
 })();
+/* ================== MERCHANT FORM LOGIC ================== */
+const GOOGLE_SHEET_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_URL"; // यहाँ अपना Apps Script URL डालें
+
+document.addEventListener("DOMContentLoaded", () => {
+    const merchantBtn = document.getElementById("merchantBtn");
+    const formSection = document.getElementById("merchantFormSection");
+    const contactSection = document.getElementById("contactSection");
+    const form = document.getElementById("merchantForm");
+    const msg = document.getElementById("mFormMsg");
+    const submitBtn = document.getElementById("mSubmitBtn");
+    const closeBtn = document.getElementById("closeMerchantFormBtn");
+
+    if(merchantBtn) {
+        merchantBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if(contactSection) contactSection.style.display = "none";
+            if(formSection) formSection.style.display = "block";
+            window.scrollTo({ top: formSection.offsetTop - 50, behavior: 'smooth' });
+        });
+    }
+
+    if(closeBtn) {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if(formSection) formSection.style.display = "none";
+            if(contactSection) contactSection.style.display = "block";
+        });
+    }
+
+    if(form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Submitting...";
+            msg.textContent = "";
+
+            const data = {
+                shopName: document.getElementById("mShopName").value,
+                ownerName: document.getElementById("mOwnerName").value,
+                phone: document.getElementById("mPhone").value,
+                wallet: document.getElementById("mWallet").value,
+                city: document.getElementById("mCity").value
+            };
+
+            try {
+                const response = await fetch(GOOGLE_SHEET_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === "success") {
+                    msg.style.color = "var(--ok)";
+                    msg.textContent = "✅ Form submitted successfully!";
+                    form.reset();
+                    setTimeout(() => {
+                        formSection.style.display = "none";
+                        contactSection.style.display = "block";
+                        msg.textContent = "";
+                    }, 3000);
+                } else {
+                    throw new Error("Failed");
+                }
+            } catch (error) {
+                msg.style.color = "var(--bad)";
+                msg.textContent = "❌ Something went wrong. Please try again.";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = t("submitForm");
+            }
+        });
+    }
+});
