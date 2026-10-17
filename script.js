@@ -298,11 +298,11 @@ function toast(msg,color){
   setTimeout(()=>el.classList.remove("show"),3000);
 }
 
-const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",SESSION:"igc_session",CLAIMED:"igc_claimed"};
+const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_pass",SESSION:"igc_session",CLAIMED:"igc_claimed",USERS:"igc_users"};
 
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
+
 function getMyCode(){
-  // अगर यूज़र लॉगिन है, तो Email से एक पक्का कोड बनाओ
   if(currentEmail && currentEmail.includes("@")){
     let hash = 0;
     const str = currentEmail.toLowerCase();
@@ -318,13 +318,19 @@ function getMyCode(){
     }
     return "IGC-" + code;
   }
-  
-  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code)
   let c = localStorage.getItem(K.MY_CODE);
   if(!c){ c = genCode(); localStorage.setItem(K.MY_CODE, c); }
   return c;
 }
-function captureRef(){const u=new URL(location.href);const r=u.searchParams.get("ref");if(!r)return null;if(r===getMyCode())return null;if(localStorage.getItem(K.REF_BY))return localStorage.getItem(K.REF_BY);localStorage.setItem(K.REF_BY,r);return r;}
+
+function captureRef(){
+  const u=new URL(location.href);
+  const r=u.searchParams.get("ref");
+  if(!r) return null;
+  if(r===getMyCode()) return null;
+  localStorage.setItem(K.REF_BY, r);
+  return r;
+}
 
 const walletModal = $("walletModal");
 const noWalletModal = $("noWalletModal");
@@ -393,8 +399,7 @@ function updateLoginUI(){
   setTimeout(()=>{const l=$("switchLink");if(l) l.onclick=()=>{isSignup=!isSignup;updateLoginUI();};},10);
 }
 
-/* ================== LOGIN (multi-account) ================== */
-K.USERS="igc_users";
+/* ================== LOGIN ================== */
 function getUsers(){try{return JSON.parse(localStorage.getItem(K.USERS)||"{}")}catch(e){return {}}}
 function saveUsers(u){localStorage.setItem(K.USERS,JSON.stringify(u))}
 async function hashPw(email,pw){
@@ -410,7 +415,6 @@ function startSession(em){
   localStorage.removeItem(K.PASS);
   showDashboard();
 }
-/* पुराने सेव email/password को नए तरीके में बदलना */
 (async function(){
   const e=localStorage.getItem(K.EMAIL),p=localStorage.getItem(K.PASS);
   if(!e||!p)return;
@@ -531,12 +535,12 @@ $("googleBtn").onclick=()=>{
 };
 window.addEventListener("load", ()=>{setTimeout(()=>{ initGoogleSignIn(); }, 1000);});
 
+/* ================== LOGOUT ================== */
 $("logoutBtn").onclick=()=>{
   localStorage.removeItem(K.SESSION);
   localStorage.removeItem("igc_gname");
-  localStorage.removeItem(K.REF_BY); // 👈 यह नई लाइन जोड़ें (पुराना रेफरल साफ करने के लिए)
+  localStorage.removeItem(K.REF_BY);
   currentEmail=null;
-  // ... बाकी कोड (जैसा था वैसा ही रहने दें)
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
   $("loginSection").style.display="block";
   $("dashboardSection").style.display="none";
@@ -547,30 +551,26 @@ $("logoutBtn").onclick=()=>{
   updateClaimBtn();
   toast(t("loggedOut"));
 };
+
 function showDashboard(){
   $("loginSection").style.display="none";
   $("dashboardSection").style.display="block";
   $("userEmail").textContent=currentEmail||"user";
   
-  // पीले बॉक्स में अपना कोड दिखाएँ
   const myCode = getMyCode();
   $("myRefCode").textContent = myCode;
   
-  // हरे बॉक्स (Referral Confirmed) को अपडेट करें
   const myRefCodeDisplay = document.getElementById("myRefCodeDisplay");
   if(myRefCodeDisplay) myRefCodeDisplay.textContent = myCode;
 
-  // चेक करें कि किसी ने रेफर किया है या नहीं
   const refBy = localStorage.getItem(K.REF_BY);
   const refWelcomeBox = document.getElementById("refWelcome");
   
   if(refBy){
-    // अगर रेफरल है, तो हरा बॉक्स दिखाओ और दोस्त का कोड डालो
     if(refWelcomeBox) refWelcomeBox.style.display = "block";
     const refWelcomeCode = document.getElementById("refWelcomeCode");
     if(refWelcomeCode) refWelcomeCode.textContent = refBy;
   } else {
-    // अगर कोई रेफरल नहीं है (नई ईमेल है), तो हरा बॉक्स छिपा दो
     if(refWelcomeBox) refWelcomeBox.style.display = "none";
   }
 
@@ -580,6 +580,21 @@ function showDashboard(){
   if(!user) connect(true);
 }
 
+function updateClaimBtn(){
+  const hasUser=!!currentEmail;const hasWallet=!!user;const btn=$("claimBtn");
+  if(!hasUser){btn.disabled=true;btn.textContent=t("claimLogin");return}
+  if(!hasWallet){btn.disabled=true;btn.textContent=t("claimWallet");return}
+  btn.disabled=false;btn.textContent=t("claimReadyText");
+}
+
+async function sendToSheet(action,payload){
+  if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL.includes("YOUR_ID")){return null;}
+  try{
+    const body=JSON.stringify({action,...payload,myRefCode:getMyCode(),referredBy:localStorage.getItem(K.REF_BY)||"direct",timestamp:new Date().toISOString()});
+    const res=await fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body,redirect:"follow"});
+    return await res.json();
+  }catch(e){return null;}
+}
 
 $("claimBtn").onclick=async()=>{
   if(!currentEmail){toast(t("needLogin"),"#ff6b6b");return}
@@ -733,6 +748,7 @@ $("shareRefBtn").onclick=()=>{
   if(navigator.share){navigator.share({title:"IGC Airdrop",text:txt,url:link}).catch(()=>{});}
   else{window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+link),"_blank");}
 };
+
 $("shareWa").onclick=(e)=>{ if(!currentEmail){e.preventDefault(); toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return;} window.open("https://wa.me/?text="+encodeURIComponent(t("shareText")+" "+buildRefLink()),"_blank"); };
 $("shareX").onclick=(e)=>{ if(!currentEmail){e.preventDefault(); toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return;} window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t("shareText"))+"&url="+encodeURIComponent(buildRefLink()),"_blank"); };
 $("shareTg").onclick=(e)=>{ if(!currentEmail){e.preventDefault(); toast("🔒 पहले Login कीजिए!", "#ff6b6b"); return;} window.open("https://t.me/share/url?url="+encodeURIComponent(buildRefLink())+"&text="+encodeURIComponent(t("shareText")),"_blank"); };
@@ -848,34 +864,27 @@ async function requestGasFromServer() {
 }
 $("freeGasBtn").onclick = requestGasFromServer;
 
+/* ================== INIT REF UI (Session Check Fix) ================== */
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
-  const myCode = getMyCode();
   
   if(refBy){
     $("refWelcome").style.display="block";
     $("refWelcomeCode").textContent=refBy;
-    
-    // अपना कोड भी उसी बॉक्स में दिखाओ
-    const myRefCodeDisplay = document.getElementById("myRefCodeDisplay");
-    if(myRefCodeDisplay) myRefCodeDisplay.textContent = myCode;
-  } else {
-    const rw = document.getElementById("refWelcome");
-    if(rw) rw.style.display="none";
   }
   
-  $("myRefCode").textContent = myCode;
-  // ... बाकी कोड (जैसे था वैसा ही रहने दें)
-  
-  const savedEmail=localStorage.getItem(K.EMAIL);
-  const hasSession=localStorage.getItem(K.SESSION)==="1";
+  const savedEmail = localStorage.getItem(K.EMAIL);
+  const hasSession = localStorage.getItem(K.SESSION) === "1";
   
   if(hasSession && savedEmail){
-    currentEmail=savedEmail;
+    currentEmail = savedEmail;
     showDashboard();
   } else {
+    $("loginSection").style.display = "block";
+    $("dashboardSection").style.display = "none";
     updateLoginUI();
+    $("myRefCode").textContent = "Login करके देखें";
   }
   
   setTimeout(()=>{$("poolFill").style.width="15%";},300);
@@ -1020,15 +1029,17 @@ $("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
 $("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
 
-applyLang(currentLang);
+/* ================== INITIALIZATION ================== */
+document.addEventListener("DOMContentLoaded", () => {
+  applyLang(currentLang);
+  initRefUI();
 
-initRefUI();
-
-if(window.ethereum){
-  connect(true);
-  window.ethereum.on&&window.ethereum.on("accountsChanged",()=>location.reload());
-  window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
-}
+  if(window.ethereum){
+    connect(true);
+    window.ethereum.on&&window.ethereum.on("accountsChanged",()=>location.reload());
+    window.ethereum.on&&window.ethereum.on("chainChanged",()=>location.reload());
+  }
+});
 
 /* ================== AUTO BACK-TO-HOME BUTTON ================== */
 (function(){
