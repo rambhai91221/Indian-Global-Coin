@@ -520,7 +520,7 @@ $("googleBtn").onclick=()=>{
             if(!info||!info.email){toast("Google email नहीं मिला","#ff6b6b");return}
             googleLoginOK(info.email,info.name||"");
           })
-          .catch(()=>toast("Google userinfo error","#ff6b6b"));
+          .catch(()=>toast("Google userinfo error — कृपया दोबारा प्रयास करें","#ff6b6b"));
         }
       },
       error_callback:(err)=>{
@@ -864,7 +864,7 @@ async function requestGasFromServer() {
 }
 $("freeGasBtn").onclick = requestGasFromServer;
 
-/* ================== INIT REF UI (Session Check Fix) ================== */
+/* ================== INIT REF UI ================== */
 function initRefUI(){
   captureRef();
   const refBy=localStorage.getItem(K.REF_BY);
@@ -877,14 +877,17 @@ function initRefUI(){
   const savedEmail = localStorage.getItem(K.EMAIL);
   const hasSession = localStorage.getItem(K.SESSION) === "1";
   
+  // अगर सेशन है, तो सीधे डैशबोर्ड दिखाओ (लॉगिन बॉक्स छिपाओ)
   if(hasSession && savedEmail){
     currentEmail = savedEmail;
     showDashboard();
   } else {
+    // अगर सेशन नहीं है, तो लॉगिन बॉक्स दिखाओ
     $("loginSection").style.display = "block";
     $("dashboardSection").style.display = "none";
     updateLoginUI();
     $("myRefCode").textContent = "Login करके देखें";
+    if(document.getElementById("refWelcome")) document.getElementById("refWelcome").style.display="none";
   }
   
   setTimeout(()=>{$("poolFill").style.width="15%";},300);
@@ -1029,7 +1032,8 @@ $("amt").oninput=()=>{clearTimeout(timer);timer=setTimeout(getQuote,400)};
 $("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode==="buy"){const b=await rpc.getBalance(user);const keep=ethers.parseEther("0.003");$("amt").value=ethers.formatEther(b>keep?b-keep:0n)}else{$("amt").value=ethers.formatUnits(await rToken.balanceOf(user),18)}getQuote()}catch(e){}};
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
 
-/* ================== INITIALIZATION ================== */
+/* ================== INITIALIZATION (Most Important Fix) ================== */
+// यह सुनिश्चित करता है कि पेज पूरी तरह लोड होने के बाद ही कोड चले, ताकि रिफ्रेश पर लॉगआउट न हो
 document.addEventListener("DOMContentLoaded", () => {
   applyLang(currentLang);
   initRefUI();
