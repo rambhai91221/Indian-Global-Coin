@@ -42,7 +42,7 @@ const TRANSLATIONS = {
   hi: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"वॉलेट जोड़ें",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
-    refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
+    refWelcome1:"आपको", refWelcome2:"ने refer किया है।", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
     switchLogin:"अकाउंट है? Login कीजिए", switchSignup:"नया user? Sign Up", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
@@ -141,12 +141,23 @@ const TRANSLATIONS = {
     i18nReady:"भाषा बदल गई: हिंदी",
     usdtSlippageNoteTitle:"⚠️ नोट:", usdtSlippageNoteText:"USDT से खरीदते समय Slippage को 5% से 10% रखें। छोटी मात्रा में खरीदने पर Price Impact ज्यादा हो सकता है।",
     bnbSlippageNoteTitle:"⚠️ नोट:", bnbSlippageNoteText:"अगर आप बड़ी मात्रा में IGC खरीद रहे हैं, तो कृपया Slippage बढ़ाएँ (5% से 10%)। या छोटी मात्रा में खरीदारी करें।",
-    firstSignup:"पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)"
+    firstSignup:"पहले Sign Up कीजिए (नीचे 'Sign Up' दबाइए)",
+    // नए जोड़े गए शब्द (Missing Keys)
+    quickTitle:"⚡ क्विक एक्शन — अपना काम चुनें", qcAirdrop:"एयरड्रॉप", qcAirdropSub:"20,000 IGC FREE पाएँ",
+    qcMining:"डेली माइनिंग", qcMiningSub:"रोज़ 100 IGC कमाएँ", qcBuySell:"खरीदें / बेचें", qcBuySellSub:"BNB या USDT से",
+    qcChart:"लाइव चार्ट", qcChartSub:"DexScreener पर देखें", qcSecurity:"सुरक्षा", qcSecuritySub:"On-chain verification",
+    qcCommunity:"कम्युनिटी", qcCommunitySub:"Telegram · X · WhatsApp", qcMerchant:"मर्चेंट", qcMerchantSub:"दुकानदारों के लिए",
+    qcWhitepaper:"व्हाइटपेपर", qcWhitepaperSub:"पूरी जानकारी पढ़ें",
+    refConfirmed:"✅ Referral Confirmed!", refYourCode:"👉 आपका अपना कोड:", refCodeDiff:"(यह पक्का करने के लिए कि आपका और आपके दोस्त का कोड अलग है)",
+    commGuidelines:"Community Guidelines", rule1:"कोई भी scam / fake link शेयर न करें", rule2:"किसी से भी seed phrase या private key न मांगें",
+    rule3:"सभी को respect करें — कोई spam नहीं", rule4:"सिर्फ official channels पर भरोसा करें", rule5:"किसी भी समस्या के लिए admin से contact करें",
+    miningHeader:"⛏️ Daily Mining — रोज़ 100 IGC", miningSubHeader:"सिर्फ 1 click · हर 24 घंटे में · हर referral पर +50 IGC/day",
+    abhiClaim:"🎯 अभी Claim कीजिए", abhiKharide:"💰 अभी खरीदें", buySellSub:"BNB या USDT से सीधे PancakeSwap के ज़रिए — 30 seconds में", backHome:"🏠 Back to Home · होम पर जाएँ"
   },
   en: {
     brand:"Indian Global Coin", tagline:"IGC · BNB Smart Chain (BEP-20)", connect:"Connect Wallet",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
-    refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
+    refWelcome1:"You were referred by", refWelcome2:"!", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
     switchLogin:"Have an account? Login", switchSignup:"New user? Sign Up", bankEncryption:"Bank-Level Encryption",
     logout:"Logout", myRefs:"My Referrals", bonusIGC:"Bonus IGC", claimedIGC:"Claimed IGC", status:"Status",
@@ -245,7 +256,18 @@ const TRANSLATIONS = {
     i18nReady:"Language changed to English",
     usdtSlippageNoteTitle:"⚠️ Note:", usdtSlippageNoteText:"Keep Slippage between 5% to 10% while buying with USDT. Price Impact may be high for small amounts.",
     bnbSlippageNoteTitle:"⚠️ Note:", bnbSlippageNoteText:"If you are buying a large amount of IGC, please increase Slippage (5% to 10%) or buy in smaller amounts.",
-    firstSignup:"Please Sign Up first"
+    firstSignup:"Please Sign Up first",
+    // नए जोड़े गए शब्द (Missing Keys)
+    quickTitle:"⚡ Quick Action — Choose Your Task", qcAirdrop:"Airdrop", qcAirdropSub:"Get 20,000 IGC FREE",
+    qcMining:"Daily Mining", qcMiningSub:"Earn 100 IGC daily", qcBuySell:"Buy / Sell", qcBuySellSub:"With BNB or USDT",
+    qcChart:"Live Chart", qcChartSub:"View on DexScreener", qcSecurity:"Security", qcSecuritySub:"On-chain verification",
+    qcCommunity:"Community", qcCommunitySub:"Telegram · X · WhatsApp", qcMerchant:"Merchant", qcMerchantSub:"For shopkeepers",
+    qcWhitepaper:"Whitepaper", qcWhitepaperSub:"Read full details",
+    refConfirmed:"✅ Referral Confirmed!", refYourCode:"👉 Your own code:", refCodeDiff:"(To ensure your code and your friend's code are different)",
+    commGuidelines:"Community Guidelines", rule1:"Don't share any scam / fake link", rule2:"Never ask anyone for seed phrase or private key",
+    rule3:"Respect everyone — no spam", rule4:"Trust only official channels", rule5:"Contact admin for any issues",
+    miningHeader:"⛏️ Daily Mining — 100 IGC daily", miningSubHeader:"Just 1 click · every 24 hours · +50 IGC/day per referral",
+    abhiClaim:"🎯 Claim Now", abhiKharide:"💰 Buy Now", buySellSub:"Directly via PancakeSwap with BNB or USDT — in 30 seconds", backHome:"🏠 Back to Home"
   }
 };
 
@@ -259,20 +281,49 @@ function applyLang(lang){
   currentLang = lang;
   localStorage.setItem("igc_lang", lang);
   document.documentElement.lang = lang;
+  
   document.querySelectorAll("[data-i18n]").forEach(el=>{
     const key = el.getAttribute("data-i18n");
     if(TRANSLATIONS[lang] && TRANSLATIONS[lang][key] !== undefined){
       el.textContent = TRANSLATIONS[lang][key];
     }
   });
+  
   document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
     const key = el.getAttribute("data-i18n-ph");
     if(TRANSLATIONS[lang] && TRANSLATIONS[lang][key] !== undefined){
       el.placeholder = TRANSLATIONS[lang][key];
     }
   });
+
+  // === रेफरल बॉक्स को डायनामिकली अपडेट करने का कोड ===
+  const refWelcomeBox = document.getElementById("refWelcome");
+  if(refWelcomeBox && refWelcomeBox.style.display !== "none"){
+      const divs = refWelcomeBox.querySelectorAll("div");
+      if(divs.length >= 4){
+          divs[0].textContent = t("refConfirmed");
+          divs[1].innerHTML = `${t("refWelcome1")} <b id="refWelcomeCode" style="color:var(--ok); font-size: 18px; letter-spacing: 1px;">${localStorage.getItem(K.REF_BY) || ''}</b> ${t("refWelcome2")}`;
+          divs[2].innerHTML = `${t("refYourCode")} <b id="myRefCodeDisplay" style="color:var(--gold); font-size: 16px;">${getMyCode()}</b>`;
+          divs[3].textContent = t("refCodeDiff");
+      }
+  }
+
+  // === Community Guidelines को अपडेट करने का कोड ===
+  const cgHeader = document.querySelector(".community-header, h2");
+  if(cgHeader && cgHeader.textContent.includes("Community Guidelines")) cgHeader.textContent = t("commGuidelines");
+  
+  const ruleElements = document.querySelectorAll(".guidelines-list li, .rules-list li");
+  if(ruleElements.length >= 5) {
+      ruleElements[0].textContent = "✅ " + t("rule1");
+      ruleElements[1].textContent = "✅ " + t("rule2");
+      ruleElements[2].textContent = "✅ " + t("rule3");
+      ruleElements[3].textContent = "✅ " + t("rule4");
+      ruleElements[4].textContent = "✅ " + t("rule5");
+  }
+
   const label = document.getElementById("langLabel");
   if(label) label.textContent = (lang === "hi") ? "EN" : "हिं";
+  
   updateLoginUI();
   updateClaimBtn();
   syncBtn();
@@ -303,7 +354,6 @@ const K={MY_CODE:"igc_my_code",REF_BY:"igc_ref_by",EMAIL:"igc_email",PASS:"igc_p
 function genCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return "IGC-"+s;}
 
 function getMyCode(){
-  // अगर यूज़र लॉगिन है, तो Email से एक पक्का कोड बनाओ
   if(currentEmail && currentEmail.includes("@")){
     let hash = 0;
     const str = currentEmail.toLowerCase();
@@ -319,8 +369,6 @@ function getMyCode(){
     }
     return "IGC-" + code;
   }
-  
-  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code)
   let c = localStorage.getItem(K.MY_CODE);
   if(!c){ c = genCode(); localStorage.setItem(K.MY_CODE, c); }
   return c;
@@ -875,7 +923,6 @@ function initRefUI(){
   const savedEmail = localStorage.getItem(K.EMAIL);
   const hasSession = localStorage.getItem(K.SESSION) === "1";
   
-  // ✅ सबसे पहले currentEmail सेट करें ताकि रेफरल कोड सही बने
   if(hasSession && savedEmail){
     currentEmail = savedEmail;
   }
@@ -894,7 +941,6 @@ function initRefUI(){
   
   $("myRefCode").textContent = myCode;
   
-  // ✅ अब डैशबोर्ड दिखाएँ
   if(hasSession && savedEmail){
     showDashboard();
   } else {
@@ -1047,19 +1093,19 @@ $("max").onclick=async()=>{if(!user){await connect();if(!user)return}try{if(mode
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(checksum)}catch(e){};$("copy").textContent=t("copyOk");setTimeout(()=>$("copy").textContent=t("copyAddress"),1800)};
 
 /* ================== INITIALIZATION (Fixed) ================== */
-// ✅ DOMContentLoaded से सुनिश्चित होगा कि पेज पूरी तरह लोड होने के बाद ही कोड चले
 document.addEventListener("DOMContentLoaded", () => {
-  // ================== MOBILE MENU TOGGLE (नया जोड़ा गया) ==================
+  // ================== MOBILE MENU TOGGLE ==================
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
 
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', function(e) {
       e.preventDefault();
-      navLinks.classList.toggle('open'); // 'active' क्लास जोड़ेगा/हटाएगा
+      navLinks.classList.toggle('open');
     });
   }
   // ================== MOBILE MENU TOGGLE END ==================
+  
   applyLang(currentLang);
   initRefUI();
 
@@ -1131,7 +1177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     wrap.innerHTML = `
       <a href="index.html" class="back-home-btn">
         <span class="bh-ico">🏠</span>
-        <span>Back to Home · होम पर जाएँ</span>
+        <span data-i18n="backHome">🏠 Back to Home · होम पर जाएँ</span>
       </a>
     `;
     const script = document.querySelector('script[src*="script.js"]');
