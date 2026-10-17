@@ -60,6 +60,9 @@ buyNowBtn:"💰 अभी खरीदें",
 refReferText1:"आपको", refReferText2:"ने refer किया है।",
 refYourCodeText:"👉 आपका अपना कोड:",
 refDiffText:"(यह पक्का करने के लिए कि आपका और आपके दोस्त का कोड अलग है)",
+    airdropPageTitle:"🎁 IGC Airdrop — 20,000 IGC FREE",
+    airdropPageSub:"सिर्फ पहले 5,000 लोगों के लिए · हर सफल referral पर +5,000 IGC बोनस",
+    abhiClaim:"🎯 अभी Claim कीजिए",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"पाएँ", free:"मुफ़्त!", onlyFirst:"सिर्फ पहले 5,000 लोगों के लिए",
     refWelcome1:"आपको", refWelcome2:"ने refer किया है! नीचे claim कीजिए और", refWelcome3:"पाइए।",
     emailPh:"अपना Email डालिए", passPh:"Password (कम से कम 6 अक्षर)", or:"— या —", continueGoogle:"Continue with Google",
@@ -183,6 +186,9 @@ buyNowBtn:"💰 Buy Now",
 refReferText1:"You were referred by", refReferText2:".",
 refYourCodeText:"👉 Your own code:",
 refDiffText:"(To ensure your code and your friend's code are different)",
+    airdropPageTitle:"🎁 IGC Airdrop — 20,000 IGC FREE",
+airdropPageSub:"Only for first 5,000 users · +5,000 IGC bonus on every successful referral",
+abhiClaim:"🎯 Claim Now",
     badgeAirdrop:"🎁 FREE AIRDROP LIVE", get:"Get", free:"Free!", onlyFirst:"Only for first 5,000 users",
     refWelcome1:"You were referred by", refWelcome2:"! Claim below and get", refWelcome3:".",
     emailPh:"Enter your Email", passPh:"Password (min 6 characters)", or:"— or —", continueGoogle:"Continue with Google",
@@ -311,23 +317,19 @@ function applyLang(lang){
   });
   const label = document.getElementById("langLabel");
   if(label) label.textContent = (lang === "hi") ? "EN" : "हिं";
-  // === Referral Box Translation ===
+  // === Referral Box Dynamic Update ===
 const refWelcomeBox = document.getElementById("refWelcome");
 if(refWelcomeBox && refWelcomeBox.style.display !== "none"){
-    const divs = refWelcomeBox.querySelectorAll("div");
-    if(divs.length >= 4){
-        const refCode = localStorage.getItem("igc_ref_by") || ''; // K.REF_BY की वैल्यू
-        const myCode = getMyCode(); // आपका अपना कोड
-
-        divs[0].textContent = t("refConfirmedText");
-        
-        divs[1].innerHTML = `${t("refReferText1")} <b id="refWelcomeCode" style="color:var(--ok); font-size: 18px; letter-spacing: 1px;">${refCode}</b> ${t("refReferText2")}`;
-        
-        divs[2].innerHTML = `${t("refYourCodeText")} <b id="myRefCodeDisplay" style="color:var(--gold); font-size: 16px;">${myCode}</b>`;
-        
-        divs[3].textContent = t("refDiffText");
-    }
+    const refCode = localStorage.getItem("igc_ref_by") || '';
+    const myCode = getMyCode();
+    const refWelCode = document.getElementById("refWelcomeCode");
+    const myRefCode = document.getElementById("myRefCodeDisplay");
+    
+    if(refWelCode) refWelCode.textContent = refCode;
+    if(myRefCode) myRefCode.textContent = myCode;
 }
+  // === Referral Box Translation ===
+
 // =================================
   updateLoginUI();
   updateClaimBtn();
