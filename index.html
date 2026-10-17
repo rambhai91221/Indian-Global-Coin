@@ -33,15 +33,15 @@
     </a>
 
     <div class="nav-links" id="navLinks">
-      <a href="index.html" class="active" data-nav="home">होम</a>
-      <a href="airdrop.html" data-nav="airdrop">एयरड्रॉप</a>
-      <a href="mining.html" data-nav="mining">माइनिंग</a>
-      <a href="buy-sell.html" data-nav="buysell">खरीदें/बेचें</a>
-      <a href="security.html" data-nav="security">सुरक्षा</a>
-      <a href="community.html" data-nav="community">कम्युनिटी</a>
-      <a href="chart.html" data-nav="chart">चार्ट</a>
-      <a href="merchant.html" data-nav="merchant">मर्चेंट</a>
-      <a href="whitepaper.html" data-nav="whitepaper">व्हाइटपेपर</a>
+  <a href="index.html" class="active" data-nav="home" data-i18n="navHome">होम</a>
+  <a href="airdrop.html" data-nav="airdrop" data-i18n="navAirdrop">एयरड्रॉप</a>
+  <a href="mining.html" data-nav="mining" data-i18n="navMining">माइनिंग</a>
+  <a href="buy-sell.html" data-nav="buysell" data-i18n="navBuySell">खरीदें/बेचें</a>
+  <a href="security.html" data-nav="security" data-i18n="navSecurity">सुरक्षा</a>
+  <a href="community.html" data-nav="community" data-i18n="navCommunity">कम्युनिटी</a>
+  <a href="chart.html" data-nav="chart" data-i18n="navChart">चार्ट</a>
+  <a href="merchant.html" data-nav="merchant" data-i18n="navMerchant">मर्चेंट</a>
+  <a href="whitepaper.html" data-nav="whitepaper" data-i18n="navWhitepaper">व्हाइटपेपर</a>
     </div>
 
     <div class="nav-actions">
@@ -124,16 +124,18 @@
   <section>
     
     <!-- ================= REFERRAL CONFIRMED BOX (यहाँ जोड़ा गया है) ================= -->
-    <div id="refWelcome" style="display:none; background: linear-gradient(135deg, rgba(61,220,151,.15), rgba(61,220,151,.05)); border: 2px dashed var(--ok); border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-      <div style="font-weight: 800; color: var(--ok); font-size: 16px; margin-bottom: 5px;">✅ Referral Confirmed!</div>
-      <div style="font-size: 14px; margin-bottom: 8px;">
-        आपको <b id="refWelcomeCode" style="color:var(--ok); font-size: 18px; letter-spacing: 1px;">friend</b> ने refer किया है।
-      </div>
-      <div style="font-size: 13px; color: #d6dbe1; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 8px; margin-top: 5px;">
-        👉 आपका अपना कोड: <b id="myRefCodeDisplay" style="color:var(--gold); font-size: 16px;">Loading...</b>
-      </div>
-      <div style="font-size: 11px; color: var(--muted); margin-top: 5px;">(यह पक्का करने के लिए कि आपका और आपके दोस्त का कोड अलग है)</div>
-    </div>
+    <!-- ================= REFERRAL CONFIRMED BOX ================= -->
+  <div id="refWelcome" style="display:none; background: linear-gradient(135deg, rgba(61,220,151,.15), rgba(61,220,151,.05)); border: 2px dashed var(--ok); border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+  <div style="font-weight: 800; color: var(--ok); font-size: 16px; margin-bottom: 5px;" data-i18n="refConfirmedText">✅ Referral Confirmed!</div>
+  <div style="font-size: 14px; margin-bottom: 8px;">
+    <span data-i18n="refReferText1">आपको</span> <b id="refWelcomeCode" style="color:var(--ok); font-size: 18px; letter-spacing: 1px;">friend</b> <span data-i18n="refReferText2">ने refer किया है।</span>
+  </div>
+  <div style="font-size: 13px; color: #d6dbe1; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 8px; margin-top: 5px;">
+    <span data-i18n="refYourCodeText">👉 आपका अपना कोड:</span> <b id="myRefCodeDisplay" style="color:var(--gold); font-size: 16px;">Loading...</b>
+  </div>
+  <div style="font-size: 11px; color: var(--muted); margin-top: 5px;" data-i18n="refDiffText">(यह पक्का करने के लिए कि आपका और आपके दोस्त का कोड अलग है)</div>
+</div>
+<!-- ================= REFERRAL CONFIRMED BOX END ================= -->
     <!-- ================= REFERRAL CONFIRMED BOX END ================= -->
 
     <div id="loginSection" class="login-box">
