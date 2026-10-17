@@ -662,11 +662,7 @@ function inAppBrowser(){
 }
   
   
-  const ua=navigator.userAgent||"";
-  const e=window.ethereum||{};
-  const walletApp=!!(e.isMetaMask||e.isTrust||e.isTrustWallet||e.isCoinbaseWallet||e.isTokenPocket||e.isSafePal)||/MetaMask|Trust|TokenPocket|SafePal|CoinbaseWallet|imToken/i.test(ua);
-  return isMobile()&&(walletApp||/; wv\)|WebView/i.test(ua));
-}
+  
 function googleLoginOK(em,name){
   const k=em.toLowerCase(),users=getUsers();
   if(!users[k]){users[k]="google";saveUsers(users)}
