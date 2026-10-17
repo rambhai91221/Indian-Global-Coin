@@ -623,45 +623,7 @@ function initGoogleSignIn(){
     console.error("Google init error:",e);
     return false;
   }
-     }
-  
-
-  // वेबसाइट (Chrome/Safari) के लिए पुराना कोड नीचे वैसा ही रहेगा...
-  if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
-  if(inAppBrowser()){
-    toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
-    return;
   }
-  if(!window.google||!window.google.accounts||!window.google.accounts.oauth2){
-    toast("⏳ Google load हो रहा है… 2 second बाद try कीजिए","#ff6b6b");
-    initGoogleSignIn();
-    return;
-  }
-  const gBtn=$("googleBtn");gBtn.disabled=true;
-  try{
-    const client=google.accounts.oauth2.initTokenClient({
-      client_id:GOOGLE_CLIENT_ID,
-      scope:"openid email profile",
-      ux_mode:"popup",
-      callback:(resp)=>{
-        gBtn.disabled=false;
-        if(resp&&resp.error){
-          toast(resp.error==="access_denied"?"Google login cancel किया":"Google error: "+resp.error,"#ff6b6b");
-          return;
-        }
-        if(resp&&resp.access_token){
-          fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+resp.access_token}})
-          .then(r=>r.json())
-          .then(info=>{
-            if(!info||!info.email){toast("Google email नहीं मिला","#ff6b6b");return}
-            googleLoginOK(info.email,info.name||"");
-          })
-          .catch(()=>toast("Google userinfo error — कृपया दोबारा प्रयास करें","#ff6b6b"));
-        }
-      },
-      error_callback:(err)=>{
-        gBtn.disabled=false;
-
 
 /* ================== GOOGLE LOGIN ================== */
 function inAppBrowser(){
