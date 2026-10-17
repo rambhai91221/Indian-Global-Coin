@@ -374,7 +374,7 @@ function getMyCode(){
     return "IGC-" + code;
   }
   
-  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code)
+  // अगर लॉगिन नहीं है, तो पुराना तरीका (Random code) - यह ऑफलाइन रेफरल कोड है जो आपने कहा था
   let c = localStorage.getItem(K.MY_CODE);
   if(!c){ c = genCode(); localStorage.setItem(K.MY_CODE, c); }
   return c;
@@ -449,6 +449,7 @@ function updateLoginUI(){
   if(btnEl) btnEl.textContent = isSignup ? "Sign Up" : "Login";
   const sw = $("switchText");
   if(sw){
+    // यहाँ मैंने आपका पुराना switchLink वाला कोड वापस लगा दिया है ताकि लॉगिन/साइनअप का टॉगल बटन काम करे
     sw.innerHTML = isSignup
       ? (currentLang==="hi"?'अकाउंट है? <a id="switchLink">Login</a>':'Have an account? <a id="switchLink">Login</a>')
       : (currentLang==="hi"?'नया user? <a id="switchLink">Sign Up</a>':'New user? <a id="switchLink">Sign Up</a>');
@@ -1113,6 +1114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   // ================== MOBILE MENU TOGGLE END ==================
+  
   applyLang(currentLang);
   initRefUI();
 
