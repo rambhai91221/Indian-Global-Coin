@@ -585,16 +585,14 @@ function startSession(em){
 })();
 
 $("googleBtn").onclick=()=>{
-  
-  // 👇 अगर यूज़र ऐप (APK) के अंदर है, तो सीधे Chrome में खोलो 👇
-  if (navigator.userAgent.indexOf('wv') > -1 || navigator.userAgent.indexOf('Capacitor') > -1) {
-      // यहाँ अपनी वेबसाइट का असली लिंक डालें
-      window.open("https://rambhai91221.github.io/Indian-Global-Coin/", "_system");
-      return; 
+  // 👇 APK (Capacitor) के अंदर से Chrome ब्राउज़र में खोलने का सही तरीका 👇
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.AppLauncher) {
+      window.Capacitor.Plugins.AppLauncher.openUrl({ url: "https://rambhai91221.github.io/Indian-Global-Coin/" });
+      return;
   }
-  // 👆 ऐप वाला चेक यहाँ खत्म होता है 👆
+  // 👆 ------------------------------------------------------------- 👆
 
-  // नीचे आपका वेबसाइट वाला पुराना कोड वैसा ही रहेगा...
+  // वेबसाइट (Chrome/Safari) के लिए पुराना कोड नीचे वैसा ही रहेगा...
   if(GOOGLE_CLIENT_ID.includes("YOUR_CLIENT_ID")){toast(t("googleClientFirst"),"#ff6b6b");return}
   if(inAppBrowser()){
     toast(currentLang==="hi"?"ऐप के अंदर वाले ब्राउज़र में Google login नहीं चलता। नीचे Email + Password से Sign Up / Login कीजिए।":"Google login does not work inside wallet-app browsers. Use Email + Password below.","#ff6b6b");
@@ -637,6 +635,7 @@ $("googleBtn").onclick=()=>{
     client.requestAccessToken({prompt:"select_account"});
   }catch(e){gBtn.disabled=false;console.error(e);toast(t("googleFail"),"#ff6b6b")}
 };
+
 
 let googleReady=false;
 function initGoogleSignIn(){
