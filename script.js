@@ -701,6 +701,8 @@ $("logoutBtn").onclick=()=>{
   localStorage.removeItem(K.SESSION);
   localStorage.removeItem("igc_gname");
   localStorage.removeItem(K.REF_BY);
+  // Logout करते समय इसे भी हटा दें
+  localStorage.removeItem("igc_wallet");
   currentEmail=null;
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
   $("loginSection").style.display="block";
@@ -1159,6 +1161,8 @@ async function connect(silent){
     }
     signer=await new ethers.BrowserProvider(window.ethereum).getSigner();
     user=await signer.getAddress();
+    // यह लाइन जोड़ें ताकि वॉलेट एड्रेस सेव हो जाए
+    localStorage.setItem("igc_wallet", user);
     $("connect").textContent=short(user);
     $("nowallet").style.display="none";
     syncBtn();refreshBal();say("");updateClaimBtn();loadUserData();updateMiningUI();
