@@ -1369,7 +1369,7 @@ if (navToggle && navLinks) {
 // ⚠️ यहाँ अपना असली गूगल स्क्रिप्ट URL डालें
 
 /* ================== MERCHANT FORM LOGIC ================== */
-const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEbMzXv79CEXdMyXSr33huiHJLkutswcLG4l6MGqZXN0aYg5DweAzYnpboqJiOnsx0/exec"; 
+const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyE0BIO2-HRzAafHAJf0m0obeuu_UWL1kfP_krKThY6o0_xkmvGKpSvALI6nzOPbRtTgw/exec"; 
 
 document.addEventListener("DOMContentLoaded", () => {
     const merchantBtn = document.getElementById("merchantBtn");
