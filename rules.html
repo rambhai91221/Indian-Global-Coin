@@ -20,11 +20,12 @@
   .igc-badge-hot { display: inline-block; background: #ff4d4d; color: #fff; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 6px; }
   .igc-btn-tg { display: inline-flex; align-items: center; gap: 8px; background: #0088cc; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 16px; border-radius: 8px; margin-top: 8px; }
   .igc-btn-claim-bonus { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #f0b90b, #c99a08); color: #111111; border: none; font-weight: 800; font-size: 13px; padding: 8px 16px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+  .igc-btn-claim-bonus:disabled { opacity: .6; cursor: not-allowed; }
   .igc-rules-footer { text-align: center; background: rgba(240, 185, 11, 0.1); border: 1px solid #f0b90b; border-radius: 10px; padding: 14px; margin-top: 20px; }
   .igc-rules-footer p { margin: 0 0 6px 0; color: #f0b90b; font-size: 15px; font-weight: 800; }
   .igc-rules-footer .warning-box { color: #ff4d4d; font-size: 13px; font-weight: 700; background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); border-radius: 8px; padding: 10px; margin-top: 8px; }
   .back-btn { display: inline-block; margin-bottom: 20px; color: #f0b90b; text-decoration: none; font-weight: bold; }
-  
+
   /* भाषा बदलने वाले बटन का डिज़ाइन */
   .lang-switch-btn {
     position: absolute; top: 20px; right: 20px;
@@ -39,7 +40,7 @@
 
 <div class="igc-rules-card">
   <a href="index.html" class="back-btn" data-i18n="backHome">← होम वापस जाएँ</a>
-  
+
   <div class="igc-rules-header">
     <span style="font-size: 28px;">📜</span>
     <div>
@@ -79,7 +80,7 @@
     <div class="igc-rule-content">
       <h4><span data-i18n="r4Title">वीकली $5 USDT लकी ड्रा</span> <span class="igc-badge-active" data-i18n="r4Badge">Weekly Draw</span></h4>
       <p data-i18n="r4Desc">जो यूज़र्स अपने वॉलेट में कम से कम 50,000 IGC (₹500 मूल्य) होल्ड रखते हैं या नई खरीदारी करते हैं, वे हमारे साप्ताहिक लकी ड्रा में शामिल होकर $5 USDT (लगभग ₹440) का नकद इनाम जीत सकते हैं!</p>
-      <!-- Telegram Link Fixed -->
+      <!-- Telegram Button -->
       <a href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener noreferrer" class="igc-btn-tg" data-i18n="r4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</a>
     </div>
   </div>
@@ -99,6 +100,9 @@
 </div>
 
 <script>
+  // ⚠️ ध्यान दें: यह URL आपके Google Apps Script का है। इसमें कोई भी गलती (जैसे स्पेस) नहीं होनी चाहिए।
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ_PvaWxb25FnQAfeCOdgp44NfAXFK59CoVrFjZ1F2lCkTj-5M_AskykXAVdyCefiH0w/exec";
+
   // ================= भाषा बदलने का सिस्टम =================
   const translations = {
     hi: {
@@ -194,12 +198,9 @@
         const myCode = localStorage.getItem("igc_my_code") || "N/A";
         const refBy = localStorage.getItem("igc_ref_by") || "Direct";
 
-        // 🔥 यहाँ आपके गूगल स्क्रिप्ट का असली URL है
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzJ_PvaWxb25FnQAfeCOdgp44NfAXFK59CoVrFjZ1F2lCkTj-5M_AskykXAVdyCefiH0w/exec";
-
         try {
           // सीधे Google Apps Script को डेटा भेजें
-          const response = await fetch(scriptURL, {
+          const response = await fetch(SCRIPT_URL, {
             method: "POST",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify({
@@ -233,4 +234,4 @@
   });
 </script>
 </body>
-  </html>
+</html>
