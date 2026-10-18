@@ -73,43 +73,35 @@
       </div>
     </div>
   </div>
-  <!-- ================= IGC RULES BUTTON (TOP OF QUICK ACTION) ================= -->
+  <!-- ================= IGC RULES BUTTON (RED) ================= -->
 <style>
-  .igc-top-rules-btn {
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(135deg, #3B99FC, #1E5AFA);
-    color: #ffffff; text-decoration: none; font-weight: 700; font-size: 15px;
-    padding: 14px 20px; border-radius: 12px; margin-bottom: 12px;
-    box-shadow: 0 8px 20px rgba(59, 153, 252, 0.4);
+  .igc-rules-btn-wrap { display: flex; justify-content: center; margin: 20px 0; }
+  .igc-rules-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    color: #ffffff; text-decoration: none; font-weight: 800; font-size: 16px;
+    padding: 16px 20px; border-radius: 12px; width: 100%; max-width: 500px;
+    box-shadow: 0 8px 24px rgba(255, 77, 77, 0.4);
     border: 1px solid rgba(255,255,255,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
-    animation: pulse-blue-top 2s infinite;
+    transition: all 0.3s ease;
+    animation: pulse-red 2s infinite;
   }
-  .igc-top-rules-btn:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 12px 25px rgba(59, 153, 252, 0.6);
+  .igc-rules-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(255, 77, 77, 0.6);
   }
-  @keyframes pulse-blue-top {
-    0% { box-shadow: 0 0 0 0 rgba(59, 153, 252, 0.5); }
-    70% { box-shadow: 0 0 0 10px rgba(59, 153, 252, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(59, 153, 252, 0); }
+  @keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 77, 77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
   }
 </style>
-
-<a href="rules.html" class="igc-top-rules-btn">
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <span style="font-size: 20px;">📜</span>
-    <span>IGC रिवॉर्ड्स एवं ट्रेडिंग नियम पढ़ें</span>
-  </div>
-  <span style="font-size: 18px; font-weight: 800;">→</span>
-</a>
+<section class="igc-rules-btn-wrap">
+  <a href="rules.html" class="igc-rules-btn">
+    📜 IGC रिवॉर्ड्स एवं ट्रेडिंग नियम पढ़ें
+  </a>
+</section>
 <!-- ================= IGC RULES BUTTON END ================= -->
-
-<!-- ================= QUICK NAV CARDS (यह पहले से आपके कोड में है) ================= -->
-<section>
-  <h2 data-i18n="quickTitle">⚡ क्विक एक्शन — अपना काम चुनें</h2>
-  <div class="quick-grid">
-    <!-- आपके कार्ड्स यहाँ हैं... -->
 
   <!-- ================= QUICK NAV CARDS ================= -->
   <section>
