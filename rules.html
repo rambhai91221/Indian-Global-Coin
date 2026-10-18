@@ -80,8 +80,7 @@
     <div class="igc-rule-content">
       <h4><span data-i18n="r4Title">वीकली $5 USDT लकी ड्रा</span> <span class="igc-badge-active" data-i18n="r4Badge">Weekly Draw</span></h4>
       <p data-i18n="r4Desc">जो यूज़र्स अपने वॉलेट में कम से कम 50,000 IGC (₹500 मूल्य) होल्ड रखते हैं या नई खरीदारी करते हैं, वे हमारे साप्ताहिक लकी ड्रा में शामिल होकर $5 USDT (लगभग ₹440) का नकद इनाम जीत सकते हैं!</p>
-      <!-- Telegram Button -->
-      <a href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener noreferrer" class="igc-btn-tg" data-i18n="r4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</a>
+      <a href="https://t.me/IGC_Official_Token" id="tgDrawBtn" rel="noopener noreferrer" class="igc-btn-tg" data-i18n="r4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</a>
     </div>
   </div>
 
@@ -100,8 +99,9 @@
 </div>
 
 <script>
-  // ⚠️ ध्यान दें: यह URL आपके Google Apps Script का है। इसमें कोई भी गलती (जैसे स्पेस) नहीं होनी चाहिए।
+  // ⚠️ जिस Apps Script में "claimRefBonus" वाला हिस्सा है, उसी का /exec URL यहाँ रखें
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIhIRGcZTw-50J5obxhaDILwvKmSaSHaJfdbT8xu1qHGIJzBTVGdjL1oC_fqtqUc-l/exec";
+  const TG_USER = "IGC_Official_Token";
 
   // ================= भाषा बदलने का सिस्टम =================
   const translations = {
@@ -122,7 +122,15 @@
       r5Title: "PancakeSwap पर लाइव + आगामी बड़े एक्सचेंज लिस्टिंग", r5Live: "Live Now", r5Soon: "More Soon",
       r5Desc: "IGC टोकन PancakeSwap पर सफलतापूर्वक लिस्ट हो चुका है और इसकी लाइव ट्रेडिंग चालू है! बहुत जल्द IGC दुनिया के अन्य बड़े क्रिप्टो एक्सचेंजों पर भी लिस्ट होने जा रहा है।",
       fTitle: "⚡ आज ही कम से कम ₹50 का IGC बाय करें और अपने वॉलेट को एक्टिवेट करें!",
-      fWarn: "⚠️ चेतावनी: यह एयरड्रॉप और डेली माइनिंग सिर्फ सीमित समय (अधिकतम 1 वर्ष) या पहले 5,000 यूज़र्स के कोटे के लिए है।"
+      fWarn: "⚠️ चेतावनी: यह एयरड्रॉप और डेली माइनिंग सिर्फ सीमित समय (अधिकतम 1 वर्ष) या पहले 5,000 यूज़र्स के कोटे के लिए है।",
+      // नए संदेश
+      needLogin: "🔒 कृपया पहले होम पेज पर जाकर Login करें!",
+      needWallet: "🔗 कृपया पहले अपना BSC Wallet कनेक्ट करें (यह पेज अपने वॉलेट ऐप के ब्राउज़र में खोलें)!",
+      processing: "प्रोसेस हो रहा है...",
+      okMsg: "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है!",
+      failMsg: "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी।",
+      netMsg: "❌ कुछ गड़बड़ हुई। कृपया दोबारा प्रयास करें।",
+      waitMsg: "⏳ कृपया थोड़ी देर बाद फिर कोशिश करें।"
     },
     en: {
       backHome: "← Back to Home",
@@ -141,18 +149,28 @@
       r5Title: "Live on PancakeSwap + Upcoming Major Exchange Listings", r5Live: "Live Now", r5Soon: "More Soon",
       r5Desc: "IGC token is successfully listed on PancakeSwap and its live trading is active! Very soon IGC will also be listed on other major global crypto exchanges.",
       fTitle: "⚡ Buy at least ₹50 of IGC today and activate your wallet!",
-      fWarn: "⚠️ Warning: This Airdrop and Daily Mining is only for a limited time (max 1 year) or for the first 5,000 user quota."
+      fWarn: "⚠️ Warning: This Airdrop and Daily Mining is only for a limited time (max 1 year) or for the first 5,000 user quota.",
+      // new messages
+      needLogin: "🔒 Please Login on the Home page first!",
+      needWallet: "🔗 Please connect your BSC Wallet first (open this page in your wallet app's browser)!",
+      processing: "Processing...",
+      okMsg: "✅ Your 10% bonus claim request has been sent successfully!",
+      failMsg: "❌ Claim request could not be recorded.",
+      netMsg: "❌ Something went wrong. Please try again.",
+      waitMsg: "⏳ Please try again after a little while."
     }
   };
 
   let currentLang = localStorage.getItem("igc_lang") || "hi";
   const langBtn = document.getElementById("langBtn");
+  const t = (k) => (translations[currentLang] && translations[currentLang][k]) || translations.hi[k] || k;
 
   function applyLang(lang) {
     currentLang = lang;
     localStorage.setItem("igc_lang", lang);
+    document.documentElement.lang = lang;
     langBtn.textContent = lang === "hi" ? "🌐 EN" : "🌐 हिं";
-    
+
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const key = el.getAttribute("data-i18n");
       if (translations[lang] && translations[lang][key]) {
@@ -167,70 +185,110 @@
 
   applyLang(currentLang);
 
-  // ================= 10% बोनस क्लेम बटन का सीधा और सही कोड =================
+  // ================= टेलीग्राम बटन (ऐप खोलने से रोक हटाने वाला) =================
+  document.querySelectorAll('a[href*="t.me/"]').forEach(a => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const web = "https://t.me/" + TG_USER;
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        let left = false;
+        const onHide = () => { if (document.hidden) left = true; };
+        document.addEventListener("visibilitychange", onHide);
+        // यूज़र के टैप से सीधे ऐप खोलने की कोशिश — ब्राउज़र इसे रोकता नहीं
+        window.location.href = "tg://resolve?domain=" + TG_USER;
+        // ऐप न खुले तो वेब लिंक
+        setTimeout(() => {
+          document.removeEventListener("visibilitychange", onHide);
+          if (!left && !document.hidden) window.location.href = web;
+        }, 1800);
+      } else {
+        window.open(web, "_blank", "noopener");
+      }
+    });
+  });
+
+  // ================= 10% बोनस क्लेम बटन =================
+  // साइट जैसा ही email-आधारित Referral Code
+  function myCodeFor(email) {
+    let hash = 0;
+    const s = email.toLowerCase();
+    for (let i = 0; i < s.length; i++) { hash = Math.imul(31, hash) + s.charCodeAt(i) | 0; }
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "", h = Math.abs(hash);
+    for (let i = 0; i < 6; i++) { code += chars[h % chars.length]; h = Math.floor(h / chars.length); }
+    return "IGC-" + code;
+  }
+
+  // वॉलेट: पहले सेव किया हुआ, नहीं तो सीधे वॉलेट ऐप से
+  async function getWallet() {
+    const saved = localStorage.getItem("igc_wallet");
+    if (saved) return saved;
+    try {
+      if (window.ethereum) {
+        let a = await window.ethereum.request({ method: "eth_accounts" });
+        if (!a || !a[0]) a = await window.ethereum.request({ method: "eth_requestAccounts" });
+        if (a && a[0]) { localStorage.setItem("igc_wallet", a[0]); return a[0]; }
+      }
+    } catch (e) { console.error(e); }
+    return "";
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const claimBtn = document.getElementById("claimRefBonusBtn");
     const msg = document.getElementById("refBonusMsg");
+    const say = (text, ok) => { msg.style.color = ok ? "#25d366" : "#ff4d4d"; msg.textContent = text; };
 
-    if (claimBtn) {
-      claimBtn.addEventListener("click", async () => {
-        
-        // लोकल स्टोरेज से चेक करें
-        const savedEmail = localStorage.getItem("igc_email");
-        const savedWallet = localStorage.getItem("igc_wallet");
+    if (!claimBtn) return;
+    claimBtn.addEventListener("click", async () => {
+      // Login की जाँच (Logout के बाद पुरानी email नहीं मानी जाएगी)
+      const loggedIn = localStorage.getItem("igc_session") === "1";
+      const email = loggedIn ? (localStorage.getItem("igc_email") || "") : "";
+      if (!email) { say(t("needLogin"), false); return; }
 
-        const finalEmail = savedEmail || (typeof currentEmail !== "undefined" ? currentEmail : "");
-        const finalWallet = savedWallet || (typeof user !== "undefined" ? user : "");
+      // बार-बार दबाने से रोक (30 सेकंड)
+      const last = parseInt(localStorage.getItem("igc_refbonus_last") || "0");
+      if (Date.now() - last < 30000) { say(t("waitMsg"), false); return; }
 
-        if (!finalEmail) {
-          alert(currentLang === "hi" ? "🔒 कृपया पहले होम पेज पर जाकर Login करें!" : "🔒 Please Login on the Home page first!");
-          return;
+      claimBtn.disabled = true;
+      claimBtn.textContent = t("processing");
+      msg.textContent = "";
+
+      try {
+        const wallet = await getWallet();
+        if (!wallet) { say(t("needWallet"), false); return; }
+
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          redirect: "follow",
+          body: JSON.stringify({
+            action: "claimRefBonus",
+            email: email,
+            wallet: wallet,
+            myRefCode: myCodeFor(email),
+            referredBy: localStorage.getItem("igc_ref_by") || "Direct",
+            timestamp: new Date().toISOString()
+          })
+        });
+
+        const resData = await response.json();
+        const ok = !!(resData && (resData.success === true || resData.status === "success"));
+
+        if (ok) {
+          localStorage.setItem("igc_refbonus_last", String(Date.now()));
+          say(t("okMsg"), true);
+        } else {
+          console.error("Bonus claim response:", resData);
+          say(t("failMsg") + (resData && resData.message ? " (" + String(resData.message).slice(0, 120) + ")" : ""), false);
         }
-        if (!finalWallet) {
-          alert(currentLang === "hi" ? "🔗 कृपया पहले होम पेज पर अपना BSC Wallet कनेक्ट करें!" : "🔗 Please connect your BSC Wallet on the Home page first!");
-          return;
-        }
-
-        claimBtn.disabled = true;
-        claimBtn.textContent = "Processing...";
-        msg.textContent = "";
-        
-        const myCode = localStorage.getItem("igc_my_code") || "N/A";
-        const refBy = localStorage.getItem("igc_ref_by") || "Direct";
-
-        try {
-          // सीधे Google Apps Script को डेटा भेजें
-          const response = await fetch(SCRIPT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({
-              action: "claimRefBonus",
-              email: finalEmail,
-              wallet: finalWallet,
-              myRefCode: myCode,
-              referredBy: refBy
-            })
-          });
-
-          const resData = await response.json();
-
-          if (resData && resData.success) {
-            msg.style.color = "#25d366";
-            msg.textContent = currentLang === "hi" ? "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है!" : "✅ Your 10% bonus claim request has been sent successfully!";
-          } else {
-            msg.style.color = "#ff4d4d";
-            msg.textContent = currentLang === "hi" ? "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी।" : "❌ Claim request could not be recorded.";
-          }
-        } catch (e) {
-          console.error(e);
-          msg.style.color = "#ff4d4d";
-          msg.textContent = currentLang === "hi" ? "❌ कुछ गड़बड़ हुई। कृपया दोबारा प्रयास करें।" : "❌ Something went wrong. Please try again.";
-        } finally {
-          claimBtn.disabled = false;
-          claimBtn.textContent = translations[currentLang].r3Btn;
-        }
-      });
-    }
+      } catch (e) {
+        console.error(e);
+        say(t("netMsg"), false);
+      } finally {
+        claimBtn.disabled = false;
+        claimBtn.textContent = t("r3Btn");
+      }
+    });
   });
 </script>
 </body>
