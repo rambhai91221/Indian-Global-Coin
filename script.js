@@ -1363,6 +1363,8 @@ if (navToggle && navLinks) {
 })();
 /* ================== MERCHANT FORM LOGIC ================== */
 // ⚠️ यहाँ अपना असली गूगल स्क्रिप्ट URL डालें
+
+/* ================== MERCHANT FORM LOGIC ================== */
 const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYd6x1p-lqfyXNpGKNDURT9Y9lwsivoH87oLHKt-NVJrKYNou7sPsGQHaYfE8SkPB3/exec"; 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1377,7 +1379,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. बटन दबाने पर फॉर्म खोलें
     if(merchantBtn) {
         merchantBtn.addEventListener("click", (e) => {
-            e.preventDefault(); // टेलीग्राम या लिंक खुलने से रोकें
+            e.preventDefault(); // डिफ़ॉल्ट लिंक/एक्शन रोकें
             if(contactSection) contactSection.style.display = "none";
             if(formSection) formSection.style.display = "block";
             window.scrollTo({ top: formSection.offsetTop - 50, behavior: 'smooth' });
@@ -1418,9 +1420,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 const result = await response.json();
                 
-                if (result.status === "success") {
+                if (result && result.status === "success") {
                     msg.style.color = "var(--ok)";
-                    msg.textContent = t("formSuccessMsg") || "✅ Form submitted successfully!";
+                    msg.textContent = "✅ आपका फॉर्म सफलतापूर्वक जमा हो गया है!";
                     form.reset();
                     setTimeout(() => {
                         formSection.style.display = "none";
@@ -1428,18 +1430,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         msg.textContent = "";
                     }, 3000);
                 } else {
-                    throw new Error("Failed");
+                    throw new Error(result.message || "Failed");
                 }
             } catch (error) {
+                console.error("Merchant form error:", error);
                 msg.style.color = "var(--bad)";
-                msg.textContent = t("formErrorMsg") || "❌ Something went wrong. Please try again.";
+                msg.textContent = "❌ कुछ गड़बड़ हुई। कृपया दोबारा प्रयास करें।";
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = t("submitForm") || "Submit Form";
+                submitBtn.textContent = "फॉर्म सबमिट करें";
             }
         });
     }
 });
+
 
 // ================== APK में GOOGLE LOGIN बटन छिपाना ==================
 document.addEventListener("DOMContentLoaded", () => {
