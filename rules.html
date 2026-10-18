@@ -24,7 +24,13 @@
   .igc-rules-footer p { margin: 0 0 6px 0; color: #f0b90b; font-size: 15px; font-weight: 800; }
   .igc-rules-footer .warning-box { color: #ff4d4d; font-size: 13px; font-weight: 700; background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); border-radius: 8px; padding: 10px; margin-top: 8px; }
   .back-btn { display: inline-block; margin-bottom: 20px; color: #f0b90b; text-decoration: none; font-weight: bold; }
-  .lang-switch-btn { position: absolute; top: 20px; right: 20px; background: #161a20; border: 1px solid #272d36; color: #f0b90b; padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  
+  /* भाषा बदलने वाले बटन का डिज़ाइन */
+  .lang-switch-btn {
+    position: absolute; top: 20px; right: 20px;
+    background: #161a20; border: 1px solid #272d36; color: #f0b90b;
+    padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
 </style>
 </head>
 <body>
@@ -156,7 +162,7 @@
 
   applyLang(currentLang);
 
-  // ================= 10% बोनस क्लेम बटन का कोड =================
+  // ================= 10% बोनस क्लेम बटन का नया और सही कोड =================
   document.addEventListener("DOMContentLoaded", () => {
     const claimBtn = document.getElementById("claimRefBonusBtn");
     const msg = document.getElementById("refBonusMsg");
@@ -211,4 +217,4 @@
 </script>
 <script src="script.js"></script>
 </body>
-</html>
+        </html>
