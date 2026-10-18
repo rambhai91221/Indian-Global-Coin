@@ -1363,7 +1363,7 @@ if (navToggle && navLinks) {
 })();
 /* ================== MERCHANT FORM LOGIC ================== */
 // ⚠️ यहाँ अपना असली गूगल स्क्रिप्ट URL डालें
-const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdaCnlc1RxhxCHbs3Z0Z3m6HHtT6kHgukjLLJNa4Ca3ebDgR9z3hZ0Or452Y1_3UzQ/exec"; 
+const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYd6x1p-lqfyXNpGKNDURT9Y9lwsivoH87oLHKt-NVJrKYNou7sPsGQHaYfE8SkPB3/exec"; 
 
 document.addEventListener("DOMContentLoaded", () => {
     const merchantBtn = document.getElementById("merchantBtn");
