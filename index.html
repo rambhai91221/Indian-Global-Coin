@@ -120,6 +120,287 @@
       </a>
     </div>
   </section>
+  <!-- ================== IGC TRADING & REWARD RULES SECTION ================== -->
+<style>
+  .igc-rules-card {
+    background: linear-gradient(145deg, #13171d, #0d1014);
+    border: 1px solid rgba(240, 185, 11, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 25px auto;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    font-family: 'Hind', system-ui, -apple-system, sans-serif;
+  }
+  .igc-rules-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px dashed rgba(240, 185, 11, 0.3);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+  }
+  .igc-rules-header h3 {
+    margin: 0;
+    color: #f0b90b;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .igc-rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-left: 4px solid #f0b90b;
+    transition: transform 0.2s ease;
+  }
+  .igc-rule-item:hover {
+    transform: translateX(4px);
+    background: rgba(240, 185, 11, 0.05);
+  }
+  .igc-rule-icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+  .igc-rule-content h4 {
+    margin: 0 0 4px 0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .igc-rule-content p {
+    margin: 0;
+    color: #a0aec0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .igc-badge-active {
+    display: inline-block;
+    background: #f0b90b;
+    color: #111;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+  .igc-badge-live {
+    display: inline-block;
+    background: #25d366;
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+  .igc-badge-hot {
+    display: inline-block;
+    background: #ff4d4d;
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+  
+  /* Buttons styling */
+  .igc-btn-tg {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #0088cc;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .igc-btn-tg:hover {
+    background: #006699;
+  }
+
+  .igc-btn-claim-bonus {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #f0b90b, #c99a08);
+    color: #111111;
+    border: none;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .igc-btn-claim-bonus:hover {
+    transform: translateY(-2px);
+  }
+
+  .igc-rules-footer {
+    text-align: center;
+    background: rgba(240, 185, 11, 0.1);
+    border: 1px solid #f0b90b;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 20px;
+  }
+  .igc-rules-footer p {
+    margin: 0 0 6px 0;
+    color: #f0b90b;
+    font-size: 15px;
+    font-weight: 800;
+  }
+  .igc-rules-footer .warning-box {
+    color: #ff4d4d;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 8px;
+  }
+</style>
+
+<div class="igc-rules-card">
+  <!-- MAIN HEADING -->
+  <div class="igc-rules-header">
+    <span style="font-size: 28px;">📜</span>
+    <div>
+      <h3 data-i18n="rulesHeaderTitle">IGC रिवॉर्ड्स एवं ट्रेडिंग नियम</h3>
+      <p style="margin:2px 0 0 0; color:#8899a6; font-size:13px;" data-i18n="rulesHeaderSub">ध्यान से पढ़ें — अपने IGC टोकन्स को क्लेम और एक्टिवेट करने के लिए नियम अनिवार्य हैं</p>
+    </div>
+  </div>
+
+  <!-- Rule 1 -->
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🔓</div>
+    <div class="igc-rule-content">
+      <h4><span data-i18n="rule1Title">माइनिंग एवं एयरड्रॉप विथड्रॉल नियम</span> <span class="igc-badge-active" data-i18n="badgeNeeded">जरूरी</span></h4>
+      <p data-i18n="rule1Desc">एयरड्रॉप या माइनिंग से कमाए गए मुफ़्त IGC टोकन्स को अपने पर्सनल वॉलेट में क्लेम / विथड्रॉ करने के लिए वॉलेट से कम से कम ₹50 से ₹100 तक की एक बार खरीदें या बेचें (Buy/Sell) की ट्रेडिंग होना अनिवार्य है।</p>
+    </div>
+  </div>
+
+  <!-- Rule 2 -->
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🏪</div>
+    <div class="igc-rule-content">
+      <h4 data-i18n="rule2Title">मर्चेंट स्टोर्स डिस्काउंट ऑफर</h4>
+      <p data-i18n="rule2Desc">किसी भी IGC रजिस्टर्ड मर्चेंट दुकान पर IGC से पेमेंट करने पर ग्राहक को खरीदारी पर 5% से 10% की विशेष छूट (Discount) मिलेगी। (जैसे ₹100 के सामान पर ₹5 से ₹10 की सीधी बचत!)</p>
+    </div>
+  </div>
+
+  <!-- Rule 3 (10% Bonus + Button) -->
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🎁</div>
+    <div class="igc-rule-content">
+      <h4 data-i18n="rule3Title">रेफ़रल बाय बोनस (10% टोकन बोनस)</h4>
+      <p data-i18n="rule3Desc">अगर आपके रेफ़रल लिंक से जुड़ा दोस्त PancakeSwap या वेबसाइट से IGC खरीदता है, तो आपको उनके ट्रांजेक्शन का 10% बोनस IGC टोकन मिलेगा। बोनस दर्ज कराने के लिए नीचे बटन दबाएँ:</p>
+      <!-- BUTTON ADDED HERE -->
+      <button class="igc-btn-claim-bonus" id="claimRefBonusBtn" data-i18n="rule3Btn">🎁 Claim 10% Bonus Request</button>
+      <div id="refBonusMsg" style="margin-top:6px; font-size:12px; font-weight:bold;"></div>
+    </div>
+  </div>
+
+  <!-- Rule 4 -->
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🏆</div>
+    <div class="igc-rule-content">
+      <h4><span data-i18n="rule4Title">वीकली $5 USDT लकी ड्रा</span> <span class="igc-badge-active" data-i18n="badgeWeekly">Weekly Draw</span></h4>
+      <p data-i18n="rule4Desc">जो यूज़र्स अपने वॉलेट में कम से कम 50,000 IGC (₹500 मूल्य) होल्ड रखते हैं या नई खरीदारी करते हैं, वे हमारे साप्ताहिक लकी ड्रा में शामिल होकर $5 USDT (लगभग ₹440) का नकद इनाम जीत सकते हैं!</p>
+      <p style="margin-top:6px; font-size:13px; color:#f0b90b;" data-i18n="rule4Sub">📌 लकी ड्रा में शामिल होने के लिए अपनी खरीदारी/होल्डिंग का स्क्रीनशॉट और अपना BSC Wallet Address हमारे टेलीग्राम पर भेजें:</p>
+      <a href="https://t.me/IGC_Official_Token" target="_blank" class="igc-btn-tg"><span data-i18n="rule4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</span></a>
+    </div>
+  </div>
+
+  <!-- Rule 5 -->
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🚀</div>
+    <div class="igc-rule-content">
+      <h4><span data-i18n="rule5Title">PancakeSwap पर लाइव + आगामी बड़े एक्सचेंज लिस्टिंग</span> <span class="igc-badge-live" data-i18n="badgeLive">Live Now</span> <span class="igc-badge-hot" data-i18n="badgeSoon">More Soon</span></h4>
+      <p data-i18n="rule5Desc">IGC टोकन PancakeSwap पर सफलतापूर्वक लिस्ट हो चुका है और इसकी लाइव ट्रेडिंग चालू है! बहुत जल्द IGC दुनिया के अन्य बड़े क्रिप्टो एक्सचेंजों पर भी लिस्ट होने जा रहा है। कीमत बढ़ने से पहले अभी बाय करके रखें!</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="igc-rules-footer">
+    <p data-i18n="footerRuleTitle">⚡ आज ही कम से कम ₹50 का IGC बाय करें और अपने वॉलेट को एक्टिवेट करें!</p>
+    <div class="warning-box" data-i18n="footerRuleWarn">
+      ⚠️ चेतावनी/नोट: यह एयरड्रॉप और डेली माइनिंग सिर्फ सीमित समय (अधिकतम 1 वर्ष) या पहले 5,000 यूज़र्स के कोटे के लिए है। कोटा पूरा होने या समय सीमा समाप्त होने के बाद मुफ़्त कॉइन मिलना बंद हो जाएंगे, और फिर केवल PancakeSwap से खरीदकर ही IGC प्राप्त किया जा सकेगा!
+    </div>
+  </div>
+</div>
+
+<!-- ================== JS FOR 10% BONUS CLAIM BUTTON ================== -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const claimBtn = document.getElementById("claimRefBonusBtn");
+    const msg = document.getElementById("refBonusMsg");
+
+    if (claimBtn) {
+      claimBtn.addEventListener("click", async () => {
+        if (typeof currentEmail === "undefined" || !currentEmail) {
+          alert(typeof t === "function" ? t("needLogin") : "🔒 कृपया पहले वेबसाइट पर Email/Google से Login करें!");
+          return;
+        }
+        if (typeof user === "undefined" || !user) {
+          alert(typeof t === "function" ? t("needWallet") : "🔗 कृपया पहले अपना BSC Wallet कनेक्ट करें!");
+          return;
+        }
+
+        claimBtn.disabled = true;
+        claimBtn.textContent = "Processing...";
+        msg.textContent = "";
+
+        const myCode = typeof getMyCode === "function" ? getMyCode() : "N/A";
+        const refBy = localStorage.getItem("igc_ref_by") || "Direct";
+
+        try {
+          if (typeof sendToSheet === "function") {
+            const res = await sendToSheet("claimRefBonus", {
+              email: currentEmail,
+              wallet: user,
+              myRefCode: myCode,
+              referredBy: refBy
+            });
+
+            if (res && res.success) {
+              msg.style.color = "#25d366";
+              msg.textContent = typeof t === "function" ? t("ruleSuccessMsg") : "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट Google Sheet और Telegram दोनों पर सफलता पूर्वक भेज दी गई है!";
+            } else {
+              msg.style.color = "#ff4d4d";
+              msg.textContent = typeof t === "function" ? t("ruleErrorMsg") : "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी। कृपया दोबारा प्रयास करें।";
+            }
+          }
+        } catch (e) {
+          console.error(e);
+          msg.style.color = "#ff4d4d";
+          msg.textContent = typeof t === "function" ? t("ruleFailMsg") : "❌ कुछ गड़बड़ हुई। कृपया टेलीग्राम पर संपर्क करें।";
+        } finally {
+          claimBtn.disabled = false;
+          claimBtn.textContent = typeof t === "function" ? t("rule3Btn") : "🎁 Claim 10% Bonus Request";
+        }
+      });
+    }
+  });
+</script>
+<!-- ================== END OF IGC RULES SECTION ================== -->
 
   <!-- ================= LOGIN / SIGNUP SECTION ================= -->
   <section>
