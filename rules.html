@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGC रिवॉर्ड्स एवं ट्रेडिंग नियम</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: #0d1014; color: #ffffff; font-family: 'Hind', sans-serif; margin: 0; padding: 20px; padding-bottom: 60px; }
+  .igc-rules-card { background: linear-gradient(145deg, #13171d, #0d1014); border: 1px solid rgba(240, 185, 11, 0.3); border-radius: 16px; padding: 24px; max-width: 650px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+  .igc-rules-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(240, 185, 11, 0.3); padding-bottom: 14px; margin-bottom: 20px; }
+  .igc-rules-header h3 { margin: 0; color: #f0b90b; font-size: 20px; font-weight: 800; }
+  .igc-rule-item { display: flex; align-items: flex-start; gap: 14px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 14px; margin-bottom: 12px; border-left: 4px solid #f0b90b; }
+  .igc-rule-icon { font-size: 22px; }
+  .igc-rule-content h4 { margin: 0 0 4px 0; color: #ffffff; font-size: 16px; font-weight: 700; }
+  .igc-rule-content p { margin: 0; color: #a0aec0; font-size: 14px; line-height: 1.5; }
+  .igc-badge-active { display: inline-block; background: #f0b90b; color: #111; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 6px; }
+  .igc-badge-live { display: inline-block; background: #25d366; color: #fff; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 6px; }
+  .igc-badge-hot { display: inline-block; background: #ff4d4d; color: #fff; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 6px; }
+  .igc-btn-tg { display: inline-flex; align-items: center; gap: 8px; background: #0088cc; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 16px; border-radius: 8px; margin-top: 8px; }
+  .igc-btn-claim-bonus { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #f0b90b, #c99a08); color: #111111; border: none; font-weight: 800; font-size: 13px; padding: 8px 16px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+  .igc-rules-footer { text-align: center; background: rgba(240, 185, 11, 0.1); border: 1px solid #f0b90b; border-radius: 10px; padding: 14px; margin-top: 20px; }
+  .igc-rules-footer p { margin: 0 0 6px 0; color: #f0b90b; font-size: 15px; font-weight: 800; }
+  .igc-rules-footer .warning-box { color: #ff4d4d; font-size: 13px; font-weight: 700; background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); border-radius: 8px; padding: 10px; margin-top: 8px; }
+  .back-btn { display: inline-block; margin-bottom: 20px; color: #f0b90b; text-decoration: none; font-weight: bold; }
+  
+  /* भाषा बदलने वाले बटन का डिज़ाइन */
+  .lang-switch-btn {
+    position: absolute; top: 20px; right: 20px;
+    background: #161a20; border: 1px solid #272d36; color: #f0b90b;
+    padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+</style>
+</head>
+<body>
 
+<button class="lang-switch-btn" id="langBtn" onclick="toggleLang()">🌐 EN</button>
+
+<div class="igc-rules-card">
+  <a href="index.html" class="back-btn" data-i18n="backHome">← होम वापस जाएँ</a>
+  
+  <div class="igc-rules-header">
+    <span style="font-size: 28px;">📜</span>
+    <div>
+      <h3 data-i18n="pageTitle">IGC रिवॉर्ड्स एवं ट्रेडिंग नियम</h3>
+      <p style="margin:2px 0 0 0; color:#8899a6; font-size:13px;" data-i18n="pageSub">ध्यान से पढ़ें — अपने IGC टोकन्स को क्लेम और एक्टिवेट करने के लिए नियम अनिवार्य हैं</p>
+    </div>
+  </div>
+
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🔓</div>
+    <div class="igc-rule-content">
+      <h4><span data-i18n="r1Title">माइनिंग एवं एयरड्रॉप विथड्रॉल नियम</span> <span class="igc-badge-active" data-i18n="r1Badge">जरूरी</span></h4>
+      <p data-i18n="r1Desc">एयरड्रॉप या माइनिंग से कमाए गए मुफ़्त IGC टोकन्स को अपने पर्सनल वॉलेट में क्लेम / विथड्रॉ करने के लिए वॉलेट से कम से कम ₹50 से ₹100 तक की एक बार खरीदें या बेचें (Buy/Sell) की ट्रेडिंग होना अनिवार्य है।</p>
+    </div>
+  </div>
+
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🏪</div>
+    <div class="igc-rule-content">
+      <h4 data-i18n="r2Title">मर्चेंट स्टोर्स डिस्काउंट ऑफर</h4>
+      <p data-i18n="r2Desc">किसी भी IGC रजिस्टर्ड मर्चेंट दुकान पर IGC से पेमेंट करने पर ग्राहक को खरीदारी पर 5% से 10% की विशेष छूट (Discount) मिलेगी।</p>
+    </div>
+  </div>
+
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🎁</div>
+    <div class="igc-rule-content">
+      <h4 data-i18n="r3Title">रेफ़रल बाय बोनस (10% टोकन बोनस)</h4>
+      <p data-i18n="r3Desc">अगर आपके रेफ़रल लिंक से जुड़ा दोस्त PancakeSwap या वेबसाइट से IGC खरीदता है, तो आपको उनके ट्रांजेक्शन का 10% बोनस IGC टोकन मिलेगा। बोनस दर्ज कराने के लिए नीचे बटन दबाएँ:</p>
+      <button class="igc-btn-claim-bonus" id="claimRefBonusBtn" data-i18n="r3Btn">🎁 Claim 10% Bonus Request</button>
+      <div id="refBonusMsg" style="margin-top:6px; font-size:12px; font-weight:bold;"></div>
+    </div>
+  </div>
+
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🏆</div>
+    <div class="igc-rule-content">
+      <h4><span data-i18n="r4Title">वीकली $5 USDT लकी ड्रा</span> <span class="igc-badge-active" data-i18n="r4Badge">Weekly Draw</span></h4>
+      <p data-i18n="r4Desc">जो यूज़र्स अपने वॉलेट में कम से कम 50,000 IGC (₹500 मूल्य) होल्ड रखते हैं या नई खरीदारी करते हैं, वे हमारे साप्ताहिक लकी ड्रा में शामिल होकर $5 USDT (लगभग ₹440) का नकद इनाम जीत सकते हैं!</p>
+      <a href="https://t.me/IGC_Official_Token" target="_blank" class="igc-btn-tg" data-i18n="r4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</a>
+    </div>
+  </div>
+
+  <div class="igc-rule-item">
+    <div class="igc-rule-icon">🚀</div>
+    <div class="igc-rule-content">
+      <h4><span data-i18n="r5Title">PancakeSwap पर लाइव + आगामी बड़े एक्सचेंज लिस्टिंग</span> <span class="igc-badge-live" data-i18n="r5Live">Live Now</span> <span class="igc-badge-hot" data-i18n="r5Soon">More Soon</span></h4>
+      <p data-i18n="r5Desc">IGC टोकन PancakeSwap पर सफलतापूर्वक लिस्ट हो चुका है और इसकी लाइव ट्रेडिंग चालू है! बहुत जल्द IGC दुनिया के अन्य बड़े क्रिप्टो एक्सचेंजों पर भी लिस्ट होने जा रहा है।</p>
+    </div>
+  </div>
+
+  <div class="igc-rules-footer">
+    <p data-i18n="fTitle">⚡ आज ही कम से कम ₹50 का IGC बाय करें और अपने वॉलेट को एक्टिवेट करें!</p>
+    <div class="warning-box" data-i18n="fWarn">⚠️ चेतावनी: यह एयरड्रॉप और डेली माइनिंग सिर्फ सीमित समय (अधिकतम 1 वर्ष) या पहले 5,000 यूज़र्स के कोटे के लिए है।</div>
+  </div>
+</div>
+
+<script>
+  // ================= भाषा बदलने का सिस्टम =================
+  const translations = {
+    hi: {
+      backHome: "← होम वापस जाएँ",
+      pageTitle: "IGC रिवॉर्ड्स एवं ट्रेडिंग नियम",
+      pageSub: "ध्यान से पढ़ें — अपने IGC टोकन्स को क्लेम और एक्टिवेट करने के लिए नियम अनिवार्य हैं",
+      r1Title: "माइनिंग एवं एयरड्रॉप विथड्रॉल नियम", r1Badge: "जरूरी",
+      r1Desc: "एयरड्रॉप या माइनिंग से कमाए गए मुफ़्त IGC टोकन्स को अपने पर्सनल वॉलेट में क्लेम / विथड्रॉ करने के लिए वॉलेट से कम से कम ₹50 से ₹100 तक की एक बार खरीदें या बेचें (Buy/Sell) की ट्रेडिंग होना अनिवार्य है।",
+      r2Title: "मर्चेंट स्टोर्स डिस्काउंट ऑफर",
+      r2Desc: "किसी भी IGC रजिस्टर्ड मर्चेंट दुकान पर IGC से पेमेंट करने पर ग्राहक को खरीदारी पर 5% से 10% की विशेष छूट (Discount) मिलेगी।",
+      r3Title: "रेफ़रल बाय बोनस (10% टोकन बोनस)",
+      r3Desc: "अगर आपके रेफ़रल लिंक से जुड़ा दोस्त PancakeSwap या वेबसाइट से IGC खरीदता है, तो आपको उनके ट्रांजेक्शन का 10% बोनस IGC टोकन मिलेगा। बोनस दर्ज कराने के लिए नीचे बटन दबाएँ:",
+      r3Btn: "🎁 Claim 10% Bonus Request",
+      r4Title: "वीकली $5 USDT लकी ड्रा", r4Badge: "Weekly Draw",
+      r4Desc: "जो यूज़र्स अपने वॉलेट में कम से कम 50,000 IGC (₹500 मूल्य) होल्ड रखते हैं या नई खरीदारी करते हैं, वे हमारे साप्ताहिक लकी ड्रा में शामिल होकर $5 USDT (लगभग ₹440) का नकद इनाम जीत सकते हैं!",
+      r4Btn: "✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें",
+      r5Title: "PancakeSwap पर लाइव + आगामी बड़े एक्सचेंज लिस्टिंग", r5Live: "Live Now", r5Soon: "More Soon",
+      r5Desc: "IGC टोकन PancakeSwap पर सफलतापूर्वक लिस्ट हो चुका है और इसकी लाइव ट्रेडिंग चालू है! बहुत जल्द IGC दुनिया के अन्य बड़े क्रिप्टो एक्सचेंजों पर भी लिस्ट होने जा रहा है।",
+      fTitle: "⚡ आज ही कम से कम ₹50 का IGC बाय करें और अपने वॉलेट को एक्टिवेट करें!",
+      fWarn: "⚠️ चेतावनी: यह एयरड्रॉप और डेली माइनिंग सिर्फ सीमित समय (अधिकतम 1 वर्ष) या पहले 5,000 यूज़र्स के कोटे के लिए है।"
+    },
+    en: {
+      backHome: "← Back to Home",
+      pageTitle: "IGC Rewards & Trading Rules",
+      pageSub: "Read carefully — rules are mandatory to claim and activate your IGC tokens",
+      r1Title: "Mining & Airdrop Withdrawal Rules", r1Badge: "Required",
+      r1Desc: "To claim/withdraw free IGC tokens earned from Airdrop or Mining to your personal wallet, it is mandatory to have at least one Buy/Sell trade of ₹50 to ₹100 from your wallet.",
+      r2Title: "Merchant Stores Discount Offer",
+      r2Desc: "Customers paying with IGC at any IGC-registered merchant store will get a special 5% to 10% discount on purchases.",
+      r3Title: "Referral Buy Bonus (10% Token Bonus)",
+      r3Desc: "If a friend joins via your referral link and buys IGC from PancakeSwap or the website, you will get a 10% bonus IGC token on their transaction. Click the button below to record your bonus:",
+      r3Btn: "🎁 Claim 10% Bonus Request",
+      r4Title: "Weekly $5 USDT Lucky Draw", r4Badge: "Weekly Draw",
+      r4Desc: "Users who hold at least 50,000 IGC (worth ₹500) in their wallet or make new purchases can participate in our weekly lucky draw and win $5 USDT (approx ₹440) cash prize!",
+      r4Btn: "✈️ Send Screenshot & Address on Telegram",
+      r5Title: "Live on PancakeSwap + Upcoming Major Exchange Listings", r5Live: "Live Now", r5Soon: "More Soon",
+      r5Desc: "IGC token is successfully listed on PancakeSwap and its live trading is active! Very soon IGC will also be listed on other major global crypto exchanges.",
+      fTitle: "⚡ Buy at least ₹50 of IGC today and activate your wallet!",
+      fWarn: "⚠️ Warning: This Airdrop and Daily Mining is only for a limited time (max 1 year) or for the first 5,000 user quota."
+    }
+  };
+
+  let currentLang = localStorage.getItem("igc_lang") || "hi";
+  const langBtn = document.getElementById("langBtn");
+
+  function applyLang(lang) {
+    currentLang = lang;
+    localStorage.setItem("igc_lang", lang);
+    langBtn.textContent = lang === "hi" ? "🌐 EN" : "🌐 हिं";
+    
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+  }
+
+  function toggleLang() {
+    applyLang(currentLang === "hi" ? "en" : "hi");
+  }
+
+  // पेज लोड होते ही भाषा सेट करें
+  applyLang(currentLang);
+
+  // ================= 10% बोनस क्लेम बटन का कोड =================
+  document.addEventListener("DOMContentLoaded", () => {
+    const claimBtn = document.getElementById("claimRefBonusBtn");
+    const msg = document.getElementById("refBonusMsg");
+
+    if (claimBtn) {
+      claimBtn.addEventListener("click", async () => {
+        if (typeof currentEmail === "undefined" || !currentEmail) {
+          alert(currentLang === "hi" ? "🔒 कृपया पहले वेबसाइट पर Login करें!" : "🔒 Please Login first on the website!");
+          return;
+        }
+        if (typeof user === "undefined" || !user) {
+          alert(currentLang === "hi" ? "🔗 कृपया पहले अपना BSC Wallet कनेक्ट करें!" : "🔗 Please connect your BSC Wallet first!");
+          return;
+        }
+        claimBtn.disabled = true;
+        claimBtn.textContent = "Processing...";
+        msg.textContent = "";
+        const myCode = typeof getMyCode === "function" ? getMyCode() : "N/A";
+        const refBy = localStorage.getItem("igc_ref_by") || "Direct";
+
+        try {
+          if (typeof sendToSheet === "function") {
+            const res = await sendToSheet("claimRefBonus", {
+              email: currentEmail, wallet: user, myRefCode: myCode, referredBy: refBy
+            });
+            if (res && res.success) {
+              msg.style.color = "#25d366";
+              msg.textContent = currentLang === "hi" ? "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है!" : "✅ Your 10% bonus claim request has been sent successfully!";
+            } else {
+              msg.style.color = "#ff4d4d";
+              msg.textContent = currentLang === "hi" ? "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी।" : "❌ Claim request could not be recorded.";
+            }
+          }
+        } catch (e) {
+          msg.style.color = "#ff4d4d";
+          msg.textContent = currentLang === "hi" ? "❌ कुछ गड़बड़ हुई।" : "❌ Something went wrong.";
+        } finally {
+          claimBtn.disabled = false;
+          claimBtn.textContent = translations[currentLang].r3Btn;
+        }
+      });
+    }
+  });
+</script>
+<script src="script.js"></script>
+</body>
+  </html>
