@@ -48,6 +48,7 @@
     </div>
   </div>
 
+  <!-- Rule 1 -->
   <div class="igc-rule-item">
     <div class="igc-rule-icon">🔓</div>
     <div class="igc-rule-content">
@@ -56,6 +57,7 @@
     </div>
   </div>
 
+  <!-- Rule 2 -->
   <div class="igc-rule-item">
     <div class="igc-rule-icon">🏪</div>
     <div class="igc-rule-content">
@@ -64,6 +66,7 @@
     </div>
   </div>
 
+  <!-- Rule 3 -->
   <div class="igc-rule-item">
     <div class="igc-rule-icon">🎁</div>
     <div class="igc-rule-content">
@@ -74,6 +77,7 @@
     </div>
   </div>
 
+  <!-- Rule 4 -->
   <div class="igc-rule-item">
     <div class="igc-rule-icon">🏆</div>
     <div class="igc-rule-content">
@@ -83,6 +87,7 @@
     </div>
   </div>
 
+  <!-- Rule 5 -->
   <div class="igc-rule-item">
     <div class="igc-rule-icon">🚀</div>
     <div class="igc-rule-content">
@@ -91,6 +96,7 @@
     </div>
   </div>
 
+  <!-- Footer -->
   <div class="igc-rules-footer">
     <p data-i18n="fTitle">⚡ आज ही कम से कम ₹50 का IGC बाय करें और अपने वॉलेट को एक्टिवेट करें!</p>
     <div class="warning-box" data-i18n="fWarn">⚠️ चेतावनी: यह एयरड्रॉप और डेली माइनिंग सिर्फ सीमित समय (अधिकतम 1 वर्ष) या पहले 5,000 यूज़र्स के कोटे के लिए है।</div>
@@ -170,24 +176,36 @@
 
     if (claimBtn) {
       claimBtn.addEventListener("click", async () => {
-        if (typeof currentEmail === "undefined" || !currentEmail) {
-          alert(currentLang === "hi" ? "🔒 कृपया पहले वेबसाइट पर Login करें!" : "🔒 Please Login first on the website!");
+        
+        // LocalStorage और Variables दोनों से लॉगिन/वॉलेट चेक करना
+        const savedEmail = localStorage.getItem("igc_email");
+        const savedWallet = localStorage.getItem("igc_wallet"); 
+
+        let isLoggedIn = (typeof currentEmail !== "undefined" && currentEmail) ? true : (savedEmail ? true : false);
+        let isWalletConnected = (typeof user !== "undefined" && user) ? true : (savedWallet ? true : false);
+
+        if (!isLoggedIn) {
+          alert(currentLang === "hi" ? "🔒 कृपया पहले होम पेज पर जाकर Login करें!" : "🔒 Please go to Home page and Login first!");
           return;
         }
-        if (typeof user === "undefined" || !user) {
-          alert(currentLang === "hi" ? "🔗 कृपया पहले अपना BSC Wallet कनेक्ट करें!" : "🔗 Please connect your BSC Wallet first!");
+        if (!isWalletConnected) {
+          alert(currentLang === "hi" ? "🔗 कृपया पहले होम पेज पर अपना BSC Wallet कनेक्ट करें!" : "🔗 Please connect your BSC Wallet on the Home page first!");
           return;
         }
+
         claimBtn.disabled = true;
         claimBtn.textContent = "Processing...";
         msg.textContent = "";
-        const myCode = typeof getMyCode === "function" ? getMyCode() : "N/A";
+        
+        const emailToSend = isLoggedIn ? (typeof currentEmail !== "undefined" ? currentEmail : savedEmail) : "";
+        const walletToSend = isWalletConnected ? (typeof user !== "undefined" ? user : savedWallet) : "";
+        const myCode = localStorage.getItem("igc_my_code") || "N/A";
         const refBy = localStorage.getItem("igc_ref_by") || "Direct";
 
         try {
           if (typeof sendToSheet === "function") {
             const res = await sendToSheet("claimRefBonus", {
-              email: currentEmail, wallet: user, myRefCode: myCode, referredBy: refBy
+              email: emailToSend, wallet: walletToSend, myRefCode: myCode, referredBy: refBy
             });
             if (res && res.success) {
               msg.style.color = "#25d366";
@@ -196,6 +214,9 @@
               msg.style.color = "#ff4d4d";
               msg.textContent = currentLang === "hi" ? "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी।" : "❌ Claim request could not be recorded.";
             }
+          } else {
+             msg.style.color = "#ff4d4d";
+             msg.textContent = currentLang === "hi" ? "❌ सर्वर से कनेक्ट नहीं हो पा रहा (Script Error)" : "❌ Could not connect to server (Script Error)";
           }
         } catch (e) {
           msg.style.color = "#ff4d4d";
@@ -210,4 +231,4 @@
 </script>
 <script src="script.js"></script>
 </body>
-  </html>
+                                                                                                                                                                                                        </html>
