@@ -79,7 +79,8 @@
     <div class="igc-rule-content">
       <h4><span data-i18n="r4Title">वीकली $5 USDT लकी ड्रा</span> <span class="igc-badge-active" data-i18n="r4Badge">Weekly Draw</span></h4>
       <p data-i18n="r4Desc">जो यूज़र्स अपने वॉलेट में कम से कम 50,000 IGC (₹500 मूल्य) होल्ड रखते हैं या नई खरीदारी करते हैं, वे हमारे साप्ताहिक लकी ड्रा में शामिल होकर $5 USDT (लगभग ₹440) का नकद इनाम जीत सकते हैं!</p>
-      <a href="https://t.me/IGC_Official_Token" target="_blank" class="igc-btn-tg" data-i18n="r4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</a>
+      <!-- Telegram Link Fixed with target="_blank" and rel="noopener" -->
+      <a href="https://t.me/IGC_Official_Token" target="_blank" rel="noopener noreferrer" class="igc-btn-tg" data-i18n="r4Btn">✈️ टेलीग्राम पर स्क्रीनशॉट और एड्रेस भेजें</a>
     </div>
   </div>
 
@@ -162,7 +163,7 @@
 
   applyLang(currentLang);
 
-  // ================= 10% बोनस क्लेम बटन का नया और सही कोड =================
+  // ================= 10% बोनस क्लेम बटन का सीधा और सही कोड =================
   document.addEventListener("DOMContentLoaded", () => {
     const claimBtn = document.getElementById("claimRefBonusBtn");
     const msg = document.getElementById("refBonusMsg");
@@ -174,47 +175,63 @@
         const savedEmail = localStorage.getItem("igc_email");
         const savedWallet = localStorage.getItem("igc_wallet");
 
-        // अगर लोकल स्टोरेज में नहीं है, तो टेस्ट के लिए डिफ़ॉल्ट वैल्यू लें (ताकि आपको एरर न आए)
-        const finalEmail = savedEmail || (typeof currentEmail !== "undefined" ? currentEmail : "test@igc.com");
-        const finalWallet = savedWallet || (typeof user !== "undefined" ? user : "0x0000000000000000000000000000000000000000");
+        const finalEmail = savedEmail || (typeof currentEmail !== "undefined" ? currentEmail : "");
+        const finalWallet = savedWallet || (typeof user !== "undefined" ? user : "");
+
+        if (!finalEmail) {
+          alert(currentLang === "hi" ? "🔒 कृपया पहले होम पेज पर जाकर Login करें!" : "🔒 Please Login on the Home page first!");
+          return;
+        }
+        if (!finalWallet) {
+          alert(currentLang === "hi" ? "🔗 कृपया पहले होम पेज पर अपना BSC Wallet कनेक्ट करें!" : "🔗 Please connect your BSC Wallet on the Home page first!");
+          return;
+        }
 
         claimBtn.disabled = true;
         claimBtn.textContent = "Processing...";
         msg.textContent = "";
         
+        const myCode = localStorage.getItem("igc_my_code") || "N/A";
+        const refBy = localStorage.getItem("igc_ref_by") || "Direct";
+
+        // 🔥 यहाँ आपके गूगल स्क्रिप्ट का असली URL है
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzJ_PvaWxb25FnQAfeCOdgp44NfAXFK59CoVrFjZ1F2lCkTj-5M_AskykXAVdyCefiH0w/exec";
+
         try {
-          // अगर sendToSheet फंक्शन मौजूद है (होम पेज वाली स्क्रिप्ट लोड हुई है)
-          if (typeof sendToSheet === "function") {
-            const res = await sendToSheet("claimRefBonus", {
-              email: finalEmail, wallet: finalWallet, myRefCode: "TEST", referredBy: "DIRECT"
-            });
-            if (res && res.success) {
-              msg.style.color = "#25d366";
-              msg.textContent = "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है!";
-            } else {
-              msg.style.color = "#ff4d4d";
-              msg.textContent = "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी।";
-            }
+          // सीधे Google Apps Script को डेटा भेजें
+          const response = await fetch(scriptURL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({
+              action: "claimRefBonus",
+              email: finalEmail,
+              wallet: finalWallet,
+              myRefCode: myCode,
+              referredBy: refBy
+            })
+          });
+
+          const resData = await response.json();
+
+          if (resData && resData.success) {
+            msg.style.color = "#25d366";
+            msg.textContent = currentLang === "hi" ? "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है!" : "✅ Your 10% bonus claim request has been sent successfully!";
           } else {
-            // अगर स्क्रिप्ट नहीं है, तो भी सक्सेस मैसेज दिखाएं (ताकि आप टेस्ट कर सकें)
-            setTimeout(() => {
-              msg.style.color = "#25d366";
-              msg.textContent = "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है! (टेस्ट मोड)";
-            }, 1000);
+            msg.style.color = "#ff4d4d";
+            msg.textContent = currentLang === "hi" ? "❌ क्लेम रिक्वेस्ट दर्ज नहीं हो सकी।" : "❌ Claim request could not be recorded.";
           }
         } catch (e) {
-          msg.style.color = "#25d366";
-          msg.textContent = "✅ आपकी 10% बोनस क्लेम रिक्वेस्ट सफलता पूर्वक भेज दी गई है!";
+          console.error(e);
+          msg.style.color = "#ff4d4d";
+          msg.textContent = currentLang === "hi" ? "❌ कुछ गड़बड़ हुई। कृपया दोबारा प्रयास करें।" : "❌ Something went wrong. Please try again.";
         } finally {
-          setTimeout(() => {
-            claimBtn.disabled = false;
-            claimBtn.textContent = translations[currentLang].r3Btn;
-          }, 1000);
+          claimBtn.disabled = false;
+          claimBtn.textContent = translations[currentLang].r3Btn;
         }
       });
     }
   });
 </script>
-<script src="script.js"></script>
+<!-- यहाँ script.js को हटा दिया गया है ताकि कोई कॉन्फ्लिक्ट न हो -->
 </body>
-        </html>
+</html>
